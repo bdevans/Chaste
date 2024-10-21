@@ -137,7 +137,7 @@ macro(Chaste_ADD_TEST _testTargetName _filename)
         set(_exeTargetName ${_testname})
 
         if (NOT TARGET ${exeTargetName})
-            set(_test_real_output_filename "${CMAKE_CURRENT_BINARY_DIR}/${_testname}.cpp")
+            set(_test_real_output_filename "${CMAKE_CURRENT_BINARY_DIR}/${_testname}.cu")
             add_custom_command(
                 OUTPUT "${_test_real_output_filename}"
                 DEPENDS ${_filename} ${ARGN}
@@ -291,6 +291,8 @@ macro(Chaste_DO_COMMON component)
     file(GLOB_RECURSE Chaste_${component}_SOURCES 
         RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp 
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cu
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cuh
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp)
 
     # Generate additional source files from cellml
@@ -528,7 +530,7 @@ macro(Chaste_DO_TEST_COMMON component)
     else()
         set(COMPONENT_LIBRARIES ${Chaste_LIBRARIES})
     endif()
-    file(GLOB_RECURSE test_sources RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
+    file(GLOB_RECURSE test_sources RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.cu *.cuh)
     if(test_sources)
         add_library(test${component} STATIC ${test_sources})
         target_link_libraries(test${component} PRIVATE Chaste_COMMON_DEPS)
@@ -595,6 +597,14 @@ macro(Chaste_DO_TEST_COMMON component)
                         set_target_properties(${exeTargetName} PROPERTIES LINK_FLAGS "${LINKER_FLAGS}")
                     endif()
 
+                    if (filename MATCHES ".cuh$")
+                        if (BUILD_SHARED_LIBS)
+                            target_link_libraries(${exeTargetName} LINK_PUBLIC ${COMPONENT_LIBRARIES})
+                        else()
+                            target_link_libraries(${exeTargetName} LINK_PUBLIC ${COMPONENT_LIBRARIES} ${Chaste_LIBRARIES} ${Chaste_THIRD_PARTY_LIBRARIES} )
+                        endif()
+                        set_target_properties(${exeTargetName} PROPERTIES LINK_FLAGS "${LINKER_FLAGS}")
+                    endif()
 
                     set_property(TEST ${testTargetName} PROPERTY LABELS ${type}_${component})
 
