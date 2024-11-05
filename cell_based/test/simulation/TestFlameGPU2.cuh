@@ -53,6 +53,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "GeneralisedLinearSpringForce.hpp"
 #include "ChemotacticForce.hpp"
 #include "RandomCellKiller.hpp"
+#include "RepulsionForce.hpp"
 #include "PlaneBasedCellKiller.hpp"
 #include "PlaneBoundaryCondition.hpp"
 #include "AbstractCellBasedWithTimingsTestSuite.hpp"
@@ -88,7 +89,67 @@ FLAMEGPU_AGENT_FUNCTION(do_nothing, flamegpu::MessageNone, flamegpu::MessageNone
     return flamegpu::ALIVE;
 }
 
-class TestOffLatticeSimulation : public AbstractCellBasedWithTimingsTestSuite
+FLAMEGPU_INIT_FUNCTION(simple_force_create_agents) {
+  // Retrieve the host agent tools for agent sheep in the default state
+  flamegpu::HostAgentAPI cell = FLAMEGPU->agent("cell");
+
+  // Create 10 new cell agents
+  for (int i = 0; i < 3; ++i) {
+      flamegpu::HostNewAgentAPI new_cell = cell.newAgent();
+      new_cell.setVariable<float>("x", i * 0.5f);
+      new_cell.setVariable<float>("y", i * 0.5f);
+      new_cell.setVariable<float>("x_force", 0.0f);
+      new_cell.setVariable<float>("y_force", 0.0f);
+      new_cell.setVariable<float>("radius", 0.5f);
+  }
+}
+
+FLAMEGPU_AGENT_FUNCTION(output_location, flamegpu::MessageNone, flamegpu::MessageBruteForce) {
+    FLAMEGPU->message_out.setVariable<float>("x", FLAMEGPU->getVariable<float>("x"));
+    FLAMEGPU->message_out.setVariable<float>("y", FLAMEGPU->getVariable<float>("y"));
+    FLAMEGPU->message_out.setVariable<float>("radius", FLAMEGPU->getVariable<float>("radius"));
+    return flamegpu::ALIVE;
+}
+
+// Models repulsion force without division/apoptosis
+FLAMEGPU_AGENT_FUNCTION(compute_force_meineke_spring, flamegpu::MessageBruteForce, flamegpu::MessageNone) {
+    const float x = FLAMEGPU->getVariable<float>("x");
+    const float y = FLAMEGPU->getVariable<float>("y");
+    float x_force = 0.0;
+    float y_force = 0.0;
+    float radius = FLAMEGPU->getVariable<float>("radius");
+
+    for (const auto& message : FLAMEGPU->message_in) {
+        float other_x = message.getVariable<float>("x");
+        float other_y = message.getVariable<float>("y");
+        float other_radius = message.getVariable<float>("radius");
+        
+        float x_dist = other_x - x;
+        float y_dist = other_y - y;
+        float distance_between_nodes = sqrt(x_dist * x_dist + y_dist * y_dist);
+        float unit_x = x_dist / distance_between_nodes;
+        float unit_y = y_dist / distance_between_nodes;
+        const float rest_length = radius + other_radius; 
+        float overlap = distance_between_nodes - rest_length;
+        const float spring_stiffness = 15.0f;
+        const float cutoff_length = 1.5f;
+        const float multiplication_factor = 1.0f;
+
+        if (distance_between_nodes > 0.0f) {
+            if (x_dist * x_dist + y_dist * y_dist < cutoff_length) {
+                x_force += multiplication_factor * spring_stiffness * unit_x * overlap; 
+                y_force += multiplication_factor * spring_stiffness * unit_y * overlap; 
+            }
+        }
+
+        
+        FLAMEGPU->setVariable("x_force", x_force);        
+        FLAMEGPU->setVariable("y_force", y_force);        
+    }
+    return flamegpu::ALIVE;
+}
+
+class TestGPUOffLatticeSimulation : public AbstractCellBasedWithTimingsTestSuite
 {
 public:
 
@@ -114,6 +175,97 @@ public:
         flamegpu::CUDASimulation cuda_model(model);
         cuda_model.simulate();
     }
+    
+
+    // This test aims to perform a simple force calculation using both chaste and fgpu2
+    // and show that the results are comparable
+    void TestSimpleForceCalculation()
+    {
+        /* 
+         * Chaste computation 
+         */
+        SimulationTime::Instance()->SetEndTimeAndNumberOfTimeSteps(1.0,1);
+        
+        // Create a NodeBasedCellPopulation
+        std::vector<Node<2>*> nodes;
+        nodes.push_back(new Node<2>(0, true, 0.0, 0.0));
+        nodes.push_back(new Node<2>(1, true, 0.5, 0.5));
+        nodes.push_back(new Node<2>(2, true, 1.0, 1.0));
+
+        // Convert this to a NodesOnlyMesh
+        NodesOnlyMesh<2> mesh;
+        mesh.ConstructNodesWithoutMesh(nodes, 100.0);
+
+        std::vector<CellPtr> cells;
+        CellsGenerator<FixedG1GenerationalCellCycleModel, 2> cells_generator;
+        cells_generator.GenerateBasic(cells, mesh.GetNumNodes());
+
+        NodeBasedCellPopulation<2> cell_population(mesh, cells);
+        cell_population.Update(); //Needs to be called separately as not in a simulation
+
+        RepulsionForce<2> repulsion_force;
+
+        for (AbstractMesh<2,2>::NodeIterator node_iter = mesh.GetNodeIteratorBegin();
+                node_iter != mesh.GetNodeIteratorEnd();
+                ++node_iter)
+        {
+            node_iter->ClearAppliedForce();
+        }
+        repulsion_force.AddForceContribution(cell_population);
+
+        /* 
+         * Flame computation 
+         */
+        flamegpu::ModelDescription model("TestSimpleForceCalculation");
+        
+        // Define an agent
+        flamegpu::AgentDescription cell_agent = model.newAgent("cell"); 
+        cell_agent.newVariable<float>("x");
+        cell_agent.newVariable<float>("y");
+        cell_agent.newVariable<float>("radius");
+        cell_agent.newVariable<float>("x_force");
+        cell_agent.newVariable<float>("y_force");
+        
+        // Define the location message
+        flamegpu::MessageBruteForce::Description location_message = model.newMessage<flamegpu::MessageBruteForce>("location_message");
+        location_message.newVariable<float>("x");
+        location_message.newVariable<float>("y");
+        location_message.newVariable<float>("radius");
+
+        // Agent functions
+        flamegpu::AgentFunctionDescription output_location_desc = cell_agent.newFunction("output_location", output_location);
+        output_location_desc.setMessageOutput("location_message");
+        
+        flamegpu::AgentFunctionDescription compute_force_desc = cell_agent.newFunction("compute_force_meineke_spring", compute_force_meineke_spring);
+        compute_force_desc.setMessageInput("location_message");
+
+        compute_force_desc.dependsOn(output_location_desc);
+        
+        // Set execution root
+        model.addExecutionRoot(output_location_desc);
+        
+        model.addInitFunction(simple_force_create_agents);
+        
+        model.generateLayers();
+
+        flamegpu::CUDASimulation cuda_model(model);
+        cuda_model.SimulationConfig().steps = 1;
+        cuda_model.simulate();
+        
+        // Get results
+        flamegpu::AgentVector out_pop(cell_agent);
+        cuda_model.getPopulationData(out_pop);
+        
+        /*
+         * Compare forces
+         */
+        
+        for (int i = 0; i < 3; i++) {
+            TS_ASSERT_DELTA(cell_population.GetNode(i)->rGetAppliedForce()[0], out_pop[i].getVariable<float>("x_force"), 1e-4);
+            TS_ASSERT_DELTA(cell_population.GetNode(i)->rGetAppliedForce()[1], out_pop[i].getVariable<float>("y_force"), 1e-4);
+        }
+    }
+  
 };
 
-#endif /*TESTOFFLATTICESIMULATION_HPP_*/
+#endif /*TESTGPUOFFLATTICESIMULATION_HPP_*/
