@@ -4,8 +4,8 @@
 //
 // SPDX-License-Identifier:    LGPL-3.0-or-later
 
-#ifndef CASTER_PETSC_H_
-#define CASTER_PETSC_H_
+#ifndef PYBINDPETSCTYPECASTER_HPP_
+#define PYBINDPETSCTYPECASTER_HPP_
 
 #include <pybind11/cast.h>
 #include <pybind11/pybind11.h>
@@ -80,4 +80,4 @@ namespace pybind11::detail
   PETSC_CASTER_MACRO(Vec, Vec, vec);
 } // namespace pybind11::detail
 
-#endif // CASTER_PETSC_H_
+#endif // PYBINDPETSCTYPECASTER_HPP_

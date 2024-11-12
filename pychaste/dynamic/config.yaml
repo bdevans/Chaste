@@ -115,12 +115,12 @@ modules:
         excluded_variables:
           - MASTER_RANK # MPI not wrapped here
         source_includes:
-          - caster_petsc.h
+          - PybindPetscTypeCaster.hpp
 
       - name: ReplicatableVector
         custom_generator: "CPPWG_SOURCEROOT/pychaste/dynamic/templates/ReplicatableVectorCustomTemplate.py"
         source_includes:
-          - caster_petsc.h
+          - PybindPetscTypeCaster.hpp
 
       ##=== core: Chaste/global/src/timing
       - name: Timer
@@ -175,7 +175,7 @@ modules:
       #=== pde: Chaste/cell_based/src/cell_based_pde
       - name: CellBasedEllipticPdeSolver
         source_includes:
-          - caster_petsc.h
+          - PybindPetscTypeCaster.hpp
           - PybindUblasTypeCaster.hpp
 
       - name: CellBasedParabolicPdeSolver
@@ -187,37 +187,37 @@ modules:
           - GetSolution
           - GetFeMesh
         source_includes:
-          - caster_petsc.h
+          - PybindPetscTypeCaster.hpp
 
       - name: AbstractBoxDomainPdeModifier
         source_includes:
-          - caster_petsc.h
+          - PybindPetscTypeCaster.hpp
 
       - name: AbstractGrowingDomainPdeModifier
         source_includes:
-          - caster_petsc.h
+          - PybindPetscTypeCaster.hpp
 
       - name: EllipticGrowingDomainPdeModifier
         source_includes:
-          - caster_petsc.h
+          - PybindPetscTypeCaster.hpp
         excluded_methods:
           - ConstructBoundaryConditionsContainer
 
       - name: ParabolicGrowingDomainPdeModifier
         source_includes:
-          - caster_petsc.h
+          - PybindPetscTypeCaster.hpp
         excluded_methods:
           - ConstructBoundaryConditionsContainer
 
       - name: EllipticBoxDomainPdeModifier
         source_includes:
-          - caster_petsc.h
+          - PybindPetscTypeCaster.hpp
         excluded_methods:
           - ConstructBoundaryConditionsContainer
 
       - name: ParabolicBoxDomainPdeModifier
         source_includes:
-          - caster_petsc.h
+          - PybindPetscTypeCaster.hpp
         excluded_methods:
           - ConstructBoundaryConditionsContainer
 
@@ -725,6 +725,7 @@ modules:
       - name: ImmersedBoundaryLinearMembraneForce
       - name: ImmersedBoundaryMorseInteractionForce
       - name: ImmersedBoundaryMorseMembraneForce
+      
       - name: NagaiHondaForce
       - name: RepulsionForce
 
@@ -1013,7 +1014,7 @@ modules:
       ##=== visualization: Chaste/pychaste/src/cpp/visualization
       - name: VtkScene
         source_includes:
-          - PybindVTKTypeCaster.h
+          - PybindVTKTypeCaster.hpp
 
       - name: AbstractPyChasteActorGenerator
         source_includes:

@@ -38,7 +38,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include "caster_petsc.h"
+#include "PybindPetscTypeCaster.hpp"
 #include "PybindUblasTypeCaster.hpp"
 #include <map>
 #include <set>

@@ -8,8 +8,8 @@
 //  PURPOSE.  See the above copyright notice for more information.
 //=========================================================================
 
-#ifndef pybind_extension_vtk_source_VTKTypeCaster_h
-#define pybind_extension_vtk_source_VTKTypeCaster_h
+#ifndef PYBINDVTKTYPECASTER_HPP_
+#define PYBINDVTKTYPECASTER_HPP_
 
 #include <pybind11/cast.h>
 #include <pybind11/pybind11.h>
@@ -136,4 +136,4 @@ struct type_caster<vtkNew<Class> > : public vtk_ptr_cast_only<vtkNew<Class> >
 } // namespace detail
 } // namespace pybind11
 
-#endif
+#endif // PYBINDVTKTYPECASTER_HPP_
