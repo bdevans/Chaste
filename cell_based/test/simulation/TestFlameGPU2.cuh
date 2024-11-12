@@ -74,6 +74,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "BetaCateninOneHitCellMutationState.hpp"
 #include "DefaultCellProliferativeType.hpp"
 #include "ForwardEulerNumericalMethod.hpp"
+#include "GPUModifier.cuh"
 
 // Cell population writers
 #include "CellMutationStatesCountWriter.hpp"
@@ -89,7 +90,7 @@ FLAMEGPU_AGENT_FUNCTION(do_nothing, flamegpu::MessageNone, flamegpu::MessageNone
     return flamegpu::ALIVE;
 }
 
-FLAMEGPU_INIT_FUNCTION(simple_force_create_agents) {
+FLAMEGPU_INIT_FUNCTION(test_simple_force_create_agents) {
   // Retrieve the host agent tools for agent sheep in the default state
   flamegpu::HostAgentAPI cell = FLAMEGPU->agent("cell");
 
@@ -104,7 +105,7 @@ FLAMEGPU_INIT_FUNCTION(simple_force_create_agents) {
   }
 }
 
-FLAMEGPU_AGENT_FUNCTION(output_location, flamegpu::MessageNone, flamegpu::MessageBruteForce) {
+FLAMEGPU_AGENT_FUNCTION(test_output_location, flamegpu::MessageNone, flamegpu::MessageBruteForce) {
     FLAMEGPU->message_out.setVariable<float>("x", FLAMEGPU->getVariable<float>("x"));
     FLAMEGPU->message_out.setVariable<float>("y", FLAMEGPU->getVariable<float>("y"));
     FLAMEGPU->message_out.setVariable<float>("radius", FLAMEGPU->getVariable<float>("radius"));
@@ -112,7 +113,7 @@ FLAMEGPU_AGENT_FUNCTION(output_location, flamegpu::MessageNone, flamegpu::Messag
 }
 
 // Models repulsion force without division/apoptosis
-FLAMEGPU_AGENT_FUNCTION(compute_force_meineke_spring, flamegpu::MessageBruteForce, flamegpu::MessageNone) {
+FLAMEGPU_AGENT_FUNCTION(test_compute_force_meineke_spring, flamegpu::MessageBruteForce, flamegpu::MessageNone) {
     const float x = FLAMEGPU->getVariable<float>("x");
     const float y = FLAMEGPU->getVariable<float>("y");
     float x_force = 0.0;
@@ -142,9 +143,12 @@ FLAMEGPU_AGENT_FUNCTION(compute_force_meineke_spring, flamegpu::MessageBruteForc
             }
         }
 
-        
+
         FLAMEGPU->setVariable("x_force", x_force);        
         FLAMEGPU->setVariable("y_force", y_force);        
+        
+        FLAMEGPU->setVariable("x", x + x_force * 0.001);
+        FLAMEGPU->setVariable("y", y + y_force * 0.001);
     }
     return flamegpu::ALIVE;
 }
@@ -156,24 +160,24 @@ public:
     void TestFlameGPU2Simulation()
     {
 
-        flamegpu::ModelDescription model("Chaste Test");
-        
-        // Define an agent
-        flamegpu::AgentDescription agent = model.newAgent("cell"); 
-        agent.newVariable<float>("x");
+        //flamegpu::ModelDescription model("Chaste Test");
+        //
+        //// Define an agent
+        //flamegpu::AgentDescription agent = model.newAgent("cell"); 
+        //agent.newVariable<float>("x");
 
-        // Agent functions
-        flamegpu::AgentFunctionDescription func = agent.newFunction("do_nothing", do_nothing);
-        
-        // Set execution root
-        model.addExecutionRoot(func);
-        
-        //model.addInitFunction(create_agents);
-        
-        model.generateLayers();
+        //// Agent functions
+        //flamegpu::AgentFunctionDescription func = agent.newFunction("do_nothing", test_do_nothing);
+        //
+        //// Set execution root
+        //model.addExecutionRoot(func);
+        //
+        ////model.addInitFunction(create_agents);
+        //
+        //model.generateLayers();
 
-        flamegpu::CUDASimulation cuda_model(model);
-        cuda_model.simulate();
+        //flamegpu::CUDASimulation cuda_model(model);
+        //cuda_model.simulate();
     }
     
 
@@ -233,10 +237,10 @@ public:
         location_message.newVariable<float>("radius");
 
         // Agent functions
-        flamegpu::AgentFunctionDescription output_location_desc = cell_agent.newFunction("output_location", output_location);
+        flamegpu::AgentFunctionDescription output_location_desc = cell_agent.newFunction("output_location", test_output_location);
         output_location_desc.setMessageOutput("location_message");
         
-        flamegpu::AgentFunctionDescription compute_force_desc = cell_agent.newFunction("compute_force_meineke_spring", compute_force_meineke_spring);
+        flamegpu::AgentFunctionDescription compute_force_desc = cell_agent.newFunction("compute_force_meineke_spring", test_compute_force_meineke_spring);
         compute_force_desc.setMessageInput("location_message");
 
         compute_force_desc.dependsOn(output_location_desc);
@@ -244,7 +248,7 @@ public:
         // Set execution root
         model.addExecutionRoot(output_location_desc);
         
-        model.addInitFunction(simple_force_create_agents);
+        model.addInitFunction(test_simple_force_create_agents);
         
         model.generateLayers();
 
@@ -263,6 +267,54 @@ public:
         for (int i = 0; i < 3; i++) {
             TS_ASSERT_DELTA(cell_population.GetNode(i)->rGetAppliedForce()[0], out_pop[i].getVariable<float>("x_force"), 1e-4);
             TS_ASSERT_DELTA(cell_population.GetNode(i)->rGetAppliedForce()[1], out_pop[i].getVariable<float>("y_force"), 1e-4);
+        }
+    }
+    
+    void TestGPUModifier() {
+        
+        double size_of_box = 8.0;
+        unsigned cells_across = 12;
+        double scaling = size_of_box/(double(cells_across-1));
+
+        // Create a simple 3D NodeBasedCellPopulation consisting of cells evenly spaced in a regular grid
+        std::vector<Node<2>*> nodes;
+        unsigned index = 0;
+        for (unsigned i=0; i<cells_across; i++)
+        {
+            for (unsigned j=0; j<cells_across; j++)
+            {
+                nodes.push_back(new Node<2>(index, false,  (double) i * scaling , (double) j * scaling));
+                index++;
+            }
+        }
+
+        NodesOnlyMesh<2> mesh;
+        mesh.ConstructNodesWithoutMesh(nodes, 1.5);
+
+        std::vector<CellPtr> cells;
+        MAKE_PTR(TransitCellProliferativeType, p_transit_type);
+        CellsGenerator<UniformCellCycleModel, 2> cells_generator;
+        cells_generator.GenerateBasicRandom(cells, mesh.GetNumNodes(), p_transit_type);
+
+        NodeBasedCellPopulation<2> node_based_cell_population(mesh, cells);
+        //node_based_cell_population.AddCellPopulationCountWriter<CellProliferativeTypesCountWriter>();
+
+        // Set up cell-based simulation
+        OffLatticeSimulation<2> simulator(node_based_cell_population);
+        simulator.SetOutputDirectory("GPUNodeBased");
+        simulator.SetSamplingTimestepMultiple(12);
+        simulator.SetEndTime(1.0);
+
+        MAKE_PTR(GPUModifier<2>, gpuModifier);
+        simulator.AddSimulationModifier(gpuModifier);
+
+        // Run simulation
+        simulator.Solve();
+
+        // Avoid memory leak
+        for (unsigned i=0; i<nodes.size(); i++)
+        {
+            delete nodes[i];
         }
     }
   
