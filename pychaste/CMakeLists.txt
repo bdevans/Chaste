@@ -68,6 +68,9 @@ chaste_do_component(pychaste)
 
 set(PYCHASTE_WRAPPER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/dynamic/wrappers")
 
+# Find PETSc4py
+find_package(PETSc4py REQUIRED)
+
 ##################################################
 # Python wrapper generation
 ##################################################
@@ -77,14 +80,14 @@ cppwg_command("${PYCHASTE_WRAPPER_DIR}")
 add_custom_command(TARGET pychaste_wrappers COMMAND ${CPPWG_COMMAND_LST})
 
 # Generate wrappers if they are missing
-if(NOT EXISTS ${PYCHASTE_WRAPPER_DIR}/lib/_pychaste_lib.main.cppwg.cpp)
+if(NOT EXISTS ${PYCHASTE_WRAPPER_DIR}/all/_pychaste_all.main.cppwg.cpp)
     message(STATUS "Generating PyChaste wrappers")
     cppwg_command("${PYCHASTE_WRAPPER_DIR}")
     execute_process(COMMAND sh -c "${CPPWG_COMMAND_STR}")
 endif()
 
 # Find wrapper header directories
-header_dirs(${PYCHASTE_WRAPPER_DIR} PYCHASTE_WRAPPER_INCLUDE_DIRS)
+header_dirs("${CMAKE_CURRENT_SOURCE_DIR}/dynamic" PYCHASTE_WRAPPER_INCLUDE_DIRS)
 
 ##################################################
 # Copy Python package to build directory
@@ -118,22 +121,22 @@ endforeach()
 ##################################################
 # Build Python modules from wrappers
 ##################################################
-# Create a `_pychaste_lib` shared library. The library name is the same
-# as the module name in the module wrapper `_pychaste_lib.main.cppwg.cpp`.
-# It is imported in Python code as `from chaste._pychaste_lib import *`.
+# Create a `_pychaste_all` shared library. The library name is the same
+# as the module name in the module wrapper `_pychaste_all.main.cppwg.cpp`.
+# It is imported in Python code as `from chaste._pychaste_all import *`.
 
 file(
     GLOB_RECURSE
     PYCHASTE_WRAPPER_SOURCES
     RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    ${PYCHASTE_WRAPPER_DIR}/lib/*.cpp
-    ${PYCHASTE_WRAPPER_DIR}/lib/*.hpp
+    ${PYCHASTE_WRAPPER_DIR}/all/*.cpp
+    ${PYCHASTE_WRAPPER_DIR}/all/*.hpp
 )
 
-add_library(_pychaste_lib SHARED ${PYCHASTE_WRAPPER_SOURCES})
+add_library(_pychaste_all SHARED ${PYCHASTE_WRAPPER_SOURCES})
 
 set_target_properties(
-    _pychaste_lib
+    _pychaste_all
     PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${PYCHASTE_PACKAGE_BINARY_DIR}/chaste
         PREFIX "${PYTHON_MODULE_PREFIX}"
@@ -141,7 +144,7 @@ set_target_properties(
 )
 
 target_link_libraries(
-    _pychaste_lib
+    _pychaste_all
     PRIVATE
     ${Python3_LIBRARIES}  # Python and pybind11 come first
     pybind11::module
@@ -150,13 +153,14 @@ target_link_libraries(
 )
 
 target_include_directories(
-    _pychaste_lib
+    _pychaste_all
     PRIVATE
     ${PYTHON3_INCLUDE_DIRS}
     ${Chaste_pychaste_INCLUDE_DIRS}  # Non-wrapper code in src/cpp/
     ${PYCHASTE_WRAPPER_INCLUDE_DIRS}
+    ${PETSC4PY_INCLUDES}
 )
 
-target_compile_options(_pychaste_lib PRIVATE -Wno-unused-local-typedefs)
+target_compile_options(_pychaste_all PRIVATE -Wno-unused-local-typedefs)
 
-add_dependencies(pychaste _pychaste_lib)
+add_dependencies(pychaste _pychaste_all)

@@ -72,7 +72,8 @@ class TestPyWrapperChanges(unittest.TestCase):
             os.path.isdir(gen_wrapper_dir),
             "Cannot find generated wrappers: " + gen_wrapper_dir,
         )
-
+        
+        self.maxDiff = None
         for dirpath, _, filenames in os.walk(src_wrapper_dir):
             for filename in filenames:
                 if filename.endswith(".cppwg.cpp") or filename.endswith(".cppwg.hpp"):

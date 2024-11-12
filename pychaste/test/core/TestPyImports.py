@@ -53,7 +53,7 @@ from chaste.visualization import *
 class TestPyImports(unittest.TestCase):
 
     def test_imports(self):
-        module = "pychaste/dynamic/wrappers/lib/_pychaste_lib.main.cppwg.cpp"
+        module = "pychaste/dynamic/wrappers/all/_pychaste_all.main.cppwg.cpp"
         class_names = []
 
         class_regex = re.compile(r"^\s*register_(\w+)_class\(m\);\s*$")

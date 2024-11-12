@@ -32,7 +32,7 @@ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from chaste._pychaste_lib import (
+from chaste._pychaste_all import (
     Alarcon2004OxygenBasedCellCycleOdeSystem,
     DeltaNotchEdgeOdeSystem,
     DeltaNotchInteriorOdeSystem,

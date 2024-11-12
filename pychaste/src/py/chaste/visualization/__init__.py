@@ -35,7 +35,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import importlib.util
 import warnings
 
-from chaste._pychaste_lib import (
+from chaste._pychaste_all import (
     CellPopulationPyChasteActorGenerator_2,
     CellPopulationPyChasteActorGenerator_3,
     VtkScene_2,
