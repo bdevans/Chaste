@@ -68,9 +68,6 @@ chaste_do_component(pychaste)
 
 set(PYCHASTE_WRAPPER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/dynamic/wrappers")
 
-# Find PETSc4py
-find_package(PETSc4py REQUIRED)
-
 ##################################################
 # Python wrapper generation
 ##################################################

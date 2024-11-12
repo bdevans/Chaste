@@ -1,2 +1,2 @@
 recursive-include chaste/ *.so
-recursive-include docs/tutorial/ *.ipynb
+recursive-include doc/tutorial/ *.ipynb

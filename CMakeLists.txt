@@ -339,7 +339,7 @@ if (Chaste_ENABLE_PYCHASTE)
     FetchContent_MakeAvailable(cppwg)
 
     execute_process(COMMAND ${chaste_python3_venv}/pip install ${cppwg_SOURCE_DIR})
-    execute_process( COMMAND ${chaste_python3_venv}/cppwg --version
+    execute_process(COMMAND ${chaste_python3_venv}/cppwg --version
         OUTPUT_VARIABLE Chaste_CPPWG_VERSION
         OUTPUT_STRIP_TRAILING_WHITESPACE)
     message("CPPWG version: ${Chaste_CPPWG_VERSION}")
@@ -484,6 +484,10 @@ endif ()
 ################################
 ####  Find PETSc
 ################################
+if (Chaste_ENABLE_PYCHASTE)
+    find_package(PETSc4py REQUIRED)
+endif ()
+
 find_package (PETSc REQUIRED)
 list (APPEND Chaste_LINK_LIBRARIES "${PETSC_LIBRARIES}")
 
