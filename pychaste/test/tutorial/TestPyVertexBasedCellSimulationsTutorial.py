@@ -42,19 +42,20 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import unittest  # Python testing framework
 
+import matplotlib.pyplot as plt  # Plotting
+import numpy as np  # Matrix tools
+
 import chaste  # The PyChaste module
 import chaste.cell_based  # Contains cell populations
 import chaste.mesh  # Contains meshes
 import chaste.visualization  # Visualization tools
-import matplotlib.pyplot as plt  # Plotting
-import numpy as np  # Matrix tools
+
+from chaste.cell_based import AbstractCellBasedTestSuite
 
 # Set up MPI
 
 
-class TestPyVertexBasedCellSimulationsTutorial(
-    chaste.cell_based.AbstractCellBasedTestSuite
-):
+class TestPyVertexBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
     ## ### Test 1 - A basic vertex-based simulation
     ## In the first test, we run a simple vertex-based simulation, in which we create a monolayer of cells,
     ## using a mutable vertex mesh. Each cell is assigned a stochastic cell-cycle model.

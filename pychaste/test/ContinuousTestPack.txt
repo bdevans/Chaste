@@ -1,3 +1,7 @@
+cell_based/TestPyCaBasedCellPopulation.py
+cell_based/TestPyMeshBasedCellPopulation.py
+cell_based/TestPyNodeBasedCellPopulation.py
+cell_based/TestPyVertexBasedCellPopulation.py
 core/TestPyFileFinder.py
 core/TestPyImports.py
 core/TestPyOutputFileHandler.py

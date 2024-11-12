@@ -46,10 +46,9 @@ import chaste.cell_based  # Contains cell populations
 import chaste.mesh  # Contains meshes
 import chaste.visualization  # Visualization tools
 
+from chaste.cell_based import AbstractCellBasedTestSuite
 
-class TestPyPottsBasedCellSimulationsTutorial(
-    chaste.cell_based.AbstractCellBasedTestSuite
-):
+class TestPyPottsBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
     ## ### Test 1 - A basic node-based simulation
     ## In the first test, we run a simple Potts-based simulation, in which we create a monolayer of cells, using a Potts mesh.
     ## Each cell is assigned a stochastic cell-cycle model.

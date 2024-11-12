@@ -41,18 +41,19 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import unittest  # Python testing framework
 
+import numpy as np  # Matrix tools
+
 import chaste  # The PyChaste module
 import chaste.cell_based  # Contains cell populations
 import chaste.mesh  # Contains meshes
 import chaste.visualization  # Visualization tools
-import numpy as np  # Matrix tools
+
+from chaste.cell_based import AbstractCellBasedTestSuite
 
 # Set up MPI
 
 
-class TestPyNodeBasedCellSimulationsTutorial(
-    chaste.cell_based.AbstractCellBasedTestSuite
-):
+class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
     ## ### Test 1 - A basic node-based simulation
     ## In the first test, we run a simple node-based simulation, in which we create a monolayer of cells,
     ## using a nodes only mesh. Each cell is assigned a uniform cell-cycle model.
