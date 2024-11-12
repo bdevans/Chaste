@@ -118,6 +118,7 @@ modules:
           - caster_petsc.h
 
       - name: ReplicatableVector
+        custom_generator: "CPPWG_SOURCEROOT/pychaste/dynamic/templates/ReplicatableVectorCustomTemplate.py"
         source_includes:
           - caster_petsc.h
 

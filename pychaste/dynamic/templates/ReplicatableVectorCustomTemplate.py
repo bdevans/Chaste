@@ -1,6 +1,4 @@
-/*
-
-Copyright (c) 2005-2024, University of Oxford.
+"""Copyright (c) 2005-2024, University of Oxford.
 All rights reserved.
 
 University of Oxford means the Chancellor, Masters and Scholars of the
@@ -30,47 +28,23 @@ GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
 HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
 LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+"""
 
-*/
+import cppwg.templates.custom
 
-// This file is auto-generated; manual changes will be overwritten.
-// To make enduring changes, see pychaste/dynamic/config.yaml.
 
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include "caster_petsc.h"
-#include <map>
-#include <set>
-#include <string>
-#include <vector>
-#include "SmartPointers.hpp"
-#include "ReplicatableVector.hpp"
+class ReplicatableVectorCustomTemplate(cppwg.templates.custom.Custom):
 
-#include "ReplicatableVector.cppwg.hpp"
+    def __init__(self):
+        pass
 
-namespace py = pybind11;
-typedef ReplicatableVector ReplicatableVector;
-PYBIND11_DECLARE_HOLDER_TYPE(T, boost::shared_ptr<T>);
+    def get_class_cpp_def_code(self, class_name):
+        """
+        Adds custom wrapper code for overloaded operator[].
+        """
 
-void register_ReplicatableVector_class(py::module &m)
-{
-    py::class_<ReplicatableVector, boost::shared_ptr<ReplicatableVector>>(m, "ReplicatableVector")
-        .def(py::init<>())
-        .def(py::init<::Vec>(), py::arg("vec"))
-        .def(py::init<unsigned int>(), py::arg("size"))
-        .def("GetSize",
-            (unsigned int(ReplicatableVector::*)()) &ReplicatableVector::GetSize,
-            " ")
-        .def("Resize",
-            (void(ReplicatableVector::*)(unsigned int)) &ReplicatableVector::Resize,
-            " ", py::arg("size"))
-        .def("Replicate",
-            (void(ReplicatableVector::*)(unsigned int, unsigned int)) &ReplicatableVector::Replicate,
-            " ", py::arg("lo"), py::arg("hi"))
-        .def("ReplicatePetscVector",
-            (void(ReplicatableVector::*)(::Vec)) &ReplicatableVector::ReplicatePetscVector,
-            " ", py::arg("vec"))
-        .def("__getitem__", &ReplicatableVector::operator[])
-        .def("__setitem__", &ReplicatableVector::operator[])
-    ;
-}
+        code = f"""\
+        .def("__getitem__", &{class_name}::operator[])
+        .def("__setitem__", &{class_name}::operator[])\n"""
+
+        return code
