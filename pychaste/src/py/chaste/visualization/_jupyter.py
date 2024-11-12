@@ -108,7 +108,7 @@ class JupyterNotebookManager:
                 library_javascript.write(infile.read())
 
             self.interactive_plotting_loaded = True
-            IPython.display(IPython.HTML(library_javascript.getvalue()))
+            IPython.display.display(IPython.display.HTML(library_javascript.getvalue()))
 
     def _interactive_plot_show(
         self, width, height, file_name="temp_scene.wrl", increment=True
@@ -130,7 +130,7 @@ class JupyterNotebookManager:
         </script>
         """
 
-        IPython.display(IPython.HTML(html_source))
+        IPython.display.display(IPython.display.HTML(html_source))
 
     def vtk_show(
         self, scene, width=400, height=300, output_format="png", increment=True
@@ -167,7 +167,7 @@ class JupyterNotebookManager:
             data = memoryview(writer.GetResult())
             self.renderWindow.RemoveRenderer(renderer)
 
-            return IPython.Image(data)
+            return IPython.display.Image(data)
 
 
 def JupyterSceneModifierFactory(VtkSceneModifier):
