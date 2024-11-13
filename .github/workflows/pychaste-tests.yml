@@ -28,17 +28,14 @@ jobs:
           mkdir -p build
           mkdir -p ${CHASTE_TEST_OUTPUT}
 
-      - name: Install Chaste dependencies
+      - name: Install PyChaste dependencies
         run: |
           sudo wget -O /usr/share/keyrings/chaste.asc https://chaste.github.io/chaste.asc
           echo 'deb [signed-by=/usr/share/keyrings/chaste.asc] https://chaste.github.io/ubuntu jammy/' \
             | sudo tee -a /etc/apt/sources.list.d/chaste.list
           sudo apt-get update
-          sudo apt-get install chaste-dependencies
-
-      - name: Install additional PyChaste dependencies
-        run: |
           sudo apt-get install -y \
+            chaste-dependencies \
             python3-matplotlib \
             python3-mpi4py \
             python3-numpy \
@@ -47,7 +44,7 @@ jobs:
             python3-vtk7 \
             python3-xvfbwrapper \
             xvfb
-          sudo python3 -m pip install --user jupyterlab
+          python3 -m pip install --user jupyterlab
 
       - name: Configure PyChaste
         run: |
