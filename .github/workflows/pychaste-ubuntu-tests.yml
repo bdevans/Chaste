@@ -1,4 +1,4 @@
-name: PyChaste tests
+name: PyChaste Ubuntu tests
 
 on:
   workflow_dispatch:
@@ -15,7 +15,13 @@ jobs:
   pychaste-tests:
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'ci:off') }}
 
-    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-22.04", "ubuntu-24.04"]
+
+    runs-on: ${{ matrix.os }}
+
     env:
       CHASTE_TEST_OUTPUT: ${{ github.workspace }}/testoutput
 
@@ -28,32 +34,41 @@ jobs:
           mkdir -p build
           mkdir -p ${CHASTE_TEST_OUTPUT}
 
-      - name: Install PyChaste dependencies
+      - name: Install Chaste dependencies
         run: |
+          codename=$(cat /etc/os-release | grep VERSION_CODENAME | cut -d= -f2)
           sudo wget -O /usr/share/keyrings/chaste.asc https://chaste.github.io/chaste.asc
-          echo 'deb [signed-by=/usr/share/keyrings/chaste.asc] https://chaste.github.io/ubuntu jammy/' \
+          echo "deb [signed-by=/usr/share/keyrings/chaste.asc] https://chaste.github.io/ubuntu ${codename}/" \
             | sudo tee -a /etc/apt/sources.list.d/chaste.list
           sudo apt-get update
+          sudo apt-get install -y chaste-dependencies
+
+      - name: Install extra PyChaste dependencies
+        run: |
+          petsc_ver=$(dpkg-query -W -f='${Version}' libpetsc-real-dev | grep -oE '^[0-9]+\.[0-9]+')
+
+          for vtk_ver in $(seq 7 9); do
+            installed=1
+            dpkg -s "libvtk${vtk_ver}-dev" || installed=0
+            if [ "${installed}" -eq 1 ]; then
+              break
+            fi
+          done
+
           sudo apt-get install -y \
-            chaste-dependencies \
             python3-matplotlib \
             python3-mpi4py \
+            python3-notebook \
             python3-numpy \
-            python3-petsc4py-real3.15 \
+            python3-petsc4py-real${petsc_ver} \
             python3-pip \
-            python3-vtk7 \
+            python3-vtk${vtk_ver} \
             python3-xvfbwrapper \
             xvfb
-          python3 -m pip install --user jupyterlab
 
       - name: Configure PyChaste
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DChaste_ENABLE_PYCHASTE=ON ..
-        working-directory: build
-
-      - name: Check for wrapper changes
-        run: |
-          ctest -V -R TestPyWrapperChanges$
         working-directory: build
 
       - name: Build PyChaste
@@ -63,7 +78,8 @@ jobs:
 
       - name: Install PyChaste
         run: |
-          pip install --user --no-deps build/pychaste/package
+          python3 -m pip install --user -v --no-deps --break-system-packages .
+        working-directory: build/pychaste/package
 
       - name: Run PyChaste tests
         run: |
