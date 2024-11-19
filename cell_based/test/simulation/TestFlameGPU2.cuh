@@ -144,11 +144,11 @@ FLAMEGPU_AGENT_FUNCTION(test_compute_force_meineke_spring, flamegpu::MessageBrut
         }
 
 
-        FLAMEGPU->setVariable("x_force", x_force);        
-        FLAMEGPU->setVariable("y_force", y_force);        
+        FLAMEGPU->setVariable<float>("x_force", x_force);        
+        FLAMEGPU->setVariable<float>("y_force", y_force);        
         
-        FLAMEGPU->setVariable("x", x + x_force * 0.001);
-        FLAMEGPU->setVariable("y", y + y_force * 0.001);
+        FLAMEGPU->setVariable<float>("x", x + x_force * 0.001);
+        FLAMEGPU->setVariable<float>("y", y + y_force * 0.001);
     }
     return flamegpu::ALIVE;
 }
