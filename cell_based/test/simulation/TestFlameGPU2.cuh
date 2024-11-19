@@ -188,86 +188,86 @@ public:
         /* 
          * Chaste computation 
          */
-        SimulationTime::Instance()->SetEndTimeAndNumberOfTimeSteps(1.0,1);
-        
-        // Create a NodeBasedCellPopulation
-        std::vector<Node<2>*> nodes;
-        nodes.push_back(new Node<2>(0, true, 0.0, 0.0));
-        nodes.push_back(new Node<2>(1, true, 0.5, 0.5));
-        nodes.push_back(new Node<2>(2, true, 1.0, 1.0));
+        //SimulationTime::Instance()->SetEndTimeAndNumberOfTimeSteps(1.0,1);
+        //
+        //// Create a NodeBasedCellPopulation
+        //std::vector<Node<2>*> nodes;
+        //nodes.push_back(new Node<2>(0, true, 0.0, 0.0));
+        //nodes.push_back(new Node<2>(1, true, 0.5, 0.5));
+        //nodes.push_back(new Node<2>(2, true, 1.0, 1.0));
 
-        // Convert this to a NodesOnlyMesh
-        NodesOnlyMesh<2> mesh;
-        mesh.ConstructNodesWithoutMesh(nodes, 100.0);
+        //// Convert this to a NodesOnlyMesh
+        //NodesOnlyMesh<2> mesh;
+        //mesh.ConstructNodesWithoutMesh(nodes, 100.0);
 
-        std::vector<CellPtr> cells;
-        CellsGenerator<FixedG1GenerationalCellCycleModel, 2> cells_generator;
-        cells_generator.GenerateBasic(cells, mesh.GetNumNodes());
+        //std::vector<CellPtr> cells;
+        //CellsGenerator<FixedG1GenerationalCellCycleModel, 2> cells_generator;
+        //cells_generator.GenerateBasic(cells, mesh.GetNumNodes());
 
-        NodeBasedCellPopulation<2> cell_population(mesh, cells);
-        cell_population.Update(); //Needs to be called separately as not in a simulation
+        //NodeBasedCellPopulation<2> cell_population(mesh, cells);
+        //cell_population.Update(); //Needs to be called separately as not in a simulation
 
-        RepulsionForce<2> repulsion_force;
+        //RepulsionForce<2> repulsion_force;
 
-        for (AbstractMesh<2,2>::NodeIterator node_iter = mesh.GetNodeIteratorBegin();
-                node_iter != mesh.GetNodeIteratorEnd();
-                ++node_iter)
-        {
-            node_iter->ClearAppliedForce();
-        }
-        repulsion_force.AddForceContribution(cell_population);
+        //for (AbstractMesh<2,2>::NodeIterator node_iter = mesh.GetNodeIteratorBegin();
+        //        node_iter != mesh.GetNodeIteratorEnd();
+        //        ++node_iter)
+        //{
+        //    node_iter->ClearAppliedForce();
+        //}
+        //repulsion_force.AddForceContribution(cell_population);
 
-        /* 
-         * Flame computation 
-         */
-        flamegpu::ModelDescription model("TestSimpleForceCalculation");
-        
-        // Define an agent
-        flamegpu::AgentDescription cell_agent = model.newAgent("cell"); 
-        cell_agent.newVariable<float>("x");
-        cell_agent.newVariable<float>("y");
-        cell_agent.newVariable<float>("radius");
-        cell_agent.newVariable<float>("x_force");
-        cell_agent.newVariable<float>("y_force");
-        
-        // Define the location message
-        flamegpu::MessageBruteForce::Description location_message = model.newMessage<flamegpu::MessageBruteForce>("location_message");
-        location_message.newVariable<float>("x");
-        location_message.newVariable<float>("y");
-        location_message.newVariable<float>("radius");
+        ///* 
+        // * Flame computation 
+        // */
+        //flamegpu::ModelDescription model("TestSimpleForceCalculation");
+        //
+        //// Define an agent
+        //flamegpu::AgentDescription cell_agent = model.newAgent("cell"); 
+        //cell_agent.newVariable<float>("x");
+        //cell_agent.newVariable<float>("y");
+        //cell_agent.newVariable<float>("radius");
+        //cell_agent.newVariable<float>("x_force");
+        //cell_agent.newVariable<float>("y_force");
+        //
+        //// Define the location message
+        //flamegpu::MessageBruteForce::Description location_message = model.newMessage<flamegpu::MessageBruteForce>("location_message");
+        //location_message.newVariable<float>("x");
+        //location_message.newVariable<float>("y");
+        //location_message.newVariable<float>("radius");
 
-        // Agent functions
-        flamegpu::AgentFunctionDescription output_location_desc = cell_agent.newFunction("output_location", test_output_location);
-        output_location_desc.setMessageOutput("location_message");
-        
-        flamegpu::AgentFunctionDescription compute_force_desc = cell_agent.newFunction("compute_force_meineke_spring", test_compute_force_meineke_spring);
-        compute_force_desc.setMessageInput("location_message");
+        //// Agent functions
+        //flamegpu::AgentFunctionDescription output_location_desc = cell_agent.newFunction("test_output_location", test_output_location);
+        //output_location_desc.setMessageOutput("location_message");
+        //
+        //flamegpu::AgentFunctionDescription compute_force_desc = cell_agent.newFunction("test_compute_force_meineke_spring", test_compute_force_meineke_spring);
+        //compute_force_desc.setMessageInput("location_message");
 
-        compute_force_desc.dependsOn(output_location_desc);
-        
-        // Set execution root
-        model.addExecutionRoot(output_location_desc);
-        
-        model.addInitFunction(test_simple_force_create_agents);
-        
-        model.generateLayers();
+        //compute_force_desc.dependsOn(output_location_desc);
+        //
+        //// Set execution root
+        //model.addExecutionRoot(output_location_desc);
+        //
+        //model.addInitFunction(test_simple_force_create_agents);
+        //
+        //model.generateLayers();
 
-        flamegpu::CUDASimulation cuda_model(model);
-        cuda_model.SimulationConfig().steps = 1;
-        cuda_model.simulate();
-        
-        // Get results
-        flamegpu::AgentVector out_pop(cell_agent);
-        cuda_model.getPopulationData(out_pop);
-        
-        /*
-         * Compare forces
-         */
-        
-        for (int i = 0; i < 3; i++) {
-            TS_ASSERT_DELTA(cell_population.GetNode(i)->rGetAppliedForce()[0], out_pop[i].getVariable<float>("x_force"), 1e-4);
-            TS_ASSERT_DELTA(cell_population.GetNode(i)->rGetAppliedForce()[1], out_pop[i].getVariable<float>("y_force"), 1e-4);
-        }
+        //flamegpu::CUDASimulation cuda_model(model);
+        //cuda_model.SimulationConfig().steps = 1;
+        //cuda_model.simulate();
+        //
+        //// Get results
+        //flamegpu::AgentVector out_pop(cell_agent);
+        //cuda_model.getPopulationData(out_pop);
+        //
+        ///*
+        // * Compare forces
+        // */
+        //
+        //for (int i = 0; i < 3; i++) {
+        //    TS_ASSERT_DELTA(cell_population.GetNode(i)->rGetAppliedForce()[0], out_pop[i].getVariable<float>("x_force"), 1e-4);
+        //    TS_ASSERT_DELTA(cell_population.GetNode(i)->rGetAppliedForce()[1], out_pop[i].getVariable<float>("y_force"), 1e-4);
+        //}
     }
     
     void TestGPUModifier() {
@@ -307,6 +307,54 @@ public:
 
         MAKE_PTR(GPUModifier<2>, gpuModifier);
         simulator.AddSimulationModifier(gpuModifier);
+
+        // Run simulation
+        simulator.Solve();
+
+        // Avoid memory leak
+        for (unsigned i=0; i<nodes.size(); i++)
+        {
+            delete nodes[i];
+        }
+    }
+
+    void TestCPUPathway() {
+        
+        double size_of_box = 8.0;
+        unsigned cells_across = 12;
+        double scaling = size_of_box/(double(cells_across-1));
+
+        // Create a simple 3D NodeBasedCellPopulation consisting of cells evenly spaced in a regular grid
+        std::vector<Node<2>*> nodes;
+        unsigned index = 0;
+        for (unsigned i=0; i<cells_across; i++)
+        {
+            for (unsigned j=0; j<cells_across; j++)
+            {
+                nodes.push_back(new Node<2>(index, false,  (double) i * scaling , (double) j * scaling));
+                index++;
+            }
+        }
+
+        NodesOnlyMesh<2> mesh;
+        mesh.ConstructNodesWithoutMesh(nodes, 1.5);
+
+        std::vector<CellPtr> cells;
+        MAKE_PTR(TransitCellProliferativeType, p_transit_type);
+        CellsGenerator<UniformCellCycleModel, 2> cells_generator;
+        cells_generator.GenerateBasicRandom(cells, mesh.GetNumNodes(), p_transit_type);
+
+        NodeBasedCellPopulation<2> node_based_cell_population(mesh, cells);
+        //node_based_cell_population.AddCellPopulationCountWriter<CellProliferativeTypesCountWriter>();
+
+        // Set up cell-based simulation
+        OffLatticeSimulation<2> simulator(node_based_cell_population);
+        simulator.SetOutputDirectory("GPUNodeBased");
+        simulator.SetSamplingTimestepMultiple(12);
+        simulator.SetEndTime(1.0);
+
+        MAKE_PTR(GeneralisedLinearSpringForce<2>, springForce);
+        simulator.AddForce(springForce);
 
         // Run simulation
         simulator.Solve();

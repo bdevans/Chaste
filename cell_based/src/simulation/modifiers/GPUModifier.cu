@@ -36,7 +36,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "GPUModifier.cuh"
 #include "MeshBasedCellPopulation.hpp"
 
-FLAMEGPU_AGENT_FUNCTION(output_location, flamegpu::MessageNone, flamegpu::MessageBruteForce) {
+FLAMEGPU_AGENT_FUNCTION(output_location, flamegpu::MessageNone, flamegpu::MessageSpatial2D) {
     FLAMEGPU->message_out.setVariable<float>("x", FLAMEGPU->getVariable<float>("x"));
     FLAMEGPU->message_out.setVariable<float>("y", FLAMEGPU->getVariable<float>("y"));
     FLAMEGPU->message_out.setVariable<float>("radius", FLAMEGPU->getVariable<float>("radius"));
@@ -44,14 +44,14 @@ FLAMEGPU_AGENT_FUNCTION(output_location, flamegpu::MessageNone, flamegpu::Messag
 }
 
 // Models repulsion force without division/apoptosis
-FLAMEGPU_AGENT_FUNCTION(compute_force_meineke_spring, flamegpu::MessageBruteForce, flamegpu::MessageNone) {
-    const float x = FLAMEGPU->getVariable<float>("x");
-    const float y = FLAMEGPU->getVariable<float>("y");
+FLAMEGPU_AGENT_FUNCTION(compute_force_meineke_spring, flamegpu::MessageSpatial2D, flamegpu::MessageNone) {
+    const double x = FLAMEGPU->getVariable<float>("x");
+    const double y = FLAMEGPU->getVariable<float>("y");
     float x_force = 0.0;
     float y_force = 0.0;
     float radius = FLAMEGPU->getVariable<float>("radius");
 
-    for (const auto& message : FLAMEGPU->message_in) {
+    for (const auto& message : FLAMEGPU->message_in(x, y)) {
         float other_x = message.getVariable<float>("x");
         float other_y = message.getVariable<float>("y");
         float other_radius = message.getVariable<float>("radius");
@@ -75,8 +75,8 @@ FLAMEGPU_AGENT_FUNCTION(compute_force_meineke_spring, flamegpu::MessageBruteForc
         }
 
         
-        FLAMEGPU->setVariable("x_force", x_force);        
-        FLAMEGPU->setVariable("y_force", y_force);        
+        FLAMEGPU->setVariable<float>("x_force", x_force);        
+        FLAMEGPU->setVariable<float>("y_force", y_force);        
     }
     return flamegpu::ALIVE;
 }
@@ -152,16 +152,19 @@ void GPUModifier<DIM>::SetupSolve(AbstractCellPopulation<DIM,DIM>& rCellPopulati
     mpCellAgentDescription->newVariable<float>("y_force");
     
     // Define the location message
-    flamegpu::MessageBruteForce::Description location_message = mpFlameGPUModel->newMessage<flamegpu::MessageBruteForce>("location_message");
-    location_message.newVariable<float>("x");
-    location_message.newVariable<float>("y");
+    flamegpu::MessageSpatial2D::Description location_message = mpFlameGPUModel->newMessage<flamegpu::MessageSpatial2D>("location_message");
+    //location_message.newVariable<float>("x"); // Implicit for spatial message
+    //location_message.newVariable<float>("y"); // Implicit for spatial message
     location_message.newVariable<float>("radius");
+    location_message.setMin(-5.0, -5.0);
+    location_message.setMax(5.0, 5.0);
+    location_message.setRadius(1.5);
 
     // Agent functions
     flamegpu::AgentFunctionDescription output_location_desc = mpCellAgentDescription->newFunction("output_location", output_location);
     output_location_desc.setMessageOutput("location_message");
     
-    flamegpu::AgentFunctionDescription compute_force_desc = mpCellAgentDescription->newFunction("compute_force_meineke_spring", compute_force_meineke_spring);
+    flamegpu::AgentFunctionDescription compute_force_desc = mpCellAgentDescription->newFunction("csfompute_force_meineke_spring", compute_force_meineke_spring);
     compute_force_desc.setMessageInput("location_message");
 
     compute_force_desc.dependsOn(output_location_desc);
