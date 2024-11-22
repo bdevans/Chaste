@@ -174,7 +174,7 @@ public:
 
 void register_MeshBasedCellPopulationWithGhostNodes_2_class(py::module &m)
 {
-    py::class_<MeshBasedCellPopulationWithGhostNodes_2, MeshBasedCellPopulationWithGhostNodes_2_Overrides, boost::shared_ptr<MeshBasedCellPopulationWithGhostNodes_2>, MeshBasedCellPopulation<2>>(m, "MeshBasedCellPopulationWithGhostNodes_2")
+    py::class_<MeshBasedCellPopulationWithGhostNodes_2, MeshBasedCellPopulationWithGhostNodes_2_Overrides, boost::shared_ptr<MeshBasedCellPopulationWithGhostNodes_2>, MeshBasedCellPopulation<2, 2>>(m, "MeshBasedCellPopulationWithGhostNodes_2")
         .def(py::init<::MutableMesh<2, 2> &, ::std::vector<boost::shared_ptr<Cell>> &, ::std::vector<unsigned int> const, bool, double, double, double>(), py::arg("rMesh"), py::arg("rCells"), py::arg("locationIndices") = std::vector<unsigned int>(), py::arg("deleteMesh") = false, py::arg("ghostCellSpringStiffness") = 15., py::arg("ghostGhostSpringStiffness") = 15., py::arg("ghostSpringRestLength") = 1.)
         .def(py::init<::MutableMesh<2, 2> &, double, double, double>(), py::arg("rMesh"), py::arg("ghostCellSpringStiffness") = 15., py::arg("ghostGhostSpringStiffness") = 15., py::arg("ghostSpringRestLength") = 1.)
         .def("GetTetrahedralMeshForPdeModifier",

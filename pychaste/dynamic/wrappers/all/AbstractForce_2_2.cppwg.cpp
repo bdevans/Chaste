@@ -55,7 +55,7 @@ class AbstractForce_2_2_Overrides : public AbstractForce_2_2
 {
 public:
     using AbstractForce_2_2::AbstractForce;
-    void AddForceContribution(::AbstractCellPopulation<2> & rCellPopulation) override
+    void AddForceContribution(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE_PURE(
             void,
@@ -86,7 +86,7 @@ void register_AbstractForce_2_2_class(py::module &m)
     py::class_<AbstractForce_2_2, AbstractForce_2_2_Overrides, boost::shared_ptr<AbstractForce_2_2>, Identifiable>(m, "AbstractForce_2_2")
         .def(py::init<>())
         .def("AddForceContribution",
-            (void(AbstractForce_2_2::*)(::AbstractCellPopulation<2> &)) &AbstractForce_2_2::AddForceContribution,
+            (void(AbstractForce_2_2::*)(::AbstractCellPopulation<2, 2> &)) &AbstractForce_2_2::AddForceContribution,
             " ", py::arg("rCellPopulation"))
         .def("OutputForceInfo",
             (void(AbstractForce_2_2::*)(::out_stream &)) &AbstractForce_2_2::OutputForceInfo,

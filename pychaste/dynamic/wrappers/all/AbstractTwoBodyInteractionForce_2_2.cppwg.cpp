@@ -57,7 +57,7 @@ class AbstractTwoBodyInteractionForce_2_2_Overrides : public AbstractTwoBodyInte
 {
 public:
     using AbstractTwoBodyInteractionForce_2_2::AbstractTwoBodyInteractionForce;
-    ::boost::numeric::ublas::c_vector<double, 2> CalculateForceBetweenNodes(unsigned int nodeAGlobalIndex, unsigned int nodeBGlobalIndex, ::AbstractCellPopulation<2> & rCellPopulation) override
+    ::boost::numeric::ublas::c_vector<double, 2> CalculateForceBetweenNodes(unsigned int nodeAGlobalIndex, unsigned int nodeBGlobalIndex, ::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE_PURE(
             _boost_numeric_ublas_c_vector_lt_double_2_gt_,
@@ -67,7 +67,7 @@ public:
             nodeBGlobalIndex,
             rCellPopulation);
     }
-    void AddForceContribution(::AbstractCellPopulation<2> & rCellPopulation) override
+    void AddForceContribution(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -95,7 +95,7 @@ public:
 
 void register_AbstractTwoBodyInteractionForce_2_2_class(py::module &m)
 {
-    py::class_<AbstractTwoBodyInteractionForce_2_2, AbstractTwoBodyInteractionForce_2_2_Overrides, boost::shared_ptr<AbstractTwoBodyInteractionForce_2_2>, AbstractForce<2>>(m, "AbstractTwoBodyInteractionForce_2_2")
+    py::class_<AbstractTwoBodyInteractionForce_2_2, AbstractTwoBodyInteractionForce_2_2_Overrides, boost::shared_ptr<AbstractTwoBodyInteractionForce_2_2>, AbstractForce<2, 2>>(m, "AbstractTwoBodyInteractionForce_2_2")
         .def("GetUseCutOffLength",
             (bool(AbstractTwoBodyInteractionForce_2_2::*)()) &AbstractTwoBodyInteractionForce_2_2::GetUseCutOffLength,
             " ")
@@ -106,10 +106,10 @@ void register_AbstractTwoBodyInteractionForce_2_2_class(py::module &m)
             (double(AbstractTwoBodyInteractionForce_2_2::*)()) &AbstractTwoBodyInteractionForce_2_2::GetCutOffLength,
             " ")
         .def("CalculateForceBetweenNodes",
-            (::boost::numeric::ublas::c_vector<double, 2>(AbstractTwoBodyInteractionForce_2_2::*)(unsigned int, unsigned int, ::AbstractCellPopulation<2> &)) &AbstractTwoBodyInteractionForce_2_2::CalculateForceBetweenNodes,
+            (::boost::numeric::ublas::c_vector<double, 2>(AbstractTwoBodyInteractionForce_2_2::*)(unsigned int, unsigned int, ::AbstractCellPopulation<2, 2> &)) &AbstractTwoBodyInteractionForce_2_2::CalculateForceBetweenNodes,
             " ", py::arg("nodeAGlobalIndex"), py::arg("nodeBGlobalIndex"), py::arg("rCellPopulation"))
         .def("AddForceContribution",
-            (void(AbstractTwoBodyInteractionForce_2_2::*)(::AbstractCellPopulation<2> &)) &AbstractTwoBodyInteractionForce_2_2::AddForceContribution,
+            (void(AbstractTwoBodyInteractionForce_2_2::*)(::AbstractCellPopulation<2, 2> &)) &AbstractTwoBodyInteractionForce_2_2::AddForceContribution,
             " ", py::arg("rCellPopulation"))
         .def("OutputForceParameters",
             (void(AbstractTwoBodyInteractionForce_2_2::*)(::out_stream &)) &AbstractTwoBodyInteractionForce_2_2::OutputForceParameters,

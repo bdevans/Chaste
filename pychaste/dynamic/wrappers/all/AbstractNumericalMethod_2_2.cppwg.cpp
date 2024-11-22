@@ -78,7 +78,7 @@ void register_AbstractNumericalMethod_2_2_class(py::module &m)
     py::class_<AbstractNumericalMethod_2_2, AbstractNumericalMethod_2_2_Overrides, boost::shared_ptr<AbstractNumericalMethod_2_2>, Identifiable>(m, "AbstractNumericalMethod_2_2")
         .def(py::init<>())
         .def("SetCellPopulation",
-            (void(AbstractNumericalMethod_2_2::*)(::AbstractOffLatticeCellPopulation<2> *)) &AbstractNumericalMethod_2_2::SetCellPopulation,
+            (void(AbstractNumericalMethod_2_2::*)(::AbstractOffLatticeCellPopulation<2, 2> *)) &AbstractNumericalMethod_2_2::SetCellPopulation,
             " ", py::arg("pPopulation"))
         .def("SetForceCollection",
             (void(AbstractNumericalMethod_2_2::*)(::std::vector<boost::shared_ptr<AbstractForce<2, 2>>> *)) &AbstractNumericalMethod_2_2::SetForceCollection,

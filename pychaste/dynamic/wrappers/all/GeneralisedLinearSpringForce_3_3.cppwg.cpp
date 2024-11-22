@@ -57,7 +57,7 @@ class GeneralisedLinearSpringForce_3_3_Overrides : public GeneralisedLinearSprin
 {
 public:
     using GeneralisedLinearSpringForce_3_3::GeneralisedLinearSpringForce;
-    double VariableSpringConstantMultiplicationFactor(unsigned int nodeAGlobalIndex, unsigned int nodeBGlobalIndex, ::AbstractCellPopulation<3> & rCellPopulation, bool isCloserThanRestLength) override
+    double VariableSpringConstantMultiplicationFactor(unsigned int nodeAGlobalIndex, unsigned int nodeBGlobalIndex, ::AbstractCellPopulation<3, 3> & rCellPopulation, bool isCloserThanRestLength) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -68,7 +68,7 @@ public:
             rCellPopulation,
             isCloserThanRestLength);
     }
-    ::boost::numeric::ublas::c_vector<double, 3> CalculateForceBetweenNodes(unsigned int nodeAGlobalIndex, unsigned int nodeBGlobalIndex, ::AbstractCellPopulation<3> & rCellPopulation) override
+    ::boost::numeric::ublas::c_vector<double, 3> CalculateForceBetweenNodes(unsigned int nodeAGlobalIndex, unsigned int nodeBGlobalIndex, ::AbstractCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             _boost_numeric_ublas_c_vector_lt_double_3_gt_,
@@ -90,13 +90,13 @@ public:
 
 void register_GeneralisedLinearSpringForce_3_3_class(py::module &m)
 {
-    py::class_<GeneralisedLinearSpringForce_3_3, GeneralisedLinearSpringForce_3_3_Overrides, boost::shared_ptr<GeneralisedLinearSpringForce_3_3>, AbstractTwoBodyInteractionForce<3>>(m, "GeneralisedLinearSpringForce_3_3")
+    py::class_<GeneralisedLinearSpringForce_3_3, GeneralisedLinearSpringForce_3_3_Overrides, boost::shared_ptr<GeneralisedLinearSpringForce_3_3>, AbstractTwoBodyInteractionForce<3, 3>>(m, "GeneralisedLinearSpringForce_3_3")
         .def(py::init<>())
         .def("VariableSpringConstantMultiplicationFactor",
-            (double(GeneralisedLinearSpringForce_3_3::*)(unsigned int, unsigned int, ::AbstractCellPopulation<3> &, bool)) &GeneralisedLinearSpringForce_3_3::VariableSpringConstantMultiplicationFactor,
+            (double(GeneralisedLinearSpringForce_3_3::*)(unsigned int, unsigned int, ::AbstractCellPopulation<3, 3> &, bool)) &GeneralisedLinearSpringForce_3_3::VariableSpringConstantMultiplicationFactor,
             " ", py::arg("nodeAGlobalIndex"), py::arg("nodeBGlobalIndex"), py::arg("rCellPopulation"), py::arg("isCloserThanRestLength"))
         .def("CalculateForceBetweenNodes",
-            (::boost::numeric::ublas::c_vector<double, 3>(GeneralisedLinearSpringForce_3_3::*)(unsigned int, unsigned int, ::AbstractCellPopulation<3> &)) &GeneralisedLinearSpringForce_3_3::CalculateForceBetweenNodes,
+            (::boost::numeric::ublas::c_vector<double, 3>(GeneralisedLinearSpringForce_3_3::*)(unsigned int, unsigned int, ::AbstractCellPopulation<3, 3> &)) &GeneralisedLinearSpringForce_3_3::CalculateForceBetweenNodes,
             " ", py::arg("nodeAGlobalIndex"), py::arg("nodeBGlobalIndex"), py::arg("rCellPopulation"))
         .def("GetMeinekeSpringStiffness",
             (double(GeneralisedLinearSpringForce_3_3::*)()) &GeneralisedLinearSpringForce_3_3::GetMeinekeSpringStiffness,

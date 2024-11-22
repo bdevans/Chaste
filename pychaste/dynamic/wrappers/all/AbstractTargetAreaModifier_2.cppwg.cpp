@@ -55,7 +55,7 @@ class AbstractTargetAreaModifier_2_Overrides : public AbstractTargetAreaModifier
 {
 public:
     using AbstractTargetAreaModifier_2::AbstractTargetAreaModifier;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -63,7 +63,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<2> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<2, 2> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -92,12 +92,12 @@ public:
 
 void register_AbstractTargetAreaModifier_2_class(py::module &m)
 {
-    py::class_<AbstractTargetAreaModifier_2, AbstractTargetAreaModifier_2_Overrides, boost::shared_ptr<AbstractTargetAreaModifier_2>, AbstractCellBasedSimulationModifier<2>>(m, "AbstractTargetAreaModifier_2")
+    py::class_<AbstractTargetAreaModifier_2, AbstractTargetAreaModifier_2_Overrides, boost::shared_ptr<AbstractTargetAreaModifier_2>, AbstractCellBasedSimulationModifier<2, 2>>(m, "AbstractTargetAreaModifier_2")
         .def("UpdateAtEndOfTimeStep",
-            (void(AbstractTargetAreaModifier_2::*)(::AbstractCellPopulation<2> &)) &AbstractTargetAreaModifier_2::UpdateAtEndOfTimeStep,
+            (void(AbstractTargetAreaModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &AbstractTargetAreaModifier_2::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(AbstractTargetAreaModifier_2::*)(::AbstractCellPopulation<2> &, ::std::string)) &AbstractTargetAreaModifier_2::SetupSolve,
+            (void(AbstractTargetAreaModifier_2::*)(::AbstractCellPopulation<2, 2> &, ::std::string)) &AbstractTargetAreaModifier_2::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("GetReferenceTargetArea",
             (double(AbstractTargetAreaModifier_2::*)()) &AbstractTargetAreaModifier_2::GetReferenceTargetArea,
@@ -106,7 +106,7 @@ void register_AbstractTargetAreaModifier_2_class(py::module &m)
             (void(AbstractTargetAreaModifier_2::*)(double)) &AbstractTargetAreaModifier_2::SetReferenceTargetArea,
             " ", py::arg("referenceTargetArea"))
         .def("UpdateTargetAreas",
-            (void(AbstractTargetAreaModifier_2::*)(::AbstractCellPopulation<2> &)) &AbstractTargetAreaModifier_2::UpdateTargetAreas,
+            (void(AbstractTargetAreaModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &AbstractTargetAreaModifier_2::UpdateTargetAreas,
             " ", py::arg("rCellPopulation"))
         .def("UpdateTargetAreaOfCell",
             (void(AbstractTargetAreaModifier_2::*)(::CellPtr const)) &AbstractTargetAreaModifier_2::UpdateTargetAreaOfCell,

@@ -87,7 +87,7 @@ public:
 
 void register_UniformSourceParabolicPde_2_class(py::module &m)
 {
-    py::class_<UniformSourceParabolicPde_2, UniformSourceParabolicPde_2_Overrides, boost::shared_ptr<UniformSourceParabolicPde_2>, AbstractLinearParabolicPde<2>>(m, "UniformSourceParabolicPde_2")
+    py::class_<UniformSourceParabolicPde_2, UniformSourceParabolicPde_2_Overrides, boost::shared_ptr<UniformSourceParabolicPde_2>, AbstractLinearParabolicPde<2, 2>>(m, "UniformSourceParabolicPde_2")
         .def(py::init<double>(), py::arg("sourceCoefficient") = 0.)
         .def("GetCoefficient",
             (double(UniformSourceParabolicPde_2::*)() const) &UniformSourceParabolicPde_2::GetCoefficient,

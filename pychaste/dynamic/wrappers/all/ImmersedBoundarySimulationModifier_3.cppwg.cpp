@@ -55,7 +55,7 @@ class ImmersedBoundarySimulationModifier_3_Overrides : public ImmersedBoundarySi
 {
 public:
     using ImmersedBoundarySimulationModifier_3::ImmersedBoundarySimulationModifier;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<3> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -63,7 +63,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<3> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<3, 3> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -84,13 +84,13 @@ public:
 
 void register_ImmersedBoundarySimulationModifier_3_class(py::module &m)
 {
-    py::class_<ImmersedBoundarySimulationModifier_3, ImmersedBoundarySimulationModifier_3_Overrides, boost::shared_ptr<ImmersedBoundarySimulationModifier_3>, AbstractCellBasedSimulationModifier<3>>(m, "ImmersedBoundarySimulationModifier_3")
+    py::class_<ImmersedBoundarySimulationModifier_3, ImmersedBoundarySimulationModifier_3_Overrides, boost::shared_ptr<ImmersedBoundarySimulationModifier_3>, AbstractCellBasedSimulationModifier<3, 3>>(m, "ImmersedBoundarySimulationModifier_3")
         .def(py::init<>())
         .def("UpdateAtEndOfTimeStep",
-            (void(ImmersedBoundarySimulationModifier_3::*)(::AbstractCellPopulation<3> &)) &ImmersedBoundarySimulationModifier_3::UpdateAtEndOfTimeStep,
+            (void(ImmersedBoundarySimulationModifier_3::*)(::AbstractCellPopulation<3, 3> &)) &ImmersedBoundarySimulationModifier_3::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(ImmersedBoundarySimulationModifier_3::*)(::AbstractCellPopulation<3> &, ::std::string)) &ImmersedBoundarySimulationModifier_3::SetupSolve,
+            (void(ImmersedBoundarySimulationModifier_3::*)(::AbstractCellPopulation<3, 3> &, ::std::string)) &ImmersedBoundarySimulationModifier_3::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("OutputSimulationModifierParameters",
             (void(ImmersedBoundarySimulationModifier_3::*)(::out_stream &)) &ImmersedBoundarySimulationModifier_3::OutputSimulationModifierParameters,

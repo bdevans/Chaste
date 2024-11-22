@@ -57,7 +57,7 @@ class EllipticGrowingDomainPdeModifier_3_Overrides : public EllipticGrowingDomai
 {
 public:
     using EllipticGrowingDomainPdeModifier_3::EllipticGrowingDomainPdeModifier;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<3> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -65,7 +65,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<3> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<3, 3> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -89,10 +89,10 @@ void register_EllipticGrowingDomainPdeModifier_3_class(py::module &m)
     py::class_<EllipticGrowingDomainPdeModifier_3, EllipticGrowingDomainPdeModifier_3_Overrides, boost::shared_ptr<EllipticGrowingDomainPdeModifier_3>, AbstractGrowingDomainPdeModifier<3>>(m, "EllipticGrowingDomainPdeModifier_3")
         .def(py::init<::boost::shared_ptr<AbstractLinearPde<3, 3>>, ::boost::shared_ptr<AbstractBoundaryCondition<3>>, bool, ::Vec>(), py::arg("pPde") = boost::shared_ptr<AbstractLinearPde<3, 3>>(), py::arg("pBoundaryCondition") = boost::shared_ptr<AbstractBoundaryCondition<3>>(), py::arg("isNeumannBoundaryCondition") = true, py::arg("solution") = nullptr)
         .def("UpdateAtEndOfTimeStep",
-            (void(EllipticGrowingDomainPdeModifier_3::*)(::AbstractCellPopulation<3> &)) &EllipticGrowingDomainPdeModifier_3::UpdateAtEndOfTimeStep,
+            (void(EllipticGrowingDomainPdeModifier_3::*)(::AbstractCellPopulation<3, 3> &)) &EllipticGrowingDomainPdeModifier_3::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(EllipticGrowingDomainPdeModifier_3::*)(::AbstractCellPopulation<3> &, ::std::string)) &EllipticGrowingDomainPdeModifier_3::SetupSolve,
+            (void(EllipticGrowingDomainPdeModifier_3::*)(::AbstractCellPopulation<3, 3> &, ::std::string)) &EllipticGrowingDomainPdeModifier_3::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("OutputSimulationModifierParameters",
             (void(EllipticGrowingDomainPdeModifier_3::*)(::out_stream &)) &EllipticGrowingDomainPdeModifier_3::OutputSimulationModifierParameters,

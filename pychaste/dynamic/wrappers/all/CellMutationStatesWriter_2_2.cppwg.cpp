@@ -56,7 +56,7 @@ class CellMutationStatesWriter_2_2_Overrides : public CellMutationStatesWriter_2
 {
 public:
     using CellMutationStatesWriter_2_2::CellMutationStatesWriter;
-    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -65,7 +65,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -81,10 +81,10 @@ void register_CellMutationStatesWriter_2_2_class(py::module &m)
     py::class_<CellMutationStatesWriter_2_2, CellMutationStatesWriter_2_2_Overrides, boost::shared_ptr<CellMutationStatesWriter_2_2>, AbstractCellWriter<2, 2>>(m, "CellMutationStatesWriter_2_2")
         .def(py::init<>())
         .def("GetCellDataForVtkOutput",
-            (double(CellMutationStatesWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &CellMutationStatesWriter_2_2::GetCellDataForVtkOutput,
+            (double(CellMutationStatesWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &CellMutationStatesWriter_2_2::GetCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(CellMutationStatesWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &CellMutationStatesWriter_2_2::VisitCell,
+            (void(CellMutationStatesWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &CellMutationStatesWriter_2_2::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
     ;
 }

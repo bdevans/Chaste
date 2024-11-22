@@ -96,9 +96,9 @@ public:
 void register_AveragedSourceEllipticPde_3_class(py::module &m)
 {
     py::class_<AveragedSourceEllipticPde_3, AveragedSourceEllipticPde_3_Overrides, boost::shared_ptr<AveragedSourceEllipticPde_3>, AbstractLinearEllipticPde<3, 3>>(m, "AveragedSourceEllipticPde_3")
-        .def(py::init<::AbstractCellPopulation<3> &, double, double>(), py::arg("rCellPopulation"), py::arg("sourceCoefficient") = 0., py::arg("diffusionCoefficient") = 1.)
+        .def(py::init<::AbstractCellPopulation<3, 3> &, double, double>(), py::arg("rCellPopulation"), py::arg("sourceCoefficient") = 0., py::arg("diffusionCoefficient") = 1.)
         .def("rGetCellPopulation",
-            (::AbstractCellPopulation<3> const &(AveragedSourceEllipticPde_3::*)() const) &AveragedSourceEllipticPde_3::rGetCellPopulation,
+            (::AbstractCellPopulation<3, 3> const &(AveragedSourceEllipticPde_3::*)() const) &AveragedSourceEllipticPde_3::rGetCellPopulation,
             " ", py::return_value_policy::reference_internal)
         .def("GetCoefficient",
             (double(AveragedSourceEllipticPde_3::*)() const) &AveragedSourceEllipticPde_3::GetCoefficient,

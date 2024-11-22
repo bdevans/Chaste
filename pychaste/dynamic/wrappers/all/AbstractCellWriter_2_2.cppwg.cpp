@@ -58,7 +58,7 @@ class AbstractCellWriter_2_2_Overrides : public AbstractCellWriter_2_2
 {
 public:
     using AbstractCellWriter_2_2::AbstractCellWriter;
-    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -67,7 +67,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    ::boost::numeric::ublas::c_vector<double, 2> GetVectorCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    ::boost::numeric::ublas::c_vector<double, 2> GetVectorCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             _boost_numeric_ublas_c_vector_lt_double_2_gt_,
@@ -76,7 +76,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE_PURE(
             void,
@@ -92,13 +92,13 @@ void register_AbstractCellWriter_2_2_class(py::module &m)
     py::class_<AbstractCellWriter_2_2, AbstractCellWriter_2_2_Overrides, boost::shared_ptr<AbstractCellWriter_2_2>, AbstractCellBasedWriter<2, 2>>(m, "AbstractCellWriter_2_2")
         .def(py::init<::std::string const &>(), py::arg("rFileName"))
         .def("GetCellDataForVtkOutput",
-            (double(AbstractCellWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &AbstractCellWriter_2_2::GetCellDataForVtkOutput,
+            (double(AbstractCellWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &AbstractCellWriter_2_2::GetCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("GetVectorCellDataForVtkOutput",
-            (::boost::numeric::ublas::c_vector<double, 2>(AbstractCellWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &AbstractCellWriter_2_2::GetVectorCellDataForVtkOutput,
+            (::boost::numeric::ublas::c_vector<double, 2>(AbstractCellWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &AbstractCellWriter_2_2::GetVectorCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(AbstractCellWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &AbstractCellWriter_2_2::VisitCell,
+            (void(AbstractCellWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &AbstractCellWriter_2_2::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("GetOutputScalarData",
             (bool(AbstractCellWriter_2_2::*)()) &AbstractCellWriter_2_2::GetOutputScalarData,

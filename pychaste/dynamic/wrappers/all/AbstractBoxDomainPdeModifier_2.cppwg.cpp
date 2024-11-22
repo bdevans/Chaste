@@ -56,7 +56,7 @@ class AbstractBoxDomainPdeModifier_2_Overrides : public AbstractBoxDomainPdeModi
 {
 public:
     using AbstractBoxDomainPdeModifier_2::AbstractBoxDomainPdeModifier;
-    void SetupSolve(::AbstractCellPopulation<2> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<2, 2> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -88,19 +88,19 @@ void register_AbstractBoxDomainPdeModifier_2_class(py::module &m)
             (bool(AbstractBoxDomainPdeModifier_2::*)()) &AbstractBoxDomainPdeModifier_2::AreBcsSetOnBoxBoundary,
             " ")
         .def("SetupSolve",
-            (void(AbstractBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2> &, ::std::string)) &AbstractBoxDomainPdeModifier_2::SetupSolve,
+            (void(AbstractBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2, 2> &, ::std::string)) &AbstractBoxDomainPdeModifier_2::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("GenerateFeMesh",
             (void(AbstractBoxDomainPdeModifier_2::*)(::boost::shared_ptr<ChasteCuboid<2>>, double)) &AbstractBoxDomainPdeModifier_2::GenerateFeMesh,
             " ", py::arg("pMeshCuboid"), py::arg("stepSize"))
         .def("UpdateCellData",
-            (void(AbstractBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2> &)) &AbstractBoxDomainPdeModifier_2::UpdateCellData,
+            (void(AbstractBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &AbstractBoxDomainPdeModifier_2::UpdateCellData,
             " ", py::arg("rCellPopulation"))
         .def("InitialiseCellPdeElementMap",
-            (void(AbstractBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2> &)) &AbstractBoxDomainPdeModifier_2::InitialiseCellPdeElementMap,
+            (void(AbstractBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &AbstractBoxDomainPdeModifier_2::InitialiseCellPdeElementMap,
             " ", py::arg("rCellPopulation"))
         .def("UpdateCellPdeElementMap",
-            (void(AbstractBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2> &)) &AbstractBoxDomainPdeModifier_2::UpdateCellPdeElementMap,
+            (void(AbstractBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &AbstractBoxDomainPdeModifier_2::UpdateCellPdeElementMap,
             " ", py::arg("rCellPopulation"))
         .def("OutputSimulationModifierParameters",
             (void(AbstractBoxDomainPdeModifier_2::*)(::out_stream &)) &AbstractBoxDomainPdeModifier_2::OutputSimulationModifierParameters,

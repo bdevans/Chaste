@@ -62,7 +62,7 @@ class HeterotypicBoundaryLengthWriter_3_3_Overrides : public HeterotypicBoundary
 {
 public:
     using HeterotypicBoundaryLengthWriter_3_3::HeterotypicBoundaryLengthWriter;
-    void Visit(::MeshBasedCellPopulation<3> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,7 +117,7 @@ void register_HeterotypicBoundaryLengthWriter_3_3_class(py::module &m)
     py::class_<HeterotypicBoundaryLengthWriter_3_3, HeterotypicBoundaryLengthWriter_3_3_Overrides, boost::shared_ptr<HeterotypicBoundaryLengthWriter_3_3>, AbstractCellPopulationWriter<3, 3>>(m, "HeterotypicBoundaryLengthWriter_3_3")
         .def(py::init<>())
         .def("Visit",
-            (void(HeterotypicBoundaryLengthWriter_3_3::*)(::MeshBasedCellPopulation<3> *)) &HeterotypicBoundaryLengthWriter_3_3::Visit,
+            (void(HeterotypicBoundaryLengthWriter_3_3::*)(::MeshBasedCellPopulation<3, 3> *)) &HeterotypicBoundaryLengthWriter_3_3::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(HeterotypicBoundaryLengthWriter_3_3::*)(::CaBasedCellPopulation<3> *)) &HeterotypicBoundaryLengthWriter_3_3::Visit,

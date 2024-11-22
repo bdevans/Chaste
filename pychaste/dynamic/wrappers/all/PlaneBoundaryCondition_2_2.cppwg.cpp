@@ -84,8 +84,8 @@ public:
 
 void register_PlaneBoundaryCondition_2_2_class(py::module &m)
 {
-    py::class_<PlaneBoundaryCondition_2_2, PlaneBoundaryCondition_2_2_Overrides, boost::shared_ptr<PlaneBoundaryCondition_2_2>, AbstractCellPopulationBoundaryCondition<2>>(m, "PlaneBoundaryCondition_2_2")
-        .def(py::init<::AbstractCellPopulation<2> *, ::boost::numeric::ublas::c_vector<double, 2>, ::boost::numeric::ublas::c_vector<double, 2>>(), py::arg("pCellPopulation"), py::arg("point"), py::arg("normal"))
+    py::class_<PlaneBoundaryCondition_2_2, PlaneBoundaryCondition_2_2_Overrides, boost::shared_ptr<PlaneBoundaryCondition_2_2>, AbstractCellPopulationBoundaryCondition<2, 2>>(m, "PlaneBoundaryCondition_2_2")
+        .def(py::init<::AbstractCellPopulation<2, 2> *, ::boost::numeric::ublas::c_vector<double, 2>, ::boost::numeric::ublas::c_vector<double, 2>>(), py::arg("pCellPopulation"), py::arg("point"), py::arg("normal"))
         .def("rGetPointOnPlane",
             (::boost::numeric::ublas::c_vector<double, 2> const &(PlaneBoundaryCondition_2_2::*)() const) &PlaneBoundaryCondition_2_2::rGetPointOnPlane,
             " ", py::return_value_policy::reference_internal)

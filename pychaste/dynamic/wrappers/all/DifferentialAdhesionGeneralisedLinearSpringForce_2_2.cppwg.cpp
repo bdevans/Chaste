@@ -55,7 +55,7 @@ class DifferentialAdhesionGeneralisedLinearSpringForce_2_2_Overrides : public Di
 {
 public:
     using DifferentialAdhesionGeneralisedLinearSpringForce_2_2::DifferentialAdhesionGeneralisedLinearSpringForce;
-    double VariableSpringConstantMultiplicationFactor(unsigned int nodeAGlobalIndex, unsigned int nodeBGlobalIndex, ::AbstractCellPopulation<2> & rCellPopulation, bool isCloserThanRestLength) override
+    double VariableSpringConstantMultiplicationFactor(unsigned int nodeAGlobalIndex, unsigned int nodeBGlobalIndex, ::AbstractCellPopulation<2, 2> & rCellPopulation, bool isCloserThanRestLength) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -78,10 +78,10 @@ public:
 
 void register_DifferentialAdhesionGeneralisedLinearSpringForce_2_2_class(py::module &m)
 {
-    py::class_<DifferentialAdhesionGeneralisedLinearSpringForce_2_2, DifferentialAdhesionGeneralisedLinearSpringForce_2_2_Overrides, boost::shared_ptr<DifferentialAdhesionGeneralisedLinearSpringForce_2_2>, GeneralisedLinearSpringForce<2>>(m, "DifferentialAdhesionGeneralisedLinearSpringForce_2_2")
+    py::class_<DifferentialAdhesionGeneralisedLinearSpringForce_2_2, DifferentialAdhesionGeneralisedLinearSpringForce_2_2_Overrides, boost::shared_ptr<DifferentialAdhesionGeneralisedLinearSpringForce_2_2>, GeneralisedLinearSpringForce<2, 2>>(m, "DifferentialAdhesionGeneralisedLinearSpringForce_2_2")
         .def(py::init<>())
         .def("VariableSpringConstantMultiplicationFactor",
-            (double(DifferentialAdhesionGeneralisedLinearSpringForce_2_2::*)(unsigned int, unsigned int, ::AbstractCellPopulation<2> &, bool)) &DifferentialAdhesionGeneralisedLinearSpringForce_2_2::VariableSpringConstantMultiplicationFactor,
+            (double(DifferentialAdhesionGeneralisedLinearSpringForce_2_2::*)(unsigned int, unsigned int, ::AbstractCellPopulation<2, 2> &, bool)) &DifferentialAdhesionGeneralisedLinearSpringForce_2_2::VariableSpringConstantMultiplicationFactor,
             " ", py::arg("nodeAGlobalIndex"), py::arg("nodeBGlobalIndex"), py::arg("rCellPopulation"), py::arg("isCloserThanRestLength"))
         .def("GetHomotypicLabelledSpringConstantMultiplier",
             (double(DifferentialAdhesionGeneralisedLinearSpringForce_2_2::*)()) &DifferentialAdhesionGeneralisedLinearSpringForce_2_2::GetHomotypicLabelledSpringConstantMultiplier,

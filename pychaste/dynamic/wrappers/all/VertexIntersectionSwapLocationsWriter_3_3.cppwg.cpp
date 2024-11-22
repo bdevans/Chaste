@@ -62,7 +62,7 @@ class VertexIntersectionSwapLocationsWriter_3_3_Overrides : public VertexInterse
 {
 public:
     using VertexIntersectionSwapLocationsWriter_3_3::VertexIntersectionSwapLocationsWriter;
-    void Visit(::MeshBasedCellPopulation<3> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,7 +117,7 @@ void register_VertexIntersectionSwapLocationsWriter_3_3_class(py::module &m)
     py::class_<VertexIntersectionSwapLocationsWriter_3_3, VertexIntersectionSwapLocationsWriter_3_3_Overrides, boost::shared_ptr<VertexIntersectionSwapLocationsWriter_3_3>, AbstractCellPopulationWriter<3, 3>>(m, "VertexIntersectionSwapLocationsWriter_3_3")
         .def(py::init<>())
         .def("Visit",
-            (void(VertexIntersectionSwapLocationsWriter_3_3::*)(::MeshBasedCellPopulation<3> *)) &VertexIntersectionSwapLocationsWriter_3_3::Visit,
+            (void(VertexIntersectionSwapLocationsWriter_3_3::*)(::MeshBasedCellPopulation<3, 3> *)) &VertexIntersectionSwapLocationsWriter_3_3::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(VertexIntersectionSwapLocationsWriter_3_3::*)(::CaBasedCellPopulation<3> *)) &VertexIntersectionSwapLocationsWriter_3_3::Visit,

@@ -56,7 +56,7 @@ class AbstractPdeModifier_3_Overrides : public AbstractPdeModifier_3
 {
 public:
     using AbstractPdeModifier_3::AbstractPdeModifier;
-    void SetupSolve(::AbstractCellPopulation<3> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<3, 3> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -65,7 +65,7 @@ public:
             rCellPopulation,
             outputDirectory);
     }
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<3> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE_PURE(
             void,
@@ -73,7 +73,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void UpdateAtEndOfOutputTimeStep(::AbstractCellPopulation<3> & rCellPopulation) override
+    void UpdateAtEndOfOutputTimeStep(::AbstractCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -81,7 +81,7 @@ public:
             UpdateAtEndOfOutputTimeStep,
             rCellPopulation);
     }
-    void UpdateAtEndOfSolve(::AbstractCellPopulation<3> & rCellPopulation) override
+    void UpdateAtEndOfSolve(::AbstractCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -101,7 +101,7 @@ public:
 
 void register_AbstractPdeModifier_3_class(py::module &m)
 {
-    py::class_<AbstractPdeModifier_3, AbstractPdeModifier_3_Overrides, boost::shared_ptr<AbstractPdeModifier_3>, AbstractCellBasedSimulationModifier<3>>(m, "AbstractPdeModifier_3")
+    py::class_<AbstractPdeModifier_3, AbstractPdeModifier_3_Overrides, boost::shared_ptr<AbstractPdeModifier_3>, AbstractCellBasedSimulationModifier<3, 3>>(m, "AbstractPdeModifier_3")
         .def("GetPde",
             (::boost::shared_ptr<AbstractLinearPde<3, 3>>(AbstractPdeModifier_3::*)()) &AbstractPdeModifier_3::GetPde,
             " ")
@@ -124,16 +124,16 @@ void register_AbstractPdeModifier_3_class(py::module &m)
             (void(AbstractPdeModifier_3::*)(::TetrahedralMesh<3, 3> *, ::std::map<boost::shared_ptr<Cell>, unsigned int> *)) &AbstractPdeModifier_3::SetUpSourceTermsForAveragedSourcePde,
             " ", py::arg("pMesh"), py::arg("pCellPdeElementMap") = nullptr)
         .def("SetupSolve",
-            (void(AbstractPdeModifier_3::*)(::AbstractCellPopulation<3> &, ::std::string)) &AbstractPdeModifier_3::SetupSolve,
+            (void(AbstractPdeModifier_3::*)(::AbstractCellPopulation<3, 3> &, ::std::string)) &AbstractPdeModifier_3::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("UpdateAtEndOfTimeStep",
-            (void(AbstractPdeModifier_3::*)(::AbstractCellPopulation<3> &)) &AbstractPdeModifier_3::UpdateAtEndOfTimeStep,
+            (void(AbstractPdeModifier_3::*)(::AbstractCellPopulation<3, 3> &)) &AbstractPdeModifier_3::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("UpdateAtEndOfOutputTimeStep",
-            (void(AbstractPdeModifier_3::*)(::AbstractCellPopulation<3> &)) &AbstractPdeModifier_3::UpdateAtEndOfOutputTimeStep,
+            (void(AbstractPdeModifier_3::*)(::AbstractCellPopulation<3, 3> &)) &AbstractPdeModifier_3::UpdateAtEndOfOutputTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("UpdateAtEndOfSolve",
-            (void(AbstractPdeModifier_3::*)(::AbstractCellPopulation<3> &)) &AbstractPdeModifier_3::UpdateAtEndOfSolve,
+            (void(AbstractPdeModifier_3::*)(::AbstractCellPopulation<3, 3> &)) &AbstractPdeModifier_3::UpdateAtEndOfSolve,
             " ", py::arg("rCellPopulation"))
         .def("GetOutputGradient",
             (bool(AbstractPdeModifier_3::*)()) &AbstractPdeModifier_3::GetOutputGradient,

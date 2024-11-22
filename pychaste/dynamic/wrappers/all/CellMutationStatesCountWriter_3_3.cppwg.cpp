@@ -62,7 +62,7 @@ class CellMutationStatesCountWriter_3_3_Overrides : public CellMutationStatesCou
 {
 public:
     using CellMutationStatesCountWriter_3_3::CellMutationStatesCountWriter;
-    void WriteHeader(::AbstractCellPopulation<3> * pCellPopulation) override
+    void WriteHeader(::AbstractCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -70,7 +70,7 @@ public:
             WriteHeader,
             pCellPopulation);
     }
-    void Visit(::MeshBasedCellPopulation<3> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -125,13 +125,13 @@ void register_CellMutationStatesCountWriter_3_3_class(py::module &m)
     py::class_<CellMutationStatesCountWriter_3_3, CellMutationStatesCountWriter_3_3_Overrides, boost::shared_ptr<CellMutationStatesCountWriter_3_3>, AbstractCellPopulationCountWriter<3, 3>>(m, "CellMutationStatesCountWriter_3_3")
         .def(py::init<>())
         .def("WriteHeader",
-            (void(CellMutationStatesCountWriter_3_3::*)(::AbstractCellPopulation<3> *)) &CellMutationStatesCountWriter_3_3::WriteHeader,
+            (void(CellMutationStatesCountWriter_3_3::*)(::AbstractCellPopulation<3, 3> *)) &CellMutationStatesCountWriter_3_3::WriteHeader,
             " ", py::arg("pCellPopulation"))
         .def("VisitAnyPopulation",
-            (void(CellMutationStatesCountWriter_3_3::*)(::AbstractCellPopulation<3> *)) &CellMutationStatesCountWriter_3_3::VisitAnyPopulation,
+            (void(CellMutationStatesCountWriter_3_3::*)(::AbstractCellPopulation<3, 3> *)) &CellMutationStatesCountWriter_3_3::VisitAnyPopulation,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
-            (void(CellMutationStatesCountWriter_3_3::*)(::MeshBasedCellPopulation<3> *)) &CellMutationStatesCountWriter_3_3::Visit,
+            (void(CellMutationStatesCountWriter_3_3::*)(::MeshBasedCellPopulation<3, 3> *)) &CellMutationStatesCountWriter_3_3::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(CellMutationStatesCountWriter_3_3::*)(::CaBasedCellPopulation<3> *)) &CellMutationStatesCountWriter_3_3::Visit,

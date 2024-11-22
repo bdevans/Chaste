@@ -182,7 +182,7 @@ public:
 
 void register_AbstractCentreBasedCellPopulation_2_2_class(py::module &m)
 {
-    py::class_<AbstractCentreBasedCellPopulation_2_2, AbstractCentreBasedCellPopulation_2_2_Overrides, boost::shared_ptr<AbstractCentreBasedCellPopulation_2_2>, AbstractOffLatticeCellPopulation<2>>(m, "AbstractCentreBasedCellPopulation_2_2")
+    py::class_<AbstractCentreBasedCellPopulation_2_2, AbstractCentreBasedCellPopulation_2_2_Overrides, boost::shared_ptr<AbstractCentreBasedCellPopulation_2_2>, AbstractOffLatticeCellPopulation<2, 2>>(m, "AbstractCentreBasedCellPopulation_2_2")
         .def("GetLocationOfCellCentre",
             (::boost::numeric::ublas::c_vector<double, 2>(AbstractCentreBasedCellPopulation_2_2::*)(::CellPtr)) &AbstractCentreBasedCellPopulation_2_2::GetLocationOfCellCentre,
             " ", py::arg("pCell"))

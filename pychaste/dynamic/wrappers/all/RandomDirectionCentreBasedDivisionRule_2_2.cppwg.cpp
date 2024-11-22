@@ -57,7 +57,7 @@ class RandomDirectionCentreBasedDivisionRule_2_2_Overrides : public RandomDirect
 {
 public:
     using RandomDirectionCentreBasedDivisionRule_2_2::RandomDirectionCentreBasedDivisionRule;
-    ::std::pair<boost::numeric::ublas::c_vector<double, 2>, boost::numeric::ublas::c_vector<double, 2>> CalculateCellDivisionVector(::CellPtr pParentCell, ::AbstractCentreBasedCellPopulation<2> & rCellPopulation) override
+    ::std::pair<boost::numeric::ublas::c_vector<double, 2>, boost::numeric::ublas::c_vector<double, 2>> CalculateCellDivisionVector(::CellPtr pParentCell, ::AbstractCentreBasedCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             _std_pair_lt_boost_numeric_ublas_c_vector_lt_double_2_gt__boost_numeric_ublas_c_vector_lt_double_2_gt__gt_,
@@ -70,10 +70,10 @@ public:
 
 void register_RandomDirectionCentreBasedDivisionRule_2_2_class(py::module &m)
 {
-    py::class_<RandomDirectionCentreBasedDivisionRule_2_2, RandomDirectionCentreBasedDivisionRule_2_2_Overrides, boost::shared_ptr<RandomDirectionCentreBasedDivisionRule_2_2>, AbstractCentreBasedDivisionRule<2>>(m, "RandomDirectionCentreBasedDivisionRule_2_2")
+    py::class_<RandomDirectionCentreBasedDivisionRule_2_2, RandomDirectionCentreBasedDivisionRule_2_2_Overrides, boost::shared_ptr<RandomDirectionCentreBasedDivisionRule_2_2>, AbstractCentreBasedDivisionRule<2, 2>>(m, "RandomDirectionCentreBasedDivisionRule_2_2")
         .def(py::init<>())
         .def("CalculateCellDivisionVector",
-            (::std::pair<boost::numeric::ublas::c_vector<double, 2>, boost::numeric::ublas::c_vector<double, 2>>(RandomDirectionCentreBasedDivisionRule_2_2::*)(::CellPtr, ::AbstractCentreBasedCellPopulation<2> &)) &RandomDirectionCentreBasedDivisionRule_2_2::CalculateCellDivisionVector,
+            (::std::pair<boost::numeric::ublas::c_vector<double, 2>, boost::numeric::ublas::c_vector<double, 2>>(RandomDirectionCentreBasedDivisionRule_2_2::*)(::CellPtr, ::AbstractCentreBasedCellPopulation<2, 2> &)) &RandomDirectionCentreBasedDivisionRule_2_2::CalculateCellDivisionVector,
             " ", py::arg("pParentCell"), py::arg("rCellPopulation"))
     ;
 }

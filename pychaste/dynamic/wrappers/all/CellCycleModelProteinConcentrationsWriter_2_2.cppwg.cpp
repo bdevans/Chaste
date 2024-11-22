@@ -56,7 +56,7 @@ class CellCycleModelProteinConcentrationsWriter_2_2_Overrides : public CellCycle
 {
 public:
     using CellCycleModelProteinConcentrationsWriter_2_2::CellCycleModelProteinConcentrationsWriter;
-    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -65,7 +65,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -81,10 +81,10 @@ void register_CellCycleModelProteinConcentrationsWriter_2_2_class(py::module &m)
     py::class_<CellCycleModelProteinConcentrationsWriter_2_2, CellCycleModelProteinConcentrationsWriter_2_2_Overrides, boost::shared_ptr<CellCycleModelProteinConcentrationsWriter_2_2>, AbstractCellWriter<2, 2>>(m, "CellCycleModelProteinConcentrationsWriter_2_2")
         .def(py::init<>())
         .def("GetCellDataForVtkOutput",
-            (double(CellCycleModelProteinConcentrationsWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &CellCycleModelProteinConcentrationsWriter_2_2::GetCellDataForVtkOutput,
+            (double(CellCycleModelProteinConcentrationsWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &CellCycleModelProteinConcentrationsWriter_2_2::GetCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(CellCycleModelProteinConcentrationsWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &CellCycleModelProteinConcentrationsWriter_2_2::VisitCell,
+            (void(CellCycleModelProteinConcentrationsWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &CellCycleModelProteinConcentrationsWriter_2_2::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
     ;
 }

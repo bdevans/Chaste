@@ -56,7 +56,7 @@ class CellDataItemWriter_2_2_Overrides : public CellDataItemWriter_2_2
 {
 public:
     using CellDataItemWriter_2_2::CellDataItemWriter;
-    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -65,7 +65,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -81,10 +81,10 @@ void register_CellDataItemWriter_2_2_class(py::module &m)
     py::class_<CellDataItemWriter_2_2, CellDataItemWriter_2_2_Overrides, boost::shared_ptr<CellDataItemWriter_2_2>, AbstractCellWriter<2, 2>>(m, "CellDataItemWriter_2_2")
         .def(py::init<::std::string>(), py::arg("cellDataVariableName") = "")
         .def("GetCellDataForVtkOutput",
-            (double(CellDataItemWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &CellDataItemWriter_2_2::GetCellDataForVtkOutput,
+            (double(CellDataItemWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &CellDataItemWriter_2_2::GetCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(CellDataItemWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &CellDataItemWriter_2_2::VisitCell,
+            (void(CellDataItemWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &CellDataItemWriter_2_2::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("GetCellDataVariableName",
             (::std::string(CellDataItemWriter_2_2::*)() const) &CellDataItemWriter_2_2::GetCellDataVariableName,

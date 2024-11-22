@@ -62,7 +62,7 @@ class AbstractCellPopulationCountWriter_3_3_Overrides : public AbstractCellPopul
 {
 public:
     using AbstractCellPopulationCountWriter_3_3::AbstractCellPopulationCountWriter;
-    void WriteHeader(::AbstractCellPopulation<3> * pCellPopulation) override
+    void WriteHeader(::AbstractCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -70,7 +70,7 @@ public:
             WriteHeader,
             pCellPopulation);
     }
-    void Visit(::MeshBasedCellPopulation<3> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE_PURE(
             void,
@@ -125,10 +125,10 @@ void register_AbstractCellPopulationCountWriter_3_3_class(py::module &m)
     py::class_<AbstractCellPopulationCountWriter_3_3, AbstractCellPopulationCountWriter_3_3_Overrides, boost::shared_ptr<AbstractCellPopulationCountWriter_3_3>, AbstractCellBasedWriter<3, 3>>(m, "AbstractCellPopulationCountWriter_3_3")
         .def(py::init<::std::string const &>(), py::arg("rFileName"))
         .def("WriteHeader",
-            (void(AbstractCellPopulationCountWriter_3_3::*)(::AbstractCellPopulation<3> *)) &AbstractCellPopulationCountWriter_3_3::WriteHeader,
+            (void(AbstractCellPopulationCountWriter_3_3::*)(::AbstractCellPopulation<3, 3> *)) &AbstractCellPopulationCountWriter_3_3::WriteHeader,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
-            (void(AbstractCellPopulationCountWriter_3_3::*)(::MeshBasedCellPopulation<3> *)) &AbstractCellPopulationCountWriter_3_3::Visit,
+            (void(AbstractCellPopulationCountWriter_3_3::*)(::MeshBasedCellPopulation<3, 3> *)) &AbstractCellPopulationCountWriter_3_3::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(AbstractCellPopulationCountWriter_3_3::*)(::CaBasedCellPopulation<3> *)) &AbstractCellPopulationCountWriter_3_3::Visit,

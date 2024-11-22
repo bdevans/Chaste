@@ -55,7 +55,7 @@ class VolumeTrackingModifier_2_Overrides : public VolumeTrackingModifier_2
 {
 public:
     using VolumeTrackingModifier_2::VolumeTrackingModifier;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -63,7 +63,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<2> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<2, 2> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -84,16 +84,16 @@ public:
 
 void register_VolumeTrackingModifier_2_class(py::module &m)
 {
-    py::class_<VolumeTrackingModifier_2, VolumeTrackingModifier_2_Overrides, boost::shared_ptr<VolumeTrackingModifier_2>, AbstractCellBasedSimulationModifier<2>>(m, "VolumeTrackingModifier_2")
+    py::class_<VolumeTrackingModifier_2, VolumeTrackingModifier_2_Overrides, boost::shared_ptr<VolumeTrackingModifier_2>, AbstractCellBasedSimulationModifier<2, 2>>(m, "VolumeTrackingModifier_2")
         .def(py::init<>())
         .def("UpdateAtEndOfTimeStep",
-            (void(VolumeTrackingModifier_2::*)(::AbstractCellPopulation<2> &)) &VolumeTrackingModifier_2::UpdateAtEndOfTimeStep,
+            (void(VolumeTrackingModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &VolumeTrackingModifier_2::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(VolumeTrackingModifier_2::*)(::AbstractCellPopulation<2> &, ::std::string)) &VolumeTrackingModifier_2::SetupSolve,
+            (void(VolumeTrackingModifier_2::*)(::AbstractCellPopulation<2, 2> &, ::std::string)) &VolumeTrackingModifier_2::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("UpdateCellData",
-            (void(VolumeTrackingModifier_2::*)(::AbstractCellPopulation<2> &)) &VolumeTrackingModifier_2::UpdateCellData,
+            (void(VolumeTrackingModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &VolumeTrackingModifier_2::UpdateCellData,
             " ", py::arg("rCellPopulation"))
         .def("OutputSimulationModifierParameters",
             (void(VolumeTrackingModifier_2::*)(::out_stream &)) &VolumeTrackingModifier_2::OutputSimulationModifierParameters,

@@ -254,7 +254,7 @@ public:
 
 void register_NodeBasedCellPopulation_3_class(py::module &m)
 {
-    py::class_<NodeBasedCellPopulation_3, NodeBasedCellPopulation_3_Overrides, boost::shared_ptr<NodeBasedCellPopulation_3>, AbstractCentreBasedCellPopulation<3>>(m, "NodeBasedCellPopulation_3")
+    py::class_<NodeBasedCellPopulation_3, NodeBasedCellPopulation_3_Overrides, boost::shared_ptr<NodeBasedCellPopulation_3>, AbstractCentreBasedCellPopulation<3, 3>>(m, "NodeBasedCellPopulation_3")
         .def(py::init<::NodesOnlyMesh<3> &, ::std::vector<boost::shared_ptr<Cell>> &, ::std::vector<unsigned int> const, bool, bool>(), py::arg("rMesh"), py::arg("rCells"), py::arg("locationIndices") = std::vector<unsigned int>(), py::arg("deleteMesh") = false, py::arg("validate") = true)
         .def(py::init<::NodesOnlyMesh<3> &>(), py::arg("rMesh"))
         .def("SetNode",

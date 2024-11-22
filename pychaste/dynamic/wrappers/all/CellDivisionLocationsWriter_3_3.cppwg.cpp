@@ -62,7 +62,7 @@ class CellDivisionLocationsWriter_3_3_Overrides : public CellDivisionLocationsWr
 {
 public:
     using CellDivisionLocationsWriter_3_3::CellDivisionLocationsWriter;
-    void Visit(::MeshBasedCellPopulation<3> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,10 +117,10 @@ void register_CellDivisionLocationsWriter_3_3_class(py::module &m)
     py::class_<CellDivisionLocationsWriter_3_3, CellDivisionLocationsWriter_3_3_Overrides, boost::shared_ptr<CellDivisionLocationsWriter_3_3>, AbstractCellPopulationEventWriter<3, 3>>(m, "CellDivisionLocationsWriter_3_3")
         .def(py::init<>())
         .def("VisitAnyPopulation",
-            (void(CellDivisionLocationsWriter_3_3::*)(::AbstractCellPopulation<3> *)) &CellDivisionLocationsWriter_3_3::VisitAnyPopulation,
+            (void(CellDivisionLocationsWriter_3_3::*)(::AbstractCellPopulation<3, 3> *)) &CellDivisionLocationsWriter_3_3::VisitAnyPopulation,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
-            (void(CellDivisionLocationsWriter_3_3::*)(::MeshBasedCellPopulation<3> *)) &CellDivisionLocationsWriter_3_3::Visit,
+            (void(CellDivisionLocationsWriter_3_3::*)(::MeshBasedCellPopulation<3, 3> *)) &CellDivisionLocationsWriter_3_3::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(CellDivisionLocationsWriter_3_3::*)(::CaBasedCellPopulation<3> *)) &CellDivisionLocationsWriter_3_3::Visit,

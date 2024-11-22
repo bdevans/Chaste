@@ -62,7 +62,7 @@ class CellProliferativePhasesCountWriter_2_2_Overrides : public CellProliferativ
 {
 public:
     using CellProliferativePhasesCountWriter_2_2::CellProliferativePhasesCountWriter;
-    void Visit(::MeshBasedCellPopulation<2> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,10 +117,10 @@ void register_CellProliferativePhasesCountWriter_2_2_class(py::module &m)
     py::class_<CellProliferativePhasesCountWriter_2_2, CellProliferativePhasesCountWriter_2_2_Overrides, boost::shared_ptr<CellProliferativePhasesCountWriter_2_2>, AbstractCellPopulationCountWriter<2, 2>>(m, "CellProliferativePhasesCountWriter_2_2")
         .def(py::init<>())
         .def("VisitAnyPopulation",
-            (void(CellProliferativePhasesCountWriter_2_2::*)(::AbstractCellPopulation<2> *)) &CellProliferativePhasesCountWriter_2_2::VisitAnyPopulation,
+            (void(CellProliferativePhasesCountWriter_2_2::*)(::AbstractCellPopulation<2, 2> *)) &CellProliferativePhasesCountWriter_2_2::VisitAnyPopulation,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
-            (void(CellProliferativePhasesCountWriter_2_2::*)(::MeshBasedCellPopulation<2> *)) &CellProliferativePhasesCountWriter_2_2::Visit,
+            (void(CellProliferativePhasesCountWriter_2_2::*)(::MeshBasedCellPopulation<2, 2> *)) &CellProliferativePhasesCountWriter_2_2::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(CellProliferativePhasesCountWriter_2_2::*)(::CaBasedCellPopulation<2> *)) &CellProliferativePhasesCountWriter_2_2::Visit,

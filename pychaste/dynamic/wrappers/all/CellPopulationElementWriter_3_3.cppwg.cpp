@@ -62,7 +62,7 @@ class CellPopulationElementWriter_3_3_Overrides : public CellPopulationElementWr
 {
 public:
     using CellPopulationElementWriter_3_3::CellPopulationElementWriter;
-    void Visit(::MeshBasedCellPopulation<3> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,7 +117,7 @@ void register_CellPopulationElementWriter_3_3_class(py::module &m)
     py::class_<CellPopulationElementWriter_3_3, CellPopulationElementWriter_3_3_Overrides, boost::shared_ptr<CellPopulationElementWriter_3_3>, AbstractCellPopulationWriter<3, 3>>(m, "CellPopulationElementWriter_3_3")
         .def(py::init<>())
         .def("Visit",
-            (void(CellPopulationElementWriter_3_3::*)(::MeshBasedCellPopulation<3> *)) &CellPopulationElementWriter_3_3::Visit,
+            (void(CellPopulationElementWriter_3_3::*)(::MeshBasedCellPopulation<3, 3> *)) &CellPopulationElementWriter_3_3::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(CellPopulationElementWriter_3_3::*)(::CaBasedCellPopulation<3> *)) &CellPopulationElementWriter_3_3::Visit,

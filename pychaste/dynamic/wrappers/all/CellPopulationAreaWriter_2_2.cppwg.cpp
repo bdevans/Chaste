@@ -62,7 +62,7 @@ class CellPopulationAreaWriter_2_2_Overrides : public CellPopulationAreaWriter_2
 {
 public:
     using CellPopulationAreaWriter_2_2::CellPopulationAreaWriter;
-    void Visit(::MeshBasedCellPopulation<2> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,7 +117,7 @@ void register_CellPopulationAreaWriter_2_2_class(py::module &m)
     py::class_<CellPopulationAreaWriter_2_2, CellPopulationAreaWriter_2_2_Overrides, boost::shared_ptr<CellPopulationAreaWriter_2_2>, AbstractCellPopulationWriter<2, 2>>(m, "CellPopulationAreaWriter_2_2")
         .def(py::init<>())
         .def("Visit",
-            (void(CellPopulationAreaWriter_2_2::*)(::MeshBasedCellPopulation<2> *)) &CellPopulationAreaWriter_2_2::Visit,
+            (void(CellPopulationAreaWriter_2_2::*)(::MeshBasedCellPopulation<2, 2> *)) &CellPopulationAreaWriter_2_2::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(CellPopulationAreaWriter_2_2::*)(::CaBasedCellPopulation<2> *)) &CellPopulationAreaWriter_2_2::Visit,

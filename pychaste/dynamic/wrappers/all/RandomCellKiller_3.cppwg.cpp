@@ -76,7 +76,7 @@ public:
 void register_RandomCellKiller_3_class(py::module &m)
 {
     py::class_<RandomCellKiller_3, RandomCellKiller_3_Overrides, boost::shared_ptr<RandomCellKiller_3>, AbstractCellKiller<3>>(m, "RandomCellKiller_3")
-        .def(py::init<::AbstractCellPopulation<3> *, double>(), py::arg("pCellPopulation"), py::arg("probabilityOfDeathInAnHour"))
+        .def(py::init<::AbstractCellPopulation<3, 3> *, double>(), py::arg("pCellPopulation"), py::arg("probabilityOfDeathInAnHour"))
         .def("GetDeathProbabilityInAnHour",
             (double(RandomCellKiller_3::*)() const) &RandomCellKiller_3::GetDeathProbabilityInAnHour,
             " ")

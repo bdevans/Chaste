@@ -75,7 +75,7 @@ public:
 
 void register_ForwardEulerNumericalMethod_2_2_class(py::module &m)
 {
-    py::class_<ForwardEulerNumericalMethod_2_2, ForwardEulerNumericalMethod_2_2_Overrides, boost::shared_ptr<ForwardEulerNumericalMethod_2_2>, AbstractNumericalMethod<2>>(m, "ForwardEulerNumericalMethod_2_2")
+    py::class_<ForwardEulerNumericalMethod_2_2, ForwardEulerNumericalMethod_2_2_Overrides, boost::shared_ptr<ForwardEulerNumericalMethod_2_2>, AbstractNumericalMethod<2, 2>>(m, "ForwardEulerNumericalMethod_2_2")
         .def(py::init<>())
         .def("UpdateAllNodePositions",
             (void(ForwardEulerNumericalMethod_2_2::*)(double)) &ForwardEulerNumericalMethod_2_2::UpdateAllNodePositions,

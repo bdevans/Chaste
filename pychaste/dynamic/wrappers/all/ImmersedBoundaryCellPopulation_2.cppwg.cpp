@@ -315,7 +315,7 @@ public:
 
 void register_ImmersedBoundaryCellPopulation_2_class(py::module &m)
 {
-    py::class_<ImmersedBoundaryCellPopulation_2, ImmersedBoundaryCellPopulation_2_Overrides, boost::shared_ptr<ImmersedBoundaryCellPopulation_2>, AbstractOffLatticeCellPopulation<2>>(m, "ImmersedBoundaryCellPopulation_2")
+    py::class_<ImmersedBoundaryCellPopulation_2, ImmersedBoundaryCellPopulation_2_Overrides, boost::shared_ptr<ImmersedBoundaryCellPopulation_2>, AbstractOffLatticeCellPopulation<2, 2>>(m, "ImmersedBoundaryCellPopulation_2")
         .def(py::init<::ImmersedBoundaryMesh<2, 2> &, ::std::vector<boost::shared_ptr<Cell>> &, bool, bool, ::std::vector<unsigned int> const>(), py::arg("rMesh"), py::arg("rCells"), py::arg("deleteMesh") = false, py::arg("validate") = true, py::arg("locationIndices") = std::vector<unsigned int>())
         .def(py::init<::ImmersedBoundaryMesh<2, 2> &>(), py::arg("rMesh"))
         .def("GetDampingConstant",

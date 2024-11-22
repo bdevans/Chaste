@@ -85,7 +85,7 @@ public:
 void register_AbstractCellPopulationBoundaryCondition_3_3_class(py::module &m)
 {
     py::class_<AbstractCellPopulationBoundaryCondition_3_3, AbstractCellPopulationBoundaryCondition_3_3_Overrides, boost::shared_ptr<AbstractCellPopulationBoundaryCondition_3_3>, Identifiable>(m, "AbstractCellPopulationBoundaryCondition_3_3")
-        .def(py::init<::AbstractCellPopulation<3> *>(), py::arg("pCellPopulation"))
+        .def(py::init<::AbstractCellPopulation<3, 3> *>(), py::arg("pCellPopulation"))
         .def("ImposeBoundaryCondition",
             (void(AbstractCellPopulationBoundaryCondition_3_3::*)(::std::map<Node<3> *, boost::numeric::ublas::c_vector<double, 3>> const &)) &AbstractCellPopulationBoundaryCondition_3_3::ImposeBoundaryCondition,
             " ", py::arg("rOldLocations"))
@@ -93,7 +93,7 @@ void register_AbstractCellPopulationBoundaryCondition_3_3_class(py::module &m)
             (bool(AbstractCellPopulationBoundaryCondition_3_3::*)()) &AbstractCellPopulationBoundaryCondition_3_3::VerifyBoundaryCondition,
             " ")
         .def("GetCellPopulation",
-            (::AbstractCellPopulation<3> const *(AbstractCellPopulationBoundaryCondition_3_3::*)() const) &AbstractCellPopulationBoundaryCondition_3_3::GetCellPopulation,
+            (::AbstractCellPopulation<3, 3> const *(AbstractCellPopulationBoundaryCondition_3_3::*)() const) &AbstractCellPopulationBoundaryCondition_3_3::GetCellPopulation,
             " ", py::return_value_policy::reference)
         .def("OutputCellPopulationBoundaryConditionInfo",
             (void(AbstractCellPopulationBoundaryCondition_3_3::*)(::out_stream &)) &AbstractCellPopulationBoundaryCondition_3_3::OutputCellPopulationBoundaryConditionInfo,

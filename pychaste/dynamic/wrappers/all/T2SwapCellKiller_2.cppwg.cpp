@@ -76,7 +76,7 @@ public:
 void register_T2SwapCellKiller_2_class(py::module &m)
 {
     py::class_<T2SwapCellKiller_2, T2SwapCellKiller_2_Overrides, boost::shared_ptr<T2SwapCellKiller_2>, AbstractCellKiller<2>>(m, "T2SwapCellKiller_2")
-        .def(py::init<::AbstractCellPopulation<2> *>(), py::arg("pCellPopulation"))
+        .def(py::init<::AbstractCellPopulation<2, 2> *>(), py::arg("pCellPopulation"))
         .def("CheckAndLabelCellsForApoptosisOrDeath",
             (void(T2SwapCellKiller_2::*)()) &T2SwapCellKiller_2::CheckAndLabelCellsForApoptosisOrDeath,
             " ")

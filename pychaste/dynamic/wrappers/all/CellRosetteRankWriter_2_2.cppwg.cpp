@@ -56,7 +56,7 @@ class CellRosetteRankWriter_2_2_Overrides : public CellRosetteRankWriter_2_2
 {
 public:
     using CellRosetteRankWriter_2_2::CellRosetteRankWriter;
-    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -65,7 +65,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -81,10 +81,10 @@ void register_CellRosetteRankWriter_2_2_class(py::module &m)
     py::class_<CellRosetteRankWriter_2_2, CellRosetteRankWriter_2_2_Overrides, boost::shared_ptr<CellRosetteRankWriter_2_2>, AbstractCellWriter<2, 2>>(m, "CellRosetteRankWriter_2_2")
         .def(py::init<>())
         .def("GetCellDataForVtkOutput",
-            (double(CellRosetteRankWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &CellRosetteRankWriter_2_2::GetCellDataForVtkOutput,
+            (double(CellRosetteRankWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &CellRosetteRankWriter_2_2::GetCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(CellRosetteRankWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &CellRosetteRankWriter_2_2::VisitCell,
+            (void(CellRosetteRankWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &CellRosetteRankWriter_2_2::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
     ;
 }

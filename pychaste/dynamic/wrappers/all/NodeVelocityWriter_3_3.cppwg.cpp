@@ -62,7 +62,7 @@ class NodeVelocityWriter_3_3_Overrides : public NodeVelocityWriter_3_3
 {
 public:
     using NodeVelocityWriter_3_3::NodeVelocityWriter;
-    void Visit(::MeshBasedCellPopulation<3> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,7 +117,7 @@ void register_NodeVelocityWriter_3_3_class(py::module &m)
     py::class_<NodeVelocityWriter_3_3, NodeVelocityWriter_3_3_Overrides, boost::shared_ptr<NodeVelocityWriter_3_3>, AbstractCellPopulationWriter<3, 3>>(m, "NodeVelocityWriter_3_3")
         .def(py::init<>())
         .def("Visit",
-            (void(NodeVelocityWriter_3_3::*)(::MeshBasedCellPopulation<3> *)) &NodeVelocityWriter_3_3::Visit,
+            (void(NodeVelocityWriter_3_3::*)(::MeshBasedCellPopulation<3, 3> *)) &NodeVelocityWriter_3_3::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(NodeVelocityWriter_3_3::*)(::CaBasedCellPopulation<3> *)) &NodeVelocityWriter_3_3::Visit,

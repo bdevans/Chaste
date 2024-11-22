@@ -56,7 +56,7 @@ class CellDeltaNotchWriter_3_3_Overrides : public CellDeltaNotchWriter_3_3
 {
 public:
     using CellDeltaNotchWriter_3_3::CellDeltaNotchWriter;
-    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<3> * pCellPopulation) override
+    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -65,7 +65,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<3> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -81,10 +81,10 @@ void register_CellDeltaNotchWriter_3_3_class(py::module &m)
     py::class_<CellDeltaNotchWriter_3_3, CellDeltaNotchWriter_3_3_Overrides, boost::shared_ptr<CellDeltaNotchWriter_3_3>, AbstractCellWriter<3, 3>>(m, "CellDeltaNotchWriter_3_3")
         .def(py::init<>())
         .def("GetCellDataForVtkOutput",
-            (double(CellDeltaNotchWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3> *)) &CellDeltaNotchWriter_3_3::GetCellDataForVtkOutput,
+            (double(CellDeltaNotchWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3, 3> *)) &CellDeltaNotchWriter_3_3::GetCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(CellDeltaNotchWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3> *)) &CellDeltaNotchWriter_3_3::VisitCell,
+            (void(CellDeltaNotchWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3, 3> *)) &CellDeltaNotchWriter_3_3::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
     ;
 }

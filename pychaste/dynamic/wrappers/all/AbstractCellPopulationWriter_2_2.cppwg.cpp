@@ -62,7 +62,7 @@ class AbstractCellPopulationWriter_2_2_Overrides : public AbstractCellPopulation
 {
 public:
     using AbstractCellPopulationWriter_2_2::AbstractCellPopulationWriter;
-    void WriteHeader(::AbstractCellPopulation<2> * pCellPopulation) override
+    void WriteHeader(::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -70,7 +70,7 @@ public:
             WriteHeader,
             pCellPopulation);
     }
-    void Visit(::MeshBasedCellPopulation<2> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE_PURE(
             void,
@@ -125,10 +125,10 @@ void register_AbstractCellPopulationWriter_2_2_class(py::module &m)
     py::class_<AbstractCellPopulationWriter_2_2, AbstractCellPopulationWriter_2_2_Overrides, boost::shared_ptr<AbstractCellPopulationWriter_2_2>, AbstractCellBasedWriter<2, 2>>(m, "AbstractCellPopulationWriter_2_2")
         .def(py::init<::std::string const &>(), py::arg("rFileName"))
         .def("WriteHeader",
-            (void(AbstractCellPopulationWriter_2_2::*)(::AbstractCellPopulation<2> *)) &AbstractCellPopulationWriter_2_2::WriteHeader,
+            (void(AbstractCellPopulationWriter_2_2::*)(::AbstractCellPopulation<2, 2> *)) &AbstractCellPopulationWriter_2_2::WriteHeader,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
-            (void(AbstractCellPopulationWriter_2_2::*)(::MeshBasedCellPopulation<2> *)) &AbstractCellPopulationWriter_2_2::Visit,
+            (void(AbstractCellPopulationWriter_2_2::*)(::MeshBasedCellPopulation<2, 2> *)) &AbstractCellPopulationWriter_2_2::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(AbstractCellPopulationWriter_2_2::*)(::CaBasedCellPopulation<2> *)) &AbstractCellPopulationWriter_2_2::Visit,

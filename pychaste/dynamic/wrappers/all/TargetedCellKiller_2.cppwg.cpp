@@ -76,7 +76,7 @@ public:
 void register_TargetedCellKiller_2_class(py::module &m)
 {
     py::class_<TargetedCellKiller_2, TargetedCellKiller_2_Overrides, boost::shared_ptr<TargetedCellKiller_2>, AbstractCellKiller<2>>(m, "TargetedCellKiller_2")
-        .def(py::init<::AbstractCellPopulation<2> *, unsigned int, bool>(), py::arg("pCellPopulation"), py::arg("targetedIndex"), py::arg("bloodLust") = true)
+        .def(py::init<::AbstractCellPopulation<2, 2> *, unsigned int, bool>(), py::arg("pCellPopulation"), py::arg("targetedIndex"), py::arg("bloodLust") = true)
         .def("GetTargetIndex",
             (unsigned int(TargetedCellKiller_2::*)() const) &TargetedCellKiller_2::GetTargetIndex,
             " ")

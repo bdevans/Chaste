@@ -56,7 +56,7 @@ class CellProliferativeTypesWriter_2_2_Overrides : public CellProliferativeTypes
 {
 public:
     using CellProliferativeTypesWriter_2_2::CellProliferativeTypesWriter;
-    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -65,7 +65,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -81,10 +81,10 @@ void register_CellProliferativeTypesWriter_2_2_class(py::module &m)
     py::class_<CellProliferativeTypesWriter_2_2, CellProliferativeTypesWriter_2_2_Overrides, boost::shared_ptr<CellProliferativeTypesWriter_2_2>, AbstractCellWriter<2, 2>>(m, "CellProliferativeTypesWriter_2_2")
         .def(py::init<>())
         .def("GetCellDataForVtkOutput",
-            (double(CellProliferativeTypesWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &CellProliferativeTypesWriter_2_2::GetCellDataForVtkOutput,
+            (double(CellProliferativeTypesWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &CellProliferativeTypesWriter_2_2::GetCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(CellProliferativeTypesWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &CellProliferativeTypesWriter_2_2::VisitCell,
+            (void(CellProliferativeTypesWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &CellProliferativeTypesWriter_2_2::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
     ;
 }

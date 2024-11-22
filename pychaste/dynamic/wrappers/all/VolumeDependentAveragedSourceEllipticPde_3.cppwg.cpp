@@ -69,7 +69,7 @@ public:
 void register_VolumeDependentAveragedSourceEllipticPde_3_class(py::module &m)
 {
     py::class_<VolumeDependentAveragedSourceEllipticPde_3, VolumeDependentAveragedSourceEllipticPde_3_Overrides, boost::shared_ptr<VolumeDependentAveragedSourceEllipticPde_3>, AveragedSourceEllipticPde<3>>(m, "VolumeDependentAveragedSourceEllipticPde_3")
-        .def(py::init<::AbstractCellPopulation<3> &, double>(), py::arg("rCellPopulation"), py::arg("coefficient") = 0.)
+        .def(py::init<::AbstractCellPopulation<3, 3> &, double>(), py::arg("rCellPopulation"), py::arg("coefficient") = 0.)
         .def("SetupSourceTerms",
             (void(VolumeDependentAveragedSourceEllipticPde_3::*)(::TetrahedralMesh<3, 3> &, ::std::map<boost::shared_ptr<Cell>, unsigned int> *)) &VolumeDependentAveragedSourceEllipticPde_3::SetupSourceTerms,
             " ", py::arg("rCoarseMesh"), py::arg("pCellPdeElementMap") = nullptr)

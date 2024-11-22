@@ -56,7 +56,7 @@ class CellLabelWriter_2_2_Overrides : public CellLabelWriter_2_2
 {
 public:
     using CellLabelWriter_2_2::CellLabelWriter;
-    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -65,7 +65,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -81,10 +81,10 @@ void register_CellLabelWriter_2_2_class(py::module &m)
     py::class_<CellLabelWriter_2_2, CellLabelWriter_2_2_Overrides, boost::shared_ptr<CellLabelWriter_2_2>, AbstractCellWriter<2, 2>>(m, "CellLabelWriter_2_2")
         .def(py::init<>())
         .def("GetCellDataForVtkOutput",
-            (double(CellLabelWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &CellLabelWriter_2_2::GetCellDataForVtkOutput,
+            (double(CellLabelWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &CellLabelWriter_2_2::GetCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(CellLabelWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &CellLabelWriter_2_2::VisitCell,
+            (void(CellLabelWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &CellLabelWriter_2_2::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
     ;
 }

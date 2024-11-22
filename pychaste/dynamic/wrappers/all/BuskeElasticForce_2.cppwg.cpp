@@ -57,7 +57,7 @@ class BuskeElasticForce_2_Overrides : public BuskeElasticForce_2
 {
 public:
     using BuskeElasticForce_2::BuskeElasticForce;
-    ::boost::numeric::ublas::c_vector<double, 2> CalculateForceBetweenNodes(unsigned int nodeAGlobalIndex, unsigned int nodeBGlobalIndex, ::AbstractCellPopulation<2> & rCellPopulation) override
+    ::boost::numeric::ublas::c_vector<double, 2> CalculateForceBetweenNodes(unsigned int nodeAGlobalIndex, unsigned int nodeBGlobalIndex, ::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             _boost_numeric_ublas_c_vector_lt_double_2_gt_,
@@ -79,7 +79,7 @@ public:
 
 void register_BuskeElasticForce_2_class(py::module &m)
 {
-    py::class_<BuskeElasticForce_2, BuskeElasticForce_2_Overrides, boost::shared_ptr<BuskeElasticForce_2>, AbstractTwoBodyInteractionForce<2>>(m, "BuskeElasticForce_2")
+    py::class_<BuskeElasticForce_2, BuskeElasticForce_2_Overrides, boost::shared_ptr<BuskeElasticForce_2>, AbstractTwoBodyInteractionForce<2, 2>>(m, "BuskeElasticForce_2")
         .def(py::init<>())
         .def("GetDeformationEnergyParameter",
             (double(BuskeElasticForce_2::*)()) &BuskeElasticForce_2::GetDeformationEnergyParameter,
@@ -88,7 +88,7 @@ void register_BuskeElasticForce_2_class(py::module &m)
             (void(BuskeElasticForce_2::*)(double)) &BuskeElasticForce_2::SetDeformationEnergyParameter,
             " ", py::arg("deformationEnergyParameter"))
         .def("CalculateForceBetweenNodes",
-            (::boost::numeric::ublas::c_vector<double, 2>(BuskeElasticForce_2::*)(unsigned int, unsigned int, ::AbstractCellPopulation<2> &)) &BuskeElasticForce_2::CalculateForceBetweenNodes,
+            (::boost::numeric::ublas::c_vector<double, 2>(BuskeElasticForce_2::*)(unsigned int, unsigned int, ::AbstractCellPopulation<2, 2> &)) &BuskeElasticForce_2::CalculateForceBetweenNodes,
             " ", py::arg("nodeAGlobalIndex"), py::arg("nodeBGlobalIndex"), py::arg("rCellPopulation"))
         .def("GetMagnitudeOfForce",
             (double(BuskeElasticForce_2::*)(double, double, double)) &BuskeElasticForce_2::GetMagnitudeOfForce,

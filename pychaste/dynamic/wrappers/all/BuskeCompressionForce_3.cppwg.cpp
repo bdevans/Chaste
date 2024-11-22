@@ -55,7 +55,7 @@ class BuskeCompressionForce_3_Overrides : public BuskeCompressionForce_3
 {
 public:
     using BuskeCompressionForce_3::BuskeCompressionForce;
-    void AddForceContribution(::AbstractCellPopulation<3> & rCellPopulation) override
+    void AddForceContribution(::AbstractCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -75,7 +75,7 @@ public:
 
 void register_BuskeCompressionForce_3_class(py::module &m)
 {
-    py::class_<BuskeCompressionForce_3, BuskeCompressionForce_3_Overrides, boost::shared_ptr<BuskeCompressionForce_3>, AbstractForce<3>>(m, "BuskeCompressionForce_3")
+    py::class_<BuskeCompressionForce_3, BuskeCompressionForce_3_Overrides, boost::shared_ptr<BuskeCompressionForce_3>, AbstractForce<3, 3>>(m, "BuskeCompressionForce_3")
         .def(py::init<>())
         .def("GetCompressionEnergyParameter",
             (double(BuskeCompressionForce_3::*)()) &BuskeCompressionForce_3::GetCompressionEnergyParameter,
@@ -84,7 +84,7 @@ void register_BuskeCompressionForce_3_class(py::module &m)
             (void(BuskeCompressionForce_3::*)(double)) &BuskeCompressionForce_3::SetCompressionEnergyParameter,
             " ", py::arg("compressionEnergyParameter"))
         .def("AddForceContribution",
-            (void(BuskeCompressionForce_3::*)(::AbstractCellPopulation<3> &)) &BuskeCompressionForce_3::AddForceContribution,
+            (void(BuskeCompressionForce_3::*)(::AbstractCellPopulation<3, 3> &)) &BuskeCompressionForce_3::AddForceContribution,
             " ", py::arg("rCellPopulation"))
         .def("OutputForceParameters",
             (void(BuskeCompressionForce_3::*)(::out_stream &)) &BuskeCompressionForce_3::OutputForceParameters,

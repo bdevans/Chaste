@@ -56,7 +56,7 @@ class DivisionBiasTrackingModifier_2_Overrides : public DivisionBiasTrackingModi
 {
 public:
     using DivisionBiasTrackingModifier_2::DivisionBiasTrackingModifier;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -64,7 +64,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<2> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<2, 2> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -85,19 +85,19 @@ public:
 
 void register_DivisionBiasTrackingModifier_2_class(py::module &m)
 {
-    py::class_<DivisionBiasTrackingModifier_2, DivisionBiasTrackingModifier_2_Overrides, boost::shared_ptr<DivisionBiasTrackingModifier_2>, AbstractCellBasedSimulationModifier<2>>(m, "DivisionBiasTrackingModifier_2")
+    py::class_<DivisionBiasTrackingModifier_2, DivisionBiasTrackingModifier_2_Overrides, boost::shared_ptr<DivisionBiasTrackingModifier_2>, AbstractCellBasedSimulationModifier<2, 2>>(m, "DivisionBiasTrackingModifier_2")
         .def(py::init<::boost::numeric::ublas::c_vector<double, 2>>(), py::arg("divisionBiasVector"))
         .def("rGetDivisionBiasVector",
             (::boost::numeric::ublas::c_vector<double, 2> const &(DivisionBiasTrackingModifier_2::*)() const) &DivisionBiasTrackingModifier_2::rGetDivisionBiasVector,
             " ", py::return_value_policy::reference_internal)
         .def("UpdateAtEndOfTimeStep",
-            (void(DivisionBiasTrackingModifier_2::*)(::AbstractCellPopulation<2> &)) &DivisionBiasTrackingModifier_2::UpdateAtEndOfTimeStep,
+            (void(DivisionBiasTrackingModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &DivisionBiasTrackingModifier_2::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(DivisionBiasTrackingModifier_2::*)(::AbstractCellPopulation<2> &, ::std::string)) &DivisionBiasTrackingModifier_2::SetupSolve,
+            (void(DivisionBiasTrackingModifier_2::*)(::AbstractCellPopulation<2, 2> &, ::std::string)) &DivisionBiasTrackingModifier_2::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("UpdateCellData",
-            (void(DivisionBiasTrackingModifier_2::*)(::AbstractCellPopulation<2> &)) &DivisionBiasTrackingModifier_2::UpdateCellData,
+            (void(DivisionBiasTrackingModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &DivisionBiasTrackingModifier_2::UpdateCellData,
             " ", py::arg("rCellPopulation"))
         .def("OutputSimulationModifierParameters",
             (void(DivisionBiasTrackingModifier_2::*)(::out_stream &)) &DivisionBiasTrackingModifier_2::OutputSimulationModifierParameters,

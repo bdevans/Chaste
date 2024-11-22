@@ -62,7 +62,7 @@ class BoundaryNodeWriter_2_2_Overrides : public BoundaryNodeWriter_2_2
 {
 public:
     using BoundaryNodeWriter_2_2::BoundaryNodeWriter;
-    void Visit(::MeshBasedCellPopulation<2> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,10 +117,10 @@ void register_BoundaryNodeWriter_2_2_class(py::module &m)
     py::class_<BoundaryNodeWriter_2_2, BoundaryNodeWriter_2_2_Overrides, boost::shared_ptr<BoundaryNodeWriter_2_2>, AbstractCellPopulationWriter<2, 2>>(m, "BoundaryNodeWriter_2_2")
         .def(py::init<>())
         .def("VisitAnyPopulation",
-            (void(BoundaryNodeWriter_2_2::*)(::AbstractCellPopulation<2> *)) &BoundaryNodeWriter_2_2::VisitAnyPopulation,
+            (void(BoundaryNodeWriter_2_2::*)(::AbstractCellPopulation<2, 2> *)) &BoundaryNodeWriter_2_2::VisitAnyPopulation,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
-            (void(BoundaryNodeWriter_2_2::*)(::MeshBasedCellPopulation<2> *)) &BoundaryNodeWriter_2_2::Visit,
+            (void(BoundaryNodeWriter_2_2::*)(::MeshBasedCellPopulation<2, 2> *)) &BoundaryNodeWriter_2_2::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(BoundaryNodeWriter_2_2::*)(::CaBasedCellPopulation<2> *)) &BoundaryNodeWriter_2_2::Visit,

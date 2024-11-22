@@ -77,7 +77,7 @@ public:
 void register_PlaneBasedCellKiller_3_class(py::module &m)
 {
     py::class_<PlaneBasedCellKiller_3, PlaneBasedCellKiller_3_Overrides, boost::shared_ptr<PlaneBasedCellKiller_3>, AbstractCellKiller<3>>(m, "PlaneBasedCellKiller_3")
-        .def(py::init<::AbstractCellPopulation<3> *, ::boost::numeric::ublas::c_vector<double, 3>, ::boost::numeric::ublas::c_vector<double, 3>>(), py::arg("pCellPopulation"), py::arg("point"), py::arg("normal"))
+        .def(py::init<::AbstractCellPopulation<3, 3> *, ::boost::numeric::ublas::c_vector<double, 3>, ::boost::numeric::ublas::c_vector<double, 3>>(), py::arg("pCellPopulation"), py::arg("point"), py::arg("normal"))
         .def("rGetPointOnPlane",
             (::boost::numeric::ublas::c_vector<double, 3> const &(PlaneBasedCellKiller_3::*)() const) &PlaneBasedCellKiller_3::rGetPointOnPlane,
             " ", py::return_value_policy::reference_internal)

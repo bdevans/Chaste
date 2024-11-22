@@ -55,7 +55,7 @@ class AbstractCellBasedSimulationModifier_3_3_Overrides : public AbstractCellBas
 {
 public:
     using AbstractCellBasedSimulationModifier_3_3::AbstractCellBasedSimulationModifier;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<3> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE_PURE(
             void,
@@ -63,7 +63,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void UpdateAtEndOfOutputTimeStep(::AbstractCellPopulation<3> & rCellPopulation) override
+    void UpdateAtEndOfOutputTimeStep(::AbstractCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -71,7 +71,7 @@ public:
             UpdateAtEndOfOutputTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<3> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<3, 3> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE_PURE(
             void,
@@ -80,7 +80,7 @@ public:
             rCellPopulation,
             outputDirectory);
     }
-    void UpdateAtEndOfSolve(::AbstractCellPopulation<3> & rCellPopulation) override
+    void UpdateAtEndOfSolve(::AbstractCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -103,16 +103,16 @@ void register_AbstractCellBasedSimulationModifier_3_3_class(py::module &m)
     py::class_<AbstractCellBasedSimulationModifier_3_3, AbstractCellBasedSimulationModifier_3_3_Overrides, boost::shared_ptr<AbstractCellBasedSimulationModifier_3_3>, Identifiable>(m, "AbstractCellBasedSimulationModifier_3_3")
         .def(py::init<>())
         .def("UpdateAtEndOfTimeStep",
-            (void(AbstractCellBasedSimulationModifier_3_3::*)(::AbstractCellPopulation<3> &)) &AbstractCellBasedSimulationModifier_3_3::UpdateAtEndOfTimeStep,
+            (void(AbstractCellBasedSimulationModifier_3_3::*)(::AbstractCellPopulation<3, 3> &)) &AbstractCellBasedSimulationModifier_3_3::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("UpdateAtEndOfOutputTimeStep",
-            (void(AbstractCellBasedSimulationModifier_3_3::*)(::AbstractCellPopulation<3> &)) &AbstractCellBasedSimulationModifier_3_3::UpdateAtEndOfOutputTimeStep,
+            (void(AbstractCellBasedSimulationModifier_3_3::*)(::AbstractCellPopulation<3, 3> &)) &AbstractCellBasedSimulationModifier_3_3::UpdateAtEndOfOutputTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(AbstractCellBasedSimulationModifier_3_3::*)(::AbstractCellPopulation<3> &, ::std::string)) &AbstractCellBasedSimulationModifier_3_3::SetupSolve,
+            (void(AbstractCellBasedSimulationModifier_3_3::*)(::AbstractCellPopulation<3, 3> &, ::std::string)) &AbstractCellBasedSimulationModifier_3_3::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("UpdateAtEndOfSolve",
-            (void(AbstractCellBasedSimulationModifier_3_3::*)(::AbstractCellPopulation<3> &)) &AbstractCellBasedSimulationModifier_3_3::UpdateAtEndOfSolve,
+            (void(AbstractCellBasedSimulationModifier_3_3::*)(::AbstractCellPopulation<3, 3> &)) &AbstractCellBasedSimulationModifier_3_3::UpdateAtEndOfSolve,
             " ", py::arg("rCellPopulation"))
         .def("OutputSimulationModifierInfo",
             (void(AbstractCellBasedSimulationModifier_3_3::*)(::out_stream &)) &AbstractCellBasedSimulationModifier_3_3::OutputSimulationModifierInfo,

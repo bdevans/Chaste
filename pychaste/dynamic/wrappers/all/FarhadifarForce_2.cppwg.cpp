@@ -55,7 +55,7 @@ class FarhadifarForce_2_Overrides : public FarhadifarForce_2
 {
 public:
     using FarhadifarForce_2::FarhadifarForce;
-    void AddForceContribution(::AbstractCellPopulation<2> & rCellPopulation) override
+    void AddForceContribution(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -85,10 +85,10 @@ public:
 
 void register_FarhadifarForce_2_class(py::module &m)
 {
-    py::class_<FarhadifarForce_2, FarhadifarForce_2_Overrides, boost::shared_ptr<FarhadifarForce_2>, AbstractForce<2>>(m, "FarhadifarForce_2")
+    py::class_<FarhadifarForce_2, FarhadifarForce_2_Overrides, boost::shared_ptr<FarhadifarForce_2>, AbstractForce<2, 2>>(m, "FarhadifarForce_2")
         .def(py::init<>())
         .def("AddForceContribution",
-            (void(FarhadifarForce_2::*)(::AbstractCellPopulation<2> &)) &FarhadifarForce_2::AddForceContribution,
+            (void(FarhadifarForce_2::*)(::AbstractCellPopulation<2, 2> &)) &FarhadifarForce_2::AddForceContribution,
             " ", py::arg("rCellPopulation"))
         .def("GetLineTensionParameter",
             (double(FarhadifarForce_2::*)(::Node<2> *, ::Node<2> *, ::VertexBasedCellPopulation<2> &)) &FarhadifarForce_2::GetLineTensionParameter,

@@ -55,7 +55,7 @@ class DeltaNotchTrackingModifier_2_Overrides : public DeltaNotchTrackingModifier
 {
 public:
     using DeltaNotchTrackingModifier_2::DeltaNotchTrackingModifier;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -63,7 +63,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<2> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<2, 2> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -84,16 +84,16 @@ public:
 
 void register_DeltaNotchTrackingModifier_2_class(py::module &m)
 {
-    py::class_<DeltaNotchTrackingModifier_2, DeltaNotchTrackingModifier_2_Overrides, boost::shared_ptr<DeltaNotchTrackingModifier_2>, AbstractCellBasedSimulationModifier<2>>(m, "DeltaNotchTrackingModifier_2")
+    py::class_<DeltaNotchTrackingModifier_2, DeltaNotchTrackingModifier_2_Overrides, boost::shared_ptr<DeltaNotchTrackingModifier_2>, AbstractCellBasedSimulationModifier<2, 2>>(m, "DeltaNotchTrackingModifier_2")
         .def(py::init<>())
         .def("UpdateAtEndOfTimeStep",
-            (void(DeltaNotchTrackingModifier_2::*)(::AbstractCellPopulation<2> &)) &DeltaNotchTrackingModifier_2::UpdateAtEndOfTimeStep,
+            (void(DeltaNotchTrackingModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &DeltaNotchTrackingModifier_2::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(DeltaNotchTrackingModifier_2::*)(::AbstractCellPopulation<2> &, ::std::string)) &DeltaNotchTrackingModifier_2::SetupSolve,
+            (void(DeltaNotchTrackingModifier_2::*)(::AbstractCellPopulation<2, 2> &, ::std::string)) &DeltaNotchTrackingModifier_2::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("UpdateCellData",
-            (void(DeltaNotchTrackingModifier_2::*)(::AbstractCellPopulation<2> &)) &DeltaNotchTrackingModifier_2::UpdateCellData,
+            (void(DeltaNotchTrackingModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &DeltaNotchTrackingModifier_2::UpdateCellData,
             " ", py::arg("rCellPopulation"))
         .def("OutputSimulationModifierParameters",
             (void(DeltaNotchTrackingModifier_2::*)(::out_stream &)) &DeltaNotchTrackingModifier_2::OutputSimulationModifierParameters,

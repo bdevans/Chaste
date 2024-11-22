@@ -106,6 +106,6 @@ public:
 void register_CellBasedParabolicPdeSolver_3_class(py::module &m)
 {
     py::class_<CellBasedParabolicPdeSolver_3, CellBasedParabolicPdeSolver_3_Overrides, boost::shared_ptr<CellBasedParabolicPdeSolver_3>>(m, "CellBasedParabolicPdeSolver_3")
-        .def(py::init<::TetrahedralMesh<3, 3> *, ::AbstractLinearParabolicPde<3> *, ::BoundaryConditionsContainer<3, 3, 1> *>(), py::arg("pMesh"), py::arg("pPde"), py::arg("pBoundaryConditions"))
+        .def(py::init<::TetrahedralMesh<3, 3> *, ::AbstractLinearParabolicPde<3, 3> *, ::BoundaryConditionsContainer<3, 3, 1> *>(), py::arg("pMesh"), py::arg("pPde"), py::arg("pBoundaryConditions"))
     ;
 }

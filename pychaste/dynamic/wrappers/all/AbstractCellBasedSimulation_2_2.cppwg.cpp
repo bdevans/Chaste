@@ -125,7 +125,7 @@ public:
 void register_AbstractCellBasedSimulation_2_2_class(py::module &m)
 {
     py::class_<AbstractCellBasedSimulation_2_2, AbstractCellBasedSimulation_2_2_Overrides, boost::shared_ptr<AbstractCellBasedSimulation_2_2>, Identifiable>(m, "AbstractCellBasedSimulation_2_2")
-        .def(py::init<::AbstractCellPopulation<2> &, bool, bool>(), py::arg("rCellPopulation"), py::arg("deleteCellPopulationInDestructor") = false, py::arg("initialiseCells") = true)
+        .def(py::init<::AbstractCellPopulation<2, 2> &, bool, bool>(), py::arg("rCellPopulation"), py::arg("deleteCellPopulationInDestructor") = false, py::arg("initialiseCells") = true)
         .def("GetNodeLocation",
             (::std::vector<double>(AbstractCellBasedSimulation_2_2::*)(unsigned int const &)) &AbstractCellBasedSimulation_2_2::GetNodeLocation,
             " ", py::arg("rNodeIndex"))
@@ -184,10 +184,10 @@ void register_AbstractCellBasedSimulation_2_2_class(py::module &m)
             (void(AbstractCellBasedSimulation_2_2::*)()) &AbstractCellBasedSimulation_2_2::Solve,
             " ")
         .def("rGetCellPopulation",
-            (::AbstractCellPopulation<2> &(AbstractCellBasedSimulation_2_2::*)()) &AbstractCellBasedSimulation_2_2::rGetCellPopulation,
+            (::AbstractCellPopulation<2, 2> &(AbstractCellBasedSimulation_2_2::*)()) &AbstractCellBasedSimulation_2_2::rGetCellPopulation,
             " ", py::return_value_policy::reference_internal)
         .def("rGetCellPopulation",
-            (::AbstractCellPopulation<2> const &(AbstractCellBasedSimulation_2_2::*)() const) &AbstractCellBasedSimulation_2_2::rGetCellPopulation,
+            (::AbstractCellPopulation<2, 2> const &(AbstractCellBasedSimulation_2_2::*)() const) &AbstractCellBasedSimulation_2_2::rGetCellPopulation,
             " ", py::return_value_policy::reference_internal)
         .def("GetOutputDivisionLocations",
             (bool(AbstractCellBasedSimulation_2_2::*)()) &AbstractCellBasedSimulation_2_2::GetOutputDivisionLocations,

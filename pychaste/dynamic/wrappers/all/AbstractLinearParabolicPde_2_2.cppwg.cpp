@@ -96,7 +96,7 @@ public:
 
 void register_AbstractLinearParabolicPde_2_2_class(py::module &m)
 {
-    py::class_<AbstractLinearParabolicPde_2_2, AbstractLinearParabolicPde_2_2_Overrides, boost::shared_ptr<AbstractLinearParabolicPde_2_2>, AbstractLinearPde<2>>(m, "AbstractLinearParabolicPde_2_2")
+    py::class_<AbstractLinearParabolicPde_2_2, AbstractLinearParabolicPde_2_2_Overrides, boost::shared_ptr<AbstractLinearParabolicPde_2_2>, AbstractLinearPde<2, 2>>(m, "AbstractLinearParabolicPde_2_2")
         .def(py::init<>())
         .def("ComputeDuDtCoefficientFunction",
             (double(AbstractLinearParabolicPde_2_2::*)(::ChastePoint<2> const &)) &AbstractLinearParabolicPde_2_2::ComputeDuDtCoefficientFunction,

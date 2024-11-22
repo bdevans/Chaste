@@ -57,7 +57,7 @@ class AbstractCentreBasedDivisionRule_3_3_Overrides : public AbstractCentreBased
 {
 public:
     using AbstractCentreBasedDivisionRule_3_3::AbstractCentreBasedDivisionRule;
-    ::std::pair<boost::numeric::ublas::c_vector<double, 3>, boost::numeric::ublas::c_vector<double, 3>> CalculateCellDivisionVector(::CellPtr pParentCell, ::AbstractCentreBasedCellPopulation<3> & rCellPopulation) override
+    ::std::pair<boost::numeric::ublas::c_vector<double, 3>, boost::numeric::ublas::c_vector<double, 3>> CalculateCellDivisionVector(::CellPtr pParentCell, ::AbstractCentreBasedCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE_PURE(
             _std_pair_lt_boost_numeric_ublas_c_vector_lt_double_3_gt__boost_numeric_ublas_c_vector_lt_double_3_gt__gt_,
@@ -81,7 +81,7 @@ void register_AbstractCentreBasedDivisionRule_3_3_class(py::module &m)
     py::class_<AbstractCentreBasedDivisionRule_3_3, AbstractCentreBasedDivisionRule_3_3_Overrides, boost::shared_ptr<AbstractCentreBasedDivisionRule_3_3>, Identifiable>(m, "AbstractCentreBasedDivisionRule_3_3")
         .def(py::init<>())
         .def("CalculateCellDivisionVector",
-            (::std::pair<boost::numeric::ublas::c_vector<double, 3>, boost::numeric::ublas::c_vector<double, 3>>(AbstractCentreBasedDivisionRule_3_3::*)(::CellPtr, ::AbstractCentreBasedCellPopulation<3> &)) &AbstractCentreBasedDivisionRule_3_3::CalculateCellDivisionVector,
+            (::std::pair<boost::numeric::ublas::c_vector<double, 3>, boost::numeric::ublas::c_vector<double, 3>>(AbstractCentreBasedDivisionRule_3_3::*)(::CellPtr, ::AbstractCentreBasedCellPopulation<3, 3> &)) &AbstractCentreBasedDivisionRule_3_3::CalculateCellDivisionVector,
             " ", py::arg("pParentCell"), py::arg("rCellPopulation"))
         .def("OutputCellCentreBasedDivisionRuleInfo",
             (void(AbstractCentreBasedDivisionRule_3_3::*)(::out_stream &)) &AbstractCentreBasedDivisionRule_3_3::OutputCellCentreBasedDivisionRuleInfo,

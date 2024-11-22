@@ -62,7 +62,7 @@ class VertexT2SwapLocationsWriter_3_3_Overrides : public VertexT2SwapLocationsWr
 {
 public:
     using VertexT2SwapLocationsWriter_3_3::VertexT2SwapLocationsWriter;
-    void Visit(::MeshBasedCellPopulation<3> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,7 +117,7 @@ void register_VertexT2SwapLocationsWriter_3_3_class(py::module &m)
     py::class_<VertexT2SwapLocationsWriter_3_3, VertexT2SwapLocationsWriter_3_3_Overrides, boost::shared_ptr<VertexT2SwapLocationsWriter_3_3>, AbstractCellPopulationWriter<3, 3>>(m, "VertexT2SwapLocationsWriter_3_3")
         .def(py::init<>())
         .def("Visit",
-            (void(VertexT2SwapLocationsWriter_3_3::*)(::MeshBasedCellPopulation<3> *)) &VertexT2SwapLocationsWriter_3_3::Visit,
+            (void(VertexT2SwapLocationsWriter_3_3::*)(::MeshBasedCellPopulation<3, 3> *)) &VertexT2SwapLocationsWriter_3_3::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(VertexT2SwapLocationsWriter_3_3::*)(::CaBasedCellPopulation<3> *)) &VertexT2SwapLocationsWriter_3_3::Visit,

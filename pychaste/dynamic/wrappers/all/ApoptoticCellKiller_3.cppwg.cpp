@@ -76,7 +76,7 @@ public:
 void register_ApoptoticCellKiller_3_class(py::module &m)
 {
     py::class_<ApoptoticCellKiller_3, ApoptoticCellKiller_3_Overrides, boost::shared_ptr<ApoptoticCellKiller_3>, AbstractCellKiller<3>>(m, "ApoptoticCellKiller_3")
-        .def(py::init<::AbstractCellPopulation<3> *>(), py::arg("pCellPopulation"))
+        .def(py::init<::AbstractCellPopulation<3, 3> *>(), py::arg("pCellPopulation"))
         .def("CheckAndLabelSingleCellForApoptosis",
             (void(ApoptoticCellKiller_3::*)(::CellPtr)) &ApoptoticCellKiller_3::CheckAndLabelSingleCellForApoptosis,
             " ", py::arg("pCell"))

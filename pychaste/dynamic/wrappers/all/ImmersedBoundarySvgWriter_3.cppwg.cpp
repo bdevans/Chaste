@@ -56,7 +56,7 @@ class ImmersedBoundarySvgWriter_3_Overrides : public ImmersedBoundarySvgWriter_3
 {
 public:
     using ImmersedBoundarySvgWriter_3::ImmersedBoundarySvgWriter;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<3> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -64,7 +64,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<3> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<3, 3> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -85,13 +85,13 @@ public:
 
 void register_ImmersedBoundarySvgWriter_3_class(py::module &m)
 {
-    py::class_<ImmersedBoundarySvgWriter_3, ImmersedBoundarySvgWriter_3_Overrides, boost::shared_ptr<ImmersedBoundarySvgWriter_3>, AbstractCellBasedSimulationModifier<3>>(m, "ImmersedBoundarySvgWriter_3")
+    py::class_<ImmersedBoundarySvgWriter_3, ImmersedBoundarySvgWriter_3_Overrides, boost::shared_ptr<ImmersedBoundarySvgWriter_3>, AbstractCellBasedSimulationModifier<3, 3>>(m, "ImmersedBoundarySvgWriter_3")
         .def(py::init<>())
         .def("UpdateAtEndOfTimeStep",
-            (void(ImmersedBoundarySvgWriter_3::*)(::AbstractCellPopulation<3> &)) &ImmersedBoundarySvgWriter_3::UpdateAtEndOfTimeStep,
+            (void(ImmersedBoundarySvgWriter_3::*)(::AbstractCellPopulation<3, 3> &)) &ImmersedBoundarySvgWriter_3::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(ImmersedBoundarySvgWriter_3::*)(::AbstractCellPopulation<3> &, ::std::string)) &ImmersedBoundarySvgWriter_3::SetupSolve,
+            (void(ImmersedBoundarySvgWriter_3::*)(::AbstractCellPopulation<3, 3> &, ::std::string)) &ImmersedBoundarySvgWriter_3::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("AddPointToSvgFile",
             (void(ImmersedBoundarySvgWriter_3::*)(::out_stream &, ::boost::numeric::ublas::c_vector<double, 3>, unsigned int, double)) &ImmersedBoundarySvgWriter_3::AddPointToSvgFile,

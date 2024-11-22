@@ -62,7 +62,7 @@ class RadialCellDataDistributionWriter_2_2_Overrides : public RadialCellDataDist
 {
 public:
     using RadialCellDataDistributionWriter_2_2::RadialCellDataDistributionWriter;
-    void Visit(::MeshBasedCellPopulation<2> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,10 +117,10 @@ void register_RadialCellDataDistributionWriter_2_2_class(py::module &m)
     py::class_<RadialCellDataDistributionWriter_2_2, RadialCellDataDistributionWriter_2_2_Overrides, boost::shared_ptr<RadialCellDataDistributionWriter_2_2>, AbstractCellPopulationWriter<2, 2>>(m, "RadialCellDataDistributionWriter_2_2")
         .def(py::init<>())
         .def("VisitAnyPopulation",
-            (void(RadialCellDataDistributionWriter_2_2::*)(::AbstractCellPopulation<2> *)) &RadialCellDataDistributionWriter_2_2::VisitAnyPopulation,
+            (void(RadialCellDataDistributionWriter_2_2::*)(::AbstractCellPopulation<2, 2> *)) &RadialCellDataDistributionWriter_2_2::VisitAnyPopulation,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
-            (void(RadialCellDataDistributionWriter_2_2::*)(::MeshBasedCellPopulation<2> *)) &RadialCellDataDistributionWriter_2_2::Visit,
+            (void(RadialCellDataDistributionWriter_2_2::*)(::MeshBasedCellPopulation<2, 2> *)) &RadialCellDataDistributionWriter_2_2::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(RadialCellDataDistributionWriter_2_2::*)(::CaBasedCellPopulation<2> *)) &RadialCellDataDistributionWriter_2_2::Visit,

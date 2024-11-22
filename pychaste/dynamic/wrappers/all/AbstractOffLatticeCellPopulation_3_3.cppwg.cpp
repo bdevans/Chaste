@@ -112,7 +112,7 @@ public:
 
 void register_AbstractOffLatticeCellPopulation_3_3_class(py::module &m)
 {
-    py::class_<AbstractOffLatticeCellPopulation_3_3, AbstractOffLatticeCellPopulation_3_3_Overrides, boost::shared_ptr<AbstractOffLatticeCellPopulation_3_3>, AbstractCellPopulation<3>>(m, "AbstractOffLatticeCellPopulation_3_3")
+    py::class_<AbstractOffLatticeCellPopulation_3_3, AbstractOffLatticeCellPopulation_3_3_Overrides, boost::shared_ptr<AbstractOffLatticeCellPopulation_3_3>, AbstractCellPopulation<3, 3>>(m, "AbstractOffLatticeCellPopulation_3_3")
         .def("AddNode",
             (unsigned int(AbstractOffLatticeCellPopulation_3_3::*)(::Node<3> *)) &AbstractOffLatticeCellPopulation_3_3::AddNode,
             " ", py::arg("pNewNode"))

@@ -57,7 +57,7 @@ class BuskeAdhesiveForce_2_Overrides : public BuskeAdhesiveForce_2
 {
 public:
     using BuskeAdhesiveForce_2::BuskeAdhesiveForce;
-    ::boost::numeric::ublas::c_vector<double, 2> CalculateForceBetweenNodes(unsigned int nodeAGlobalIndex, unsigned int nodeBGlobalIndex, ::AbstractCellPopulation<2> & rCellPopulation) override
+    ::boost::numeric::ublas::c_vector<double, 2> CalculateForceBetweenNodes(unsigned int nodeAGlobalIndex, unsigned int nodeBGlobalIndex, ::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             _boost_numeric_ublas_c_vector_lt_double_2_gt_,
@@ -79,7 +79,7 @@ public:
 
 void register_BuskeAdhesiveForce_2_class(py::module &m)
 {
-    py::class_<BuskeAdhesiveForce_2, BuskeAdhesiveForce_2_Overrides, boost::shared_ptr<BuskeAdhesiveForce_2>, AbstractTwoBodyInteractionForce<2>>(m, "BuskeAdhesiveForce_2")
+    py::class_<BuskeAdhesiveForce_2, BuskeAdhesiveForce_2_Overrides, boost::shared_ptr<BuskeAdhesiveForce_2>, AbstractTwoBodyInteractionForce<2, 2>>(m, "BuskeAdhesiveForce_2")
         .def(py::init<>())
         .def("GetAdhesionEnergyParameter",
             (double(BuskeAdhesiveForce_2::*)()) &BuskeAdhesiveForce_2::GetAdhesionEnergyParameter,
@@ -88,7 +88,7 @@ void register_BuskeAdhesiveForce_2_class(py::module &m)
             (void(BuskeAdhesiveForce_2::*)(double)) &BuskeAdhesiveForce_2::SetAdhesionEnergyParameter,
             " ", py::arg("adhesionEnergyParameter"))
         .def("CalculateForceBetweenNodes",
-            (::boost::numeric::ublas::c_vector<double, 2>(BuskeAdhesiveForce_2::*)(unsigned int, unsigned int, ::AbstractCellPopulation<2> &)) &BuskeAdhesiveForce_2::CalculateForceBetweenNodes,
+            (::boost::numeric::ublas::c_vector<double, 2>(BuskeAdhesiveForce_2::*)(unsigned int, unsigned int, ::AbstractCellPopulation<2, 2> &)) &BuskeAdhesiveForce_2::CalculateForceBetweenNodes,
             " ", py::arg("nodeAGlobalIndex"), py::arg("nodeBGlobalIndex"), py::arg("rCellPopulation"))
         .def("GetMagnitudeOfForce",
             (double(BuskeAdhesiveForce_2::*)(double, double, double)) &BuskeAdhesiveForce_2::GetMagnitudeOfForce,

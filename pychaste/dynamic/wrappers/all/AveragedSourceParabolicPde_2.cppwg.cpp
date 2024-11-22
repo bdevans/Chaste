@@ -105,10 +105,10 @@ public:
 
 void register_AveragedSourceParabolicPde_2_class(py::module &m)
 {
-    py::class_<AveragedSourceParabolicPde_2, AveragedSourceParabolicPde_2_Overrides, boost::shared_ptr<AveragedSourceParabolicPde_2>, AbstractLinearParabolicPde<2>>(m, "AveragedSourceParabolicPde_2")
-        .def(py::init<::AbstractCellPopulation<2> &, double, double, double>(), py::arg("rCellPopulation"), py::arg("duDtCoefficient") = 1., py::arg("diffusionCoefficient") = 1., py::arg("sourceCoefficient") = 0.)
+    py::class_<AveragedSourceParabolicPde_2, AveragedSourceParabolicPde_2_Overrides, boost::shared_ptr<AveragedSourceParabolicPde_2>, AbstractLinearParabolicPde<2, 2>>(m, "AveragedSourceParabolicPde_2")
+        .def(py::init<::AbstractCellPopulation<2, 2> &, double, double, double>(), py::arg("rCellPopulation"), py::arg("duDtCoefficient") = 1., py::arg("diffusionCoefficient") = 1., py::arg("sourceCoefficient") = 0.)
         .def("rGetCellPopulation",
-            (::AbstractCellPopulation<2> const &(AveragedSourceParabolicPde_2::*)() const) &AveragedSourceParabolicPde_2::rGetCellPopulation,
+            (::AbstractCellPopulation<2, 2> const &(AveragedSourceParabolicPde_2::*)() const) &AveragedSourceParabolicPde_2::rGetCellPopulation,
             " ", py::return_value_policy::reference_internal)
         .def("SetupSourceTerms",
             (void(AveragedSourceParabolicPde_2::*)(::TetrahedralMesh<2, 2> &, ::std::map<boost::shared_ptr<Cell>, unsigned int> *)) &AveragedSourceParabolicPde_2::SetupSourceTerms,

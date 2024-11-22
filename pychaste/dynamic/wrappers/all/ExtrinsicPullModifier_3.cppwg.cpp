@@ -55,7 +55,7 @@ class ExtrinsicPullModifier_3_Overrides : public ExtrinsicPullModifier_3
 {
 public:
     using ExtrinsicPullModifier_3::ExtrinsicPullModifier;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<3> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<3, 3> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -63,7 +63,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<3> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<3, 3> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -84,13 +84,13 @@ public:
 
 void register_ExtrinsicPullModifier_3_class(py::module &m)
 {
-    py::class_<ExtrinsicPullModifier_3, ExtrinsicPullModifier_3_Overrides, boost::shared_ptr<ExtrinsicPullModifier_3>, AbstractCellBasedSimulationModifier<3>>(m, "ExtrinsicPullModifier_3")
+    py::class_<ExtrinsicPullModifier_3, ExtrinsicPullModifier_3_Overrides, boost::shared_ptr<ExtrinsicPullModifier_3>, AbstractCellBasedSimulationModifier<3, 3>>(m, "ExtrinsicPullModifier_3")
         .def(py::init<>())
         .def("UpdateAtEndOfTimeStep",
-            (void(ExtrinsicPullModifier_3::*)(::AbstractCellPopulation<3> &)) &ExtrinsicPullModifier_3::UpdateAtEndOfTimeStep,
+            (void(ExtrinsicPullModifier_3::*)(::AbstractCellPopulation<3, 3> &)) &ExtrinsicPullModifier_3::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(ExtrinsicPullModifier_3::*)(::AbstractCellPopulation<3> &, ::std::string)) &ExtrinsicPullModifier_3::SetupSolve,
+            (void(ExtrinsicPullModifier_3::*)(::AbstractCellPopulation<3, 3> &, ::std::string)) &ExtrinsicPullModifier_3::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("SetApplyExtrinsicPullToAllNodes",
             (void(ExtrinsicPullModifier_3::*)(bool)) &ExtrinsicPullModifier_3::SetApplyExtrinsicPullToAllNodes,

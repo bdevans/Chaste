@@ -57,7 +57,7 @@ class ImmersedBoundaryNeighbourNumberWriter_2_2_Overrides : public ImmersedBound
 {
 public:
     using ImmersedBoundaryNeighbourNumberWriter_2_2::ImmersedBoundaryNeighbourNumberWriter;
-    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -66,7 +66,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<2, 2> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -82,10 +82,10 @@ void register_ImmersedBoundaryNeighbourNumberWriter_2_2_class(py::module &m)
     py::class_<ImmersedBoundaryNeighbourNumberWriter_2_2, ImmersedBoundaryNeighbourNumberWriter_2_2_Overrides, boost::shared_ptr<ImmersedBoundaryNeighbourNumberWriter_2_2>, AbstractCellWriter<2, 2>>(m, "ImmersedBoundaryNeighbourNumberWriter_2_2")
         .def(py::init<>())
         .def("GetCellDataForVtkOutput",
-            (double(ImmersedBoundaryNeighbourNumberWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &ImmersedBoundaryNeighbourNumberWriter_2_2::GetCellDataForVtkOutput,
+            (double(ImmersedBoundaryNeighbourNumberWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &ImmersedBoundaryNeighbourNumberWriter_2_2::GetCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(ImmersedBoundaryNeighbourNumberWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2> *)) &ImmersedBoundaryNeighbourNumberWriter_2_2::VisitCell,
+            (void(ImmersedBoundaryNeighbourNumberWriter_2_2::*)(::CellPtr, ::AbstractCellPopulation<2, 2> *)) &ImmersedBoundaryNeighbourNumberWriter_2_2::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
     ;
 }

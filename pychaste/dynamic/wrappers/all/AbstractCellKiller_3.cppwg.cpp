@@ -76,12 +76,12 @@ public:
 void register_AbstractCellKiller_3_class(py::module &m)
 {
     py::class_<AbstractCellKiller_3, AbstractCellKiller_3_Overrides, boost::shared_ptr<AbstractCellKiller_3>, Identifiable>(m, "AbstractCellKiller_3")
-        .def(py::init<::AbstractCellPopulation<3> *>(), py::arg("pCellPopulation"))
+        .def(py::init<::AbstractCellPopulation<3, 3> *>(), py::arg("pCellPopulation"))
         .def("CheckAndLabelCellsForApoptosisOrDeath",
             (void(AbstractCellKiller_3::*)()) &AbstractCellKiller_3::CheckAndLabelCellsForApoptosisOrDeath,
             " ")
         .def("GetCellPopulation",
-            (::AbstractCellPopulation<3> const *(AbstractCellKiller_3::*)() const) &AbstractCellKiller_3::GetCellPopulation,
+            (::AbstractCellPopulation<3, 3> const *(AbstractCellKiller_3::*)() const) &AbstractCellKiller_3::GetCellPopulation,
             " ", py::return_value_policy::reference)
         .def("OutputCellKillerInfo",
             (void(AbstractCellKiller_3::*)(::out_stream &)) &AbstractCellKiller_3::OutputCellKillerInfo,

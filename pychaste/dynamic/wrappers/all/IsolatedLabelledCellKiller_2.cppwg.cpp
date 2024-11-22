@@ -76,7 +76,7 @@ public:
 void register_IsolatedLabelledCellKiller_2_class(py::module &m)
 {
     py::class_<IsolatedLabelledCellKiller_2, IsolatedLabelledCellKiller_2_Overrides, boost::shared_ptr<IsolatedLabelledCellKiller_2>, AbstractCellKiller<2>>(m, "IsolatedLabelledCellKiller_2")
-        .def(py::init<::AbstractCellPopulation<2> *>(), py::arg("pCellPopulation"))
+        .def(py::init<::AbstractCellPopulation<2, 2> *>(), py::arg("pCellPopulation"))
         .def("CheckAndLabelCellsForApoptosisOrDeath",
             (void(IsolatedLabelledCellKiller_2::*)()) &IsolatedLabelledCellKiller_2::CheckAndLabelCellsForApoptosisOrDeath,
             " ")

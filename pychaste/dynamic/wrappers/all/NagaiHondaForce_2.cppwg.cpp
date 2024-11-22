@@ -55,7 +55,7 @@ class NagaiHondaForce_2_Overrides : public NagaiHondaForce_2
 {
 public:
     using NagaiHondaForce_2::NagaiHondaForce;
-    void AddForceContribution(::AbstractCellPopulation<2> & rCellPopulation) override
+    void AddForceContribution(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -85,10 +85,10 @@ public:
 
 void register_NagaiHondaForce_2_class(py::module &m)
 {
-    py::class_<NagaiHondaForce_2, NagaiHondaForce_2_Overrides, boost::shared_ptr<NagaiHondaForce_2>, AbstractForce<2>>(m, "NagaiHondaForce_2")
+    py::class_<NagaiHondaForce_2, NagaiHondaForce_2_Overrides, boost::shared_ptr<NagaiHondaForce_2>, AbstractForce<2, 2>>(m, "NagaiHondaForce_2")
         .def(py::init<>())
         .def("AddForceContribution",
-            (void(NagaiHondaForce_2::*)(::AbstractCellPopulation<2> &)) &NagaiHondaForce_2::AddForceContribution,
+            (void(NagaiHondaForce_2::*)(::AbstractCellPopulation<2, 2> &)) &NagaiHondaForce_2::AddForceContribution,
             " ", py::arg("rCellPopulation"))
         .def("GetAdhesionParameter",
             (double(NagaiHondaForce_2::*)(::Node<2> *, ::Node<2> *, ::VertexBasedCellPopulation<2> &)) &NagaiHondaForce_2::GetAdhesionParameter,

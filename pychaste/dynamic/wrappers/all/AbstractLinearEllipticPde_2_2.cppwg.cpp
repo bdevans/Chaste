@@ -102,7 +102,7 @@ public:
 
 void register_AbstractLinearEllipticPde_2_2_class(py::module &m)
 {
-    py::class_<AbstractLinearEllipticPde_2_2, AbstractLinearEllipticPde_2_2_Overrides, boost::shared_ptr<AbstractLinearEllipticPde_2_2>, AbstractLinearPde<2>>(m, "AbstractLinearEllipticPde_2_2")
+    py::class_<AbstractLinearEllipticPde_2_2, AbstractLinearEllipticPde_2_2_Overrides, boost::shared_ptr<AbstractLinearEllipticPde_2_2>, AbstractLinearPde<2, 2>>(m, "AbstractLinearEllipticPde_2_2")
         .def(py::init<>())
         .def("ComputeConstantInUSourceTerm",
             (double(AbstractLinearEllipticPde_2_2::*)(::ChastePoint<2> const &, ::Element<2, 2> *)) &AbstractLinearEllipticPde_2_2::ComputeConstantInUSourceTerm,

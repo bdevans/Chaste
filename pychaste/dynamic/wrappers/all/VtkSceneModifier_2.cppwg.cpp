@@ -55,7 +55,7 @@ class VtkSceneModifier_2_Overrides : public VtkSceneModifier_2
 {
 public:
     using VtkSceneModifier_2::VtkSceneModifier;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -63,7 +63,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<2> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<2, 2> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -84,22 +84,22 @@ public:
 
 void register_VtkSceneModifier_2_class(py::module &m)
 {
-    py::class_<VtkSceneModifier_2, VtkSceneModifier_2_Overrides, boost::shared_ptr<VtkSceneModifier_2>, AbstractCellBasedSimulationModifier<2>>(m, "VtkSceneModifier_2")
+    py::class_<VtkSceneModifier_2, VtkSceneModifier_2_Overrides, boost::shared_ptr<VtkSceneModifier_2>, AbstractCellBasedSimulationModifier<2, 2>>(m, "VtkSceneModifier_2")
         .def(py::init<>())
         .def("GetVtkScene",
             (::boost::shared_ptr<VtkScene<2>>(VtkSceneModifier_2::*)()) &VtkSceneModifier_2::GetVtkScene,
             " ")
         .def("UpdateAtEndOfTimeStep",
-            (void(VtkSceneModifier_2::*)(::AbstractCellPopulation<2> &)) &VtkSceneModifier_2::UpdateAtEndOfTimeStep,
+            (void(VtkSceneModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &VtkSceneModifier_2::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(VtkSceneModifier_2::*)(::AbstractCellPopulation<2> &, ::std::string)) &VtkSceneModifier_2::SetupSolve,
+            (void(VtkSceneModifier_2::*)(::AbstractCellPopulation<2, 2> &, ::std::string)) &VtkSceneModifier_2::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("SetVtkScene",
             (void(VtkSceneModifier_2::*)(::boost::shared_ptr<VtkScene<2>>)) &VtkSceneModifier_2::SetVtkScene,
             " ", py::arg("pScene"))
         .def("UpdateCellData",
-            (void(VtkSceneModifier_2::*)(::AbstractCellPopulation<2> &)) &VtkSceneModifier_2::UpdateCellData,
+            (void(VtkSceneModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &VtkSceneModifier_2::UpdateCellData,
             " ", py::arg("rCellPopulation"))
         .def("OutputSimulationModifierParameters",
             (void(VtkSceneModifier_2::*)(::out_stream &)) &VtkSceneModifier_2::OutputSimulationModifierParameters,

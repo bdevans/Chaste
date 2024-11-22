@@ -56,7 +56,7 @@ class LegacyCellProliferativeTypesWriter_3_3_Overrides : public LegacyCellProlif
 {
 public:
     using LegacyCellProliferativeTypesWriter_3_3::LegacyCellProliferativeTypesWriter;
-    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<3> * pCellPopulation) override
+    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -65,7 +65,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<3> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -81,10 +81,10 @@ void register_LegacyCellProliferativeTypesWriter_3_3_class(py::module &m)
     py::class_<LegacyCellProliferativeTypesWriter_3_3, LegacyCellProliferativeTypesWriter_3_3_Overrides, boost::shared_ptr<LegacyCellProliferativeTypesWriter_3_3>, AbstractCellWriter<3, 3>>(m, "LegacyCellProliferativeTypesWriter_3_3")
         .def(py::init<>())
         .def("GetCellDataForVtkOutput",
-            (double(LegacyCellProliferativeTypesWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3> *)) &LegacyCellProliferativeTypesWriter_3_3::GetCellDataForVtkOutput,
+            (double(LegacyCellProliferativeTypesWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3, 3> *)) &LegacyCellProliferativeTypesWriter_3_3::GetCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(LegacyCellProliferativeTypesWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3> *)) &LegacyCellProliferativeTypesWriter_3_3::VisitCell,
+            (void(LegacyCellProliferativeTypesWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3, 3> *)) &LegacyCellProliferativeTypesWriter_3_3::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
     ;
 }

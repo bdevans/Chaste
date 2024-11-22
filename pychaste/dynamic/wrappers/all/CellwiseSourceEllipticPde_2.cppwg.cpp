@@ -95,9 +95,9 @@ public:
 void register_CellwiseSourceEllipticPde_2_class(py::module &m)
 {
     py::class_<CellwiseSourceEllipticPde_2, CellwiseSourceEllipticPde_2_Overrides, boost::shared_ptr<CellwiseSourceEllipticPde_2>, AbstractLinearEllipticPde<2, 2>>(m, "CellwiseSourceEllipticPde_2")
-        .def(py::init<::AbstractCellPopulation<2> &, double>(), py::arg("rCellPopulation"), py::arg("sourceCoefficient") = 0.)
+        .def(py::init<::AbstractCellPopulation<2, 2> &, double>(), py::arg("rCellPopulation"), py::arg("sourceCoefficient") = 0.)
         .def("rGetCellPopulation",
-            (::AbstractCellPopulation<2> const &(CellwiseSourceEllipticPde_2::*)() const) &CellwiseSourceEllipticPde_2::rGetCellPopulation,
+            (::AbstractCellPopulation<2, 2> const &(CellwiseSourceEllipticPde_2::*)() const) &CellwiseSourceEllipticPde_2::rGetCellPopulation,
             " ", py::return_value_policy::reference_internal)
         .def("GetCoefficient",
             (double(CellwiseSourceEllipticPde_2::*)() const) &CellwiseSourceEllipticPde_2::GetCoefficient,

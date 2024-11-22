@@ -55,7 +55,7 @@ class DeltaNotchEdgeInteriorTrackingModifier_2_Overrides : public DeltaNotchEdge
 {
 public:
     using DeltaNotchEdgeInteriorTrackingModifier_2::DeltaNotchEdgeInteriorTrackingModifier;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -63,7 +63,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<2> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<2, 2> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -84,16 +84,16 @@ public:
 
 void register_DeltaNotchEdgeInteriorTrackingModifier_2_class(py::module &m)
 {
-    py::class_<DeltaNotchEdgeInteriorTrackingModifier_2, DeltaNotchEdgeInteriorTrackingModifier_2_Overrides, boost::shared_ptr<DeltaNotchEdgeInteriorTrackingModifier_2>, AbstractCellBasedSimulationModifier<2>>(m, "DeltaNotchEdgeInteriorTrackingModifier_2")
+    py::class_<DeltaNotchEdgeInteriorTrackingModifier_2, DeltaNotchEdgeInteriorTrackingModifier_2_Overrides, boost::shared_ptr<DeltaNotchEdgeInteriorTrackingModifier_2>, AbstractCellBasedSimulationModifier<2, 2>>(m, "DeltaNotchEdgeInteriorTrackingModifier_2")
         .def(py::init<>())
         .def("UpdateAtEndOfTimeStep",
-            (void(DeltaNotchEdgeInteriorTrackingModifier_2::*)(::AbstractCellPopulation<2> &)) &DeltaNotchEdgeInteriorTrackingModifier_2::UpdateAtEndOfTimeStep,
+            (void(DeltaNotchEdgeInteriorTrackingModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &DeltaNotchEdgeInteriorTrackingModifier_2::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(DeltaNotchEdgeInteriorTrackingModifier_2::*)(::AbstractCellPopulation<2> &, ::std::string)) &DeltaNotchEdgeInteriorTrackingModifier_2::SetupSolve,
+            (void(DeltaNotchEdgeInteriorTrackingModifier_2::*)(::AbstractCellPopulation<2, 2> &, ::std::string)) &DeltaNotchEdgeInteriorTrackingModifier_2::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("UpdateCellData",
-            (void(DeltaNotchEdgeInteriorTrackingModifier_2::*)(::AbstractCellPopulation<2> &)) &DeltaNotchEdgeInteriorTrackingModifier_2::UpdateCellData,
+            (void(DeltaNotchEdgeInteriorTrackingModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &DeltaNotchEdgeInteriorTrackingModifier_2::UpdateCellData,
             " ", py::arg("rCellPopulation"))
         .def("OutputSimulationModifierParameters",
             (void(DeltaNotchEdgeInteriorTrackingModifier_2::*)(::out_stream &)) &DeltaNotchEdgeInteriorTrackingModifier_2::OutputSimulationModifierParameters,

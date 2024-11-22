@@ -62,7 +62,7 @@ class CellPopulationAdjacencyMatrixWriter_3_3_Overrides : public CellPopulationA
 {
 public:
     using CellPopulationAdjacencyMatrixWriter_3_3::CellPopulationAdjacencyMatrixWriter;
-    void Visit(::MeshBasedCellPopulation<3> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,10 +117,10 @@ void register_CellPopulationAdjacencyMatrixWriter_3_3_class(py::module &m)
     py::class_<CellPopulationAdjacencyMatrixWriter_3_3, CellPopulationAdjacencyMatrixWriter_3_3_Overrides, boost::shared_ptr<CellPopulationAdjacencyMatrixWriter_3_3>, AbstractCellPopulationWriter<3, 3>>(m, "CellPopulationAdjacencyMatrixWriter_3_3")
         .def(py::init<>())
         .def("VisitAnyPopulation",
-            (void(CellPopulationAdjacencyMatrixWriter_3_3::*)(::AbstractCellPopulation<3> *)) &CellPopulationAdjacencyMatrixWriter_3_3::VisitAnyPopulation,
+            (void(CellPopulationAdjacencyMatrixWriter_3_3::*)(::AbstractCellPopulation<3, 3> *)) &CellPopulationAdjacencyMatrixWriter_3_3::VisitAnyPopulation,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
-            (void(CellPopulationAdjacencyMatrixWriter_3_3::*)(::MeshBasedCellPopulation<3> *)) &CellPopulationAdjacencyMatrixWriter_3_3::Visit,
+            (void(CellPopulationAdjacencyMatrixWriter_3_3::*)(::MeshBasedCellPopulation<3, 3> *)) &CellPopulationAdjacencyMatrixWriter_3_3::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(CellPopulationAdjacencyMatrixWriter_3_3::*)(::CaBasedCellPopulation<3> *)) &CellPopulationAdjacencyMatrixWriter_3_3::Visit,

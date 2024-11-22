@@ -321,7 +321,7 @@ public:
             WriteDataToVisualizerSetupFile,
             pVizSetupFile);
     }
-    void SimulationSetupHook(::AbstractCellBasedSimulation<2> * pSimulation) override
+    void SimulationSetupHook(::AbstractCellBasedSimulation<2, 2> * pSimulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -333,7 +333,7 @@ public:
 
 void register_VertexBasedCellPopulation_2_class(py::module &m)
 {
-    py::class_<VertexBasedCellPopulation_2, VertexBasedCellPopulation_2_Overrides, boost::shared_ptr<VertexBasedCellPopulation_2>, AbstractOffLatticeCellPopulation<2>>(m, "VertexBasedCellPopulation_2")
+    py::class_<VertexBasedCellPopulation_2, VertexBasedCellPopulation_2_Overrides, boost::shared_ptr<VertexBasedCellPopulation_2>, AbstractOffLatticeCellPopulation<2, 2>>(m, "VertexBasedCellPopulation_2")
         .def(py::init<::MutableVertexMesh<2, 2> &, ::std::vector<boost::shared_ptr<Cell>> &, bool, bool, ::std::vector<unsigned int> const>(), py::arg("rMesh"), py::arg("rCells"), py::arg("deleteMesh") = false, py::arg("validate") = true, py::arg("locationIndices") = std::vector<unsigned int>())
         .def(py::init<::MutableVertexMesh<2, 2> &, ::VertexBasedPopulationSrn<2> &>(), py::arg("rMesh"), py::arg("rPopSrn"))
         .def("GetDampingConstant",
@@ -448,7 +448,7 @@ void register_VertexBasedCellPopulation_2_class(py::module &m)
             (void(VertexBasedCellPopulation_2::*)(::out_stream &)) &VertexBasedCellPopulation_2::WriteDataToVisualizerSetupFile,
             " ", py::arg("pVizSetupFile"))
         .def("SimulationSetupHook",
-            (void(VertexBasedCellPopulation_2::*)(::AbstractCellBasedSimulation<2> *)) &VertexBasedCellPopulation_2::SimulationSetupHook,
+            (void(VertexBasedCellPopulation_2::*)(::AbstractCellBasedSimulation<2, 2> *)) &VertexBasedCellPopulation_2::SimulationSetupHook,
             " ", py::arg("pSimulation"))
         .def("GetRestrictVertexMovementBoolean",
             (bool(VertexBasedCellPopulation_2::*)()) &VertexBasedCellPopulation_2::GetRestrictVertexMovementBoolean,

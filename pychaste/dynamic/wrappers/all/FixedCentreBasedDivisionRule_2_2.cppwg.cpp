@@ -57,7 +57,7 @@ class FixedCentreBasedDivisionRule_2_2_Overrides : public FixedCentreBasedDivisi
 {
 public:
     using FixedCentreBasedDivisionRule_2_2::FixedCentreBasedDivisionRule;
-    ::std::pair<boost::numeric::ublas::c_vector<double, 2>, boost::numeric::ublas::c_vector<double, 2>> CalculateCellDivisionVector(::CellPtr pParentCell, ::AbstractCentreBasedCellPopulation<2> & rCellPopulation) override
+    ::std::pair<boost::numeric::ublas::c_vector<double, 2>, boost::numeric::ublas::c_vector<double, 2>> CalculateCellDivisionVector(::CellPtr pParentCell, ::AbstractCentreBasedCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             _std_pair_lt_boost_numeric_ublas_c_vector_lt_double_2_gt__boost_numeric_ublas_c_vector_lt_double_2_gt__gt_,
@@ -70,13 +70,13 @@ public:
 
 void register_FixedCentreBasedDivisionRule_2_2_class(py::module &m)
 {
-    py::class_<FixedCentreBasedDivisionRule_2_2, FixedCentreBasedDivisionRule_2_2_Overrides, boost::shared_ptr<FixedCentreBasedDivisionRule_2_2>, AbstractCentreBasedDivisionRule<2>>(m, "FixedCentreBasedDivisionRule_2_2")
+    py::class_<FixedCentreBasedDivisionRule_2_2, FixedCentreBasedDivisionRule_2_2_Overrides, boost::shared_ptr<FixedCentreBasedDivisionRule_2_2>, AbstractCentreBasedDivisionRule<2, 2>>(m, "FixedCentreBasedDivisionRule_2_2")
         .def(py::init<::boost::numeric::ublas::c_vector<double, 2> &>(), py::arg("rDaughterLocation"))
         .def("rGetDaughterLocation",
             (::boost::numeric::ublas::c_vector<double, 2> const &(FixedCentreBasedDivisionRule_2_2::*)() const) &FixedCentreBasedDivisionRule_2_2::rGetDaughterLocation,
             " ", py::return_value_policy::reference_internal)
         .def("CalculateCellDivisionVector",
-            (::std::pair<boost::numeric::ublas::c_vector<double, 2>, boost::numeric::ublas::c_vector<double, 2>>(FixedCentreBasedDivisionRule_2_2::*)(::CellPtr, ::AbstractCentreBasedCellPopulation<2> &)) &FixedCentreBasedDivisionRule_2_2::CalculateCellDivisionVector,
+            (::std::pair<boost::numeric::ublas::c_vector<double, 2>, boost::numeric::ublas::c_vector<double, 2>>(FixedCentreBasedDivisionRule_2_2::*)(::CellPtr, ::AbstractCentreBasedCellPopulation<2, 2> &)) &FixedCentreBasedDivisionRule_2_2::CalculateCellDivisionVector,
             " ", py::arg("pParentCell"), py::arg("rCellPopulation"))
     ;
 }

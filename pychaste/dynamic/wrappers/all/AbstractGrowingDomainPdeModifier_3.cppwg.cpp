@@ -70,10 +70,10 @@ void register_AbstractGrowingDomainPdeModifier_3_class(py::module &m)
 {
     py::class_<AbstractGrowingDomainPdeModifier_3, AbstractGrowingDomainPdeModifier_3_Overrides, boost::shared_ptr<AbstractGrowingDomainPdeModifier_3>, AbstractPdeModifier<3>>(m, "AbstractGrowingDomainPdeModifier_3")
         .def("GenerateFeMesh",
-            (void(AbstractGrowingDomainPdeModifier_3::*)(::AbstractCellPopulation<3> &)) &AbstractGrowingDomainPdeModifier_3::GenerateFeMesh,
+            (void(AbstractGrowingDomainPdeModifier_3::*)(::AbstractCellPopulation<3, 3> &)) &AbstractGrowingDomainPdeModifier_3::GenerateFeMesh,
             " ", py::arg("rCellPopulation"))
         .def("UpdateCellData",
-            (void(AbstractGrowingDomainPdeModifier_3::*)(::AbstractCellPopulation<3> &)) &AbstractGrowingDomainPdeModifier_3::UpdateCellData,
+            (void(AbstractGrowingDomainPdeModifier_3::*)(::AbstractCellPopulation<3, 3> &)) &AbstractGrowingDomainPdeModifier_3::UpdateCellData,
             " ", py::arg("rCellPopulation"))
         .def("OutputSimulationModifierParameters",
             (void(AbstractGrowingDomainPdeModifier_3::*)(::out_stream &)) &AbstractGrowingDomainPdeModifier_3::OutputSimulationModifierParameters,

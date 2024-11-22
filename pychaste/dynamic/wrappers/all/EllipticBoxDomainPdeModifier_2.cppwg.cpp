@@ -57,7 +57,7 @@ class EllipticBoxDomainPdeModifier_2_Overrides : public EllipticBoxDomainPdeModi
 {
 public:
     using EllipticBoxDomainPdeModifier_2::EllipticBoxDomainPdeModifier;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -65,7 +65,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<2> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<2, 2> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -89,10 +89,10 @@ void register_EllipticBoxDomainPdeModifier_2_class(py::module &m)
     py::class_<EllipticBoxDomainPdeModifier_2, EllipticBoxDomainPdeModifier_2_Overrides, boost::shared_ptr<EllipticBoxDomainPdeModifier_2>, AbstractBoxDomainPdeModifier<2>>(m, "EllipticBoxDomainPdeModifier_2")
         .def(py::init<::boost::shared_ptr<AbstractLinearPde<2, 2>>, ::boost::shared_ptr<AbstractBoundaryCondition<2>>, bool, ::boost::shared_ptr<ChasteCuboid<2>>, double, ::Vec>(), py::arg("pPde") = boost::shared_ptr<AbstractLinearPde<2, 2>>(), py::arg("pBoundaryCondition") = boost::shared_ptr<AbstractBoundaryCondition<2>>(), py::arg("isNeumannBoundaryCondition") = true, py::arg("pMeshCuboid") = boost::shared_ptr<ChasteCuboid<2>>(), py::arg("stepSize") = 1., py::arg("solution") = nullptr)
         .def("UpdateAtEndOfTimeStep",
-            (void(EllipticBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2> &)) &EllipticBoxDomainPdeModifier_2::UpdateAtEndOfTimeStep,
+            (void(EllipticBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &EllipticBoxDomainPdeModifier_2::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(EllipticBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2> &, ::std::string)) &EllipticBoxDomainPdeModifier_2::SetupSolve,
+            (void(EllipticBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2, 2> &, ::std::string)) &EllipticBoxDomainPdeModifier_2::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("OutputSimulationModifierParameters",
             (void(EllipticBoxDomainPdeModifier_2::*)(::out_stream &)) &EllipticBoxDomainPdeModifier_2::OutputSimulationModifierParameters,

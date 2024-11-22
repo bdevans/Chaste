@@ -126,7 +126,7 @@ public:
 
 void register_AbstractOnLatticeCellPopulation_2_class(py::module &m)
 {
-    py::class_<AbstractOnLatticeCellPopulation_2, AbstractOnLatticeCellPopulation_2_Overrides, boost::shared_ptr<AbstractOnLatticeCellPopulation_2>, AbstractCellPopulation<2>>(m, "AbstractOnLatticeCellPopulation_2")
+    py::class_<AbstractOnLatticeCellPopulation_2, AbstractOnLatticeCellPopulation_2_Overrides, boost::shared_ptr<AbstractOnLatticeCellPopulation_2>, AbstractCellPopulation<2, 2>>(m, "AbstractOnLatticeCellPopulation_2")
         .def("UpdateCellLocations",
             (void(AbstractOnLatticeCellPopulation_2::*)(double)) &AbstractOnLatticeCellPopulation_2::UpdateCellLocations,
             " ", py::arg("dt"))

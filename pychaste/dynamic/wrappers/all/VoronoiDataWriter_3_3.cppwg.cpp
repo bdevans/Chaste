@@ -62,7 +62,7 @@ class VoronoiDataWriter_3_3_Overrides : public VoronoiDataWriter_3_3
 {
 public:
     using VoronoiDataWriter_3_3::VoronoiDataWriter;
-    void Visit(::MeshBasedCellPopulation<3> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,7 +117,7 @@ void register_VoronoiDataWriter_3_3_class(py::module &m)
     py::class_<VoronoiDataWriter_3_3, VoronoiDataWriter_3_3_Overrides, boost::shared_ptr<VoronoiDataWriter_3_3>, AbstractCellPopulationWriter<3, 3>>(m, "VoronoiDataWriter_3_3")
         .def(py::init<>())
         .def("Visit",
-            (void(VoronoiDataWriter_3_3::*)(::MeshBasedCellPopulation<3> *)) &VoronoiDataWriter_3_3::Visit,
+            (void(VoronoiDataWriter_3_3::*)(::MeshBasedCellPopulation<3, 3> *)) &VoronoiDataWriter_3_3::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(VoronoiDataWriter_3_3::*)(::CaBasedCellPopulation<3> *)) &VoronoiDataWriter_3_3::Visit,

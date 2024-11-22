@@ -56,7 +56,7 @@ class CellLocationIndexWriter_3_3_Overrides : public CellLocationIndexWriter_3_3
 {
 public:
     using CellLocationIndexWriter_3_3::CellLocationIndexWriter;
-    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<3> * pCellPopulation) override
+    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -65,7 +65,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<3> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -81,10 +81,10 @@ void register_CellLocationIndexWriter_3_3_class(py::module &m)
     py::class_<CellLocationIndexWriter_3_3, CellLocationIndexWriter_3_3_Overrides, boost::shared_ptr<CellLocationIndexWriter_3_3>, AbstractCellWriter<3, 3>>(m, "CellLocationIndexWriter_3_3")
         .def(py::init<>())
         .def("GetCellDataForVtkOutput",
-            (double(CellLocationIndexWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3> *)) &CellLocationIndexWriter_3_3::GetCellDataForVtkOutput,
+            (double(CellLocationIndexWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3, 3> *)) &CellLocationIndexWriter_3_3::GetCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(CellLocationIndexWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3> *)) &CellLocationIndexWriter_3_3::VisitCell,
+            (void(CellLocationIndexWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3, 3> *)) &CellLocationIndexWriter_3_3::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
     ;
 }

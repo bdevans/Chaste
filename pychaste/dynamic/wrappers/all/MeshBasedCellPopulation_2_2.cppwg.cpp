@@ -285,7 +285,7 @@ public:
 
 void register_MeshBasedCellPopulation_2_2_class(py::module &m)
 {
-    py::class_<MeshBasedCellPopulation_2_2, MeshBasedCellPopulation_2_2_Overrides, boost::shared_ptr<MeshBasedCellPopulation_2_2>, AbstractCentreBasedCellPopulation<2>>(m, "MeshBasedCellPopulation_2_2")
+    py::class_<MeshBasedCellPopulation_2_2, MeshBasedCellPopulation_2_2_Overrides, boost::shared_ptr<MeshBasedCellPopulation_2_2>, AbstractCentreBasedCellPopulation<2, 2>>(m, "MeshBasedCellPopulation_2_2")
         .def(py::init<::MutableMesh<2, 2> &, ::std::vector<boost::shared_ptr<Cell>> &, ::std::vector<unsigned int> const, bool, bool>(), py::arg("rMesh"), py::arg("rCells"), py::arg("locationIndices") = ::std::vector<unsigned int> {}, py::arg("deleteMesh") = false, py::arg("validate") = true)
         .def(py::init<::MutableMesh<2, 2> &>(), py::arg("rMesh"))
         .def("UseAreaBasedDampingConstant",
@@ -367,10 +367,10 @@ void register_MeshBasedCellPopulation_2_2_class(py::module &m)
             (void(MeshBasedCellPopulation_2_2::*)(::out_stream &)) &MeshBasedCellPopulation_2_2::WriteDataToVisualizerSetupFile,
             " ", py::arg("pVizSetupFile"))
         .def("SpringsBegin",
-            (::MeshBasedCellPopulation<2>::SpringIterator(MeshBasedCellPopulation_2_2::*)()) &MeshBasedCellPopulation_2_2::SpringsBegin,
+            (::MeshBasedCellPopulation<2, 2>::SpringIterator(MeshBasedCellPopulation_2_2::*)()) &MeshBasedCellPopulation_2_2::SpringsBegin,
             " ")
         .def("SpringsEnd",
-            (::MeshBasedCellPopulation<2>::SpringIterator(MeshBasedCellPopulation_2_2::*)()) &MeshBasedCellPopulation_2_2::SpringsEnd,
+            (::MeshBasedCellPopulation<2, 2>::SpringIterator(MeshBasedCellPopulation_2_2::*)()) &MeshBasedCellPopulation_2_2::SpringsEnd,
             " ")
         .def("CheckCellPointers",
             (void(MeshBasedCellPopulation_2_2::*)()) &MeshBasedCellPopulation_2_2::CheckCellPointers,

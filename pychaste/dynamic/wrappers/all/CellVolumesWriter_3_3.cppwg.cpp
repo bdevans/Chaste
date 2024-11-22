@@ -56,7 +56,7 @@ class CellVolumesWriter_3_3_Overrides : public CellVolumesWriter_3_3
 {
 public:
     using CellVolumesWriter_3_3::CellVolumesWriter;
-    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<3> * pCellPopulation) override
+    double GetCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             double,
@@ -65,7 +65,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<3> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -81,10 +81,10 @@ void register_CellVolumesWriter_3_3_class(py::module &m)
     py::class_<CellVolumesWriter_3_3, CellVolumesWriter_3_3_Overrides, boost::shared_ptr<CellVolumesWriter_3_3>, AbstractCellWriter<3, 3>>(m, "CellVolumesWriter_3_3")
         .def(py::init<>())
         .def("GetCellDataForVtkOutput",
-            (double(CellVolumesWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3> *)) &CellVolumesWriter_3_3::GetCellDataForVtkOutput,
+            (double(CellVolumesWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3, 3> *)) &CellVolumesWriter_3_3::GetCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(CellVolumesWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3> *)) &CellVolumesWriter_3_3::VisitCell,
+            (void(CellVolumesWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3, 3> *)) &CellVolumesWriter_3_3::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
     ;
 }

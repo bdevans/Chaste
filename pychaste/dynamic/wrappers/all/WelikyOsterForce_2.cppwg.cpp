@@ -55,7 +55,7 @@ class WelikyOsterForce_2_Overrides : public WelikyOsterForce_2
 {
 public:
     using WelikyOsterForce_2::WelikyOsterForce;
-    void AddForceContribution(::AbstractCellPopulation<2> & rCellPopulation) override
+    void AddForceContribution(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -75,10 +75,10 @@ public:
 
 void register_WelikyOsterForce_2_class(py::module &m)
 {
-    py::class_<WelikyOsterForce_2, WelikyOsterForce_2_Overrides, boost::shared_ptr<WelikyOsterForce_2>, AbstractForce<2>>(m, "WelikyOsterForce_2")
+    py::class_<WelikyOsterForce_2, WelikyOsterForce_2_Overrides, boost::shared_ptr<WelikyOsterForce_2>, AbstractForce<2, 2>>(m, "WelikyOsterForce_2")
         .def(py::init<>())
         .def("AddForceContribution",
-            (void(WelikyOsterForce_2::*)(::AbstractCellPopulation<2> &)) &WelikyOsterForce_2::AddForceContribution,
+            (void(WelikyOsterForce_2::*)(::AbstractCellPopulation<2, 2> &)) &WelikyOsterForce_2::AddForceContribution,
             " ", py::arg("rCellPopulation"))
         .def("GetWelikyOsterAreaParameter",
             (double(WelikyOsterForce_2::*)()) &WelikyOsterForce_2::GetWelikyOsterAreaParameter,

@@ -58,7 +58,7 @@ class CellAppliedForceWriter_3_3_Overrides : public CellAppliedForceWriter_3_3
 {
 public:
     using CellAppliedForceWriter_3_3::CellAppliedForceWriter;
-    ::boost::numeric::ublas::c_vector<double, 3> GetVectorCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<3> * pCellPopulation) override
+    ::boost::numeric::ublas::c_vector<double, 3> GetVectorCellDataForVtkOutput(::CellPtr pCell, ::AbstractCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             _boost_numeric_ublas_c_vector_lt_double_3_gt_,
@@ -67,7 +67,7 @@ public:
             pCell,
             pCellPopulation);
     }
-    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<3> * pCellPopulation) override
+    void VisitCell(::CellPtr pCell, ::AbstractCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -83,10 +83,10 @@ void register_CellAppliedForceWriter_3_3_class(py::module &m)
     py::class_<CellAppliedForceWriter_3_3, CellAppliedForceWriter_3_3_Overrides, boost::shared_ptr<CellAppliedForceWriter_3_3>, AbstractCellWriter<3, 3>>(m, "CellAppliedForceWriter_3_3")
         .def(py::init<>())
         .def("GetVectorCellDataForVtkOutput",
-            (::boost::numeric::ublas::c_vector<double, 3>(CellAppliedForceWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3> *)) &CellAppliedForceWriter_3_3::GetVectorCellDataForVtkOutput,
+            (::boost::numeric::ublas::c_vector<double, 3>(CellAppliedForceWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3, 3> *)) &CellAppliedForceWriter_3_3::GetVectorCellDataForVtkOutput,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
         .def("VisitCell",
-            (void(CellAppliedForceWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3> *)) &CellAppliedForceWriter_3_3::VisitCell,
+            (void(CellAppliedForceWriter_3_3::*)(::CellPtr, ::AbstractCellPopulation<3, 3> *)) &CellAppliedForceWriter_3_3::VisitCell,
             " ", py::arg("pCell"), py::arg("pCellPopulation"))
     ;
 }

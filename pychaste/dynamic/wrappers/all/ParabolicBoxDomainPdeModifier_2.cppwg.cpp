@@ -57,7 +57,7 @@ class ParabolicBoxDomainPdeModifier_2_Overrides : public ParabolicBoxDomainPdeMo
 {
 public:
     using ParabolicBoxDomainPdeModifier_2::ParabolicBoxDomainPdeModifier;
-    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2> & rCellPopulation) override
+    void UpdateAtEndOfTimeStep(::AbstractCellPopulation<2, 2> & rCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -65,7 +65,7 @@ public:
             UpdateAtEndOfTimeStep,
             rCellPopulation);
     }
-    void SetupSolve(::AbstractCellPopulation<2> & rCellPopulation, ::std::string outputDirectory) override
+    void SetupSolve(::AbstractCellPopulation<2, 2> & rCellPopulation, ::std::string outputDirectory) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -89,13 +89,13 @@ void register_ParabolicBoxDomainPdeModifier_2_class(py::module &m)
     py::class_<ParabolicBoxDomainPdeModifier_2, ParabolicBoxDomainPdeModifier_2_Overrides, boost::shared_ptr<ParabolicBoxDomainPdeModifier_2>, AbstractBoxDomainPdeModifier<2>>(m, "ParabolicBoxDomainPdeModifier_2")
         .def(py::init<::boost::shared_ptr<AbstractLinearPde<2, 2>>, ::boost::shared_ptr<AbstractBoundaryCondition<2>>, bool, ::boost::shared_ptr<ChasteCuboid<2>>, double, ::Vec>(), py::arg("pPde") = boost::shared_ptr<AbstractLinearPde<2, 2>>(), py::arg("pBoundaryCondition") = boost::shared_ptr<AbstractBoundaryCondition<2>>(), py::arg("isNeumannBoundaryCondition") = true, py::arg("pMeshCuboid") = boost::shared_ptr<ChasteCuboid<2>>(), py::arg("stepSize") = 1., py::arg("solution") = nullptr)
         .def("UpdateAtEndOfTimeStep",
-            (void(ParabolicBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2> &)) &ParabolicBoxDomainPdeModifier_2::UpdateAtEndOfTimeStep,
+            (void(ParabolicBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &ParabolicBoxDomainPdeModifier_2::UpdateAtEndOfTimeStep,
             " ", py::arg("rCellPopulation"))
         .def("SetupSolve",
-            (void(ParabolicBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2> &, ::std::string)) &ParabolicBoxDomainPdeModifier_2::SetupSolve,
+            (void(ParabolicBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2, 2> &, ::std::string)) &ParabolicBoxDomainPdeModifier_2::SetupSolve,
             " ", py::arg("rCellPopulation"), py::arg("outputDirectory"))
         .def("SetupInitialSolutionVector",
-            (void(ParabolicBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2> &)) &ParabolicBoxDomainPdeModifier_2::SetupInitialSolutionVector,
+            (void(ParabolicBoxDomainPdeModifier_2::*)(::AbstractCellPopulation<2, 2> &)) &ParabolicBoxDomainPdeModifier_2::SetupInitialSolutionVector,
             " ", py::arg("rCellPopulation"))
         .def("OutputSimulationModifierParameters",
             (void(ParabolicBoxDomainPdeModifier_2::*)(::out_stream &)) &ParabolicBoxDomainPdeModifier_2::OutputSimulationModifierParameters,

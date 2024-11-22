@@ -62,7 +62,7 @@ class NodeLocationWriter_3_3_Overrides : public NodeLocationWriter_3_3
 {
 public:
     using NodeLocationWriter_3_3::NodeLocationWriter;
-    void Visit(::MeshBasedCellPopulation<3> * pCellPopulation) override
+    void Visit(::MeshBasedCellPopulation<3, 3> * pCellPopulation) override
     {
         PYBIND11_OVERRIDE(
             void,
@@ -117,10 +117,10 @@ void register_NodeLocationWriter_3_3_class(py::module &m)
     py::class_<NodeLocationWriter_3_3, NodeLocationWriter_3_3_Overrides, boost::shared_ptr<NodeLocationWriter_3_3>, AbstractCellPopulationWriter<3, 3>>(m, "NodeLocationWriter_3_3")
         .def(py::init<>())
         .def("VisitAnyPopulation",
-            (void(NodeLocationWriter_3_3::*)(::AbstractCellPopulation<3> *)) &NodeLocationWriter_3_3::VisitAnyPopulation,
+            (void(NodeLocationWriter_3_3::*)(::AbstractCellPopulation<3, 3> *)) &NodeLocationWriter_3_3::VisitAnyPopulation,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
-            (void(NodeLocationWriter_3_3::*)(::MeshBasedCellPopulation<3> *)) &NodeLocationWriter_3_3::Visit,
+            (void(NodeLocationWriter_3_3::*)(::MeshBasedCellPopulation<3, 3> *)) &NodeLocationWriter_3_3::Visit,
             " ", py::arg("pCellPopulation"))
         .def("Visit",
             (void(NodeLocationWriter_3_3::*)(::CaBasedCellPopulation<3> *)) &NodeLocationWriter_3_3::Visit,
