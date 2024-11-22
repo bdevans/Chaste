@@ -8,11 +8,11 @@ on:
 
 # Limit concurrent runs to one per branch
 concurrency:
-  group: pychaste-tests-${{ github.ref }}
+  group: pychaste-ubuntu-tests-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  pychaste-tests:
+  pychaste-ubuntu-tests:
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'ci:off') }}
 
     strategy:
@@ -45,8 +45,6 @@ jobs:
 
       - name: Install extra PyChaste dependencies
         run: |
-          petsc_ver=$(dpkg-query -W -f='${Version}' libpetsc-real-dev | grep -oE '^[0-9]+\.[0-9]+')
-
           for vtk_ver in $(seq 7 9); do
             installed=1
             dpkg -s "libvtk${vtk_ver}-dev" || installed=0
@@ -56,11 +54,13 @@ jobs:
           done
 
           sudo apt-get install -y \
+            castxml \
+            clang \
             python3-matplotlib \
             python3-mpi4py \
             python3-notebook \
             python3-numpy \
-            python3-petsc4py-real${petsc_ver} \
+            python3-petsc4py-real \
             python3-pip \
             python3-vtk${vtk_ver} \
             python3-xvfbwrapper \
@@ -78,11 +78,14 @@ jobs:
 
       - name: Install PyChaste
         run: |
-          python3 -m pip install --user -v --no-deps --break-system-packages .
+          python3 -m venv --system-site-packages .venv
+          . .venv/bin/activate
+          python3 -m pip install -v .
         working-directory: build/pychaste/package
 
       - name: Run PyChaste tests
         run: |
+          . .venv/bin/activate
           xvfb-run --server-args="-screen 0 1024x768x24" \
             ctest -j $(nproc) -L pychaste --output-on-failure
         working-directory: build
