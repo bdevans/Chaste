@@ -4,6 +4,10 @@
 //
 // SPDX-License-Identifier:    LGPL-3.0-or-later
 
+// Modifications:
+// This file, originally named "caster_petsc.h", has been modified
+// to use pybind11 instead of nanobind.
+
 #ifndef PYBINDPETSCTYPECASTER_HPP_
 #define PYBINDPETSCTYPECASTER_HPP_
 
