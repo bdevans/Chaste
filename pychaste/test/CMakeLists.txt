@@ -36,20 +36,23 @@ endif()
 project(testpychaste)
 chaste_do_test_component(pychaste)
 
-# Add TestWrapperGeneration
-cppwg_command("${CMAKE_CURRENT_BINARY_DIR}/wrappers.gen" QUIET)
 add_test(
     NAME TestPyWrapperGeneration
     COMMAND sh -c
-        "${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/wrappers &&
-         ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/wrappers.gen &&
-         ${CMAKE_COMMAND} -E copy_directory \
-             ${CMAKE_SOURCE_DIR}/pychaste/dynamic/wrappers \
-             ${CMAKE_CURRENT_BINARY_DIR}/wrappers &&
-         ${CPPWG_COMMAND_STR}"
+        "${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/wrappers && \
+         ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/wrappers.gen && \
+         ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/pychaste/dynamic/wrappers \
+                                            ${CMAKE_CURRENT_BINARY_DIR}/wrappers && \
+         ${chaste_python3_venv}/cppwg ${CMAKE_SOURCE_DIR} \
+            -w ${CMAKE_CURRENT_BINARY_DIR}/wrappers.gen \
+            -p ${CMAKE_SOURCE_DIR}/pychaste/dynamic/config.yaml \
+            -i $<JOIN:$<TARGET_PROPERTY:chaste_pychaste,INCLUDE_DIRECTORIES>, > \
+            -l ${CMAKE_CURRENT_BINARY_DIR}/cppwg.log \
+            --std c++17 \
+            --quiet"
 )
-set_tests_properties(TestPyWrapperGeneration PROPERTIES FIXTURES_SETUP GEN_WRAPPERS)
 
-# TestPyWrapperChanges depends on output from TestWrapperGeneration 
+# TestPyWrapperChanges depends on output from TestWrapperGeneration
+set_tests_properties(TestPyWrapperGeneration PROPERTIES FIXTURES_SETUP GEN_WRAPPERS)
 set_tests_properties(TestPyWrapperChanges PROPERTIES FIXTURES_REQUIRED GEN_WRAPPERS)
 set_tests_properties(TestPyWrapperChanges PROPERTIES WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")

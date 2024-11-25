@@ -35,56 +35,7 @@ endif()
 
 find_package(Chaste COMPONENTS ${Chaste_DEPENDS_pychaste})
 
-# Create the command for generating wrappers.
-# The resulting command will generate wrappers to OUTPUT_DIR.
-# If QUIET is set, wrapper generation will run in quiet mode.
-# The command will be stored as a list in CPPWG_COMMAND_LST.
-# It will also be stored as a string in CPPWG_COMMAND_STR.
-function(cppwg_command OUTPUT_DIR)
-    cmake_parse_arguments(ARG "QUIET" "" "" ${ARGN})
-    if(ARG_QUIET)
-        set(QUIET_FLAG "-q")
-    else()
-        set(QUIET_FLAG "")
-    endif()
-    set(COMMAND_LST
-        . ${chaste_python3_venv}/activate &&
-        ${chaste_python3_venv}/cppwg ${CMAKE_SOURCE_DIR}
-            -w ${OUTPUT_DIR}
-            -p ${CMAKE_SOURCE_DIR}/pychaste/dynamic/config.yaml
-            -i ${Chaste_INCLUDE_DIRS}
-               ${Chaste_pychaste_INCLUDE_DIRS}
-               ${Chaste_THIRD_PARTY_INCLUDE_DIRS}
-            -l ${CMAKE_CURRENT_BINARY_DIR}/cppwg.log
-            --std c++17 ${QUIET_FLAG} &&
-        deactivate
-    )
-    string(JOIN " " COMMAND_STR ${COMMAND_LST})
-    set(CPPWG_COMMAND_LST "${COMMAND_LST}" PARENT_SCOPE)
-    set(CPPWG_COMMAND_STR "${COMMAND_STR}" PARENT_SCOPE)
-endfunction()
-
 chaste_do_component(pychaste)
-
-set(PYCHASTE_WRAPPER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/dynamic/wrappers")
-
-##################################################
-# Python wrapper generation
-##################################################
-# Add `pychaste_wrappers` target for re-generating wrappers manually
-add_custom_target(pychaste_wrappers)
-cppwg_command("${PYCHASTE_WRAPPER_DIR}")
-add_custom_command(TARGET pychaste_wrappers COMMAND ${CPPWG_COMMAND_LST})
-
-# Generate wrappers if they are missing
-if(NOT EXISTS ${PYCHASTE_WRAPPER_DIR}/all/_pychaste_all.main.cppwg.cpp)
-    message(STATUS "Generating PyChaste wrappers")
-    cppwg_command("${PYCHASTE_WRAPPER_DIR}")
-    execute_process(COMMAND sh -c "${CPPWG_COMMAND_STR}")
-endif()
-
-# Find wrapper header directories
-header_dirs("${CMAKE_CURRENT_SOURCE_DIR}/dynamic" PYCHASTE_WRAPPER_INCLUDE_DIRS)
 
 ##################################################
 # Copy Python package to build directory
@@ -122,6 +73,9 @@ endforeach()
 # as the module name in the module wrapper `_pychaste_all.main.cppwg.cpp`.
 # It is imported in Python code as `from chaste._pychaste_all import *`.
 
+header_dirs("${CMAKE_CURRENT_SOURCE_DIR}/dynamic" PYCHASTE_WRAPPER_INCLUDE_DIRS)
+set(PYCHASTE_WRAPPER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/dynamic/wrappers")
+
 file(
     GLOB_RECURSE
     PYCHASTE_WRAPPER_SOURCES
@@ -130,7 +84,10 @@ file(
     ${PYCHASTE_WRAPPER_DIR}/all/*.hpp
 )
 
-add_library(_pychaste_all SHARED ${PYCHASTE_WRAPPER_SOURCES})
+add_library(_pychaste_all SHARED
+    "${PYCHASTE_WRAPPER_DIR}/all/_pychaste_all.main.cppwg.cpp"
+    ${PYCHASTE_WRAPPER_SOURCES}
+)
 
 set_target_properties(
     _pychaste_all
@@ -145,7 +102,6 @@ target_link_libraries(
     PRIVATE
     ${Python3_LIBRARIES}  # Python and pybind11 come first
     pybind11::module
-    Chaste_COMMON_DEPS
     chaste_pychaste  # Library built from non-wrapper code in src/cpp/
 )
 
@@ -161,3 +117,17 @@ target_include_directories(
 target_compile_options(_pychaste_all PRIVATE -Wno-unused-local-typedefs)
 
 add_dependencies(pychaste _pychaste_all)
+
+##################################################
+# Python wrapper generation
+##################################################
+
+add_custom_target(pychaste_wrappers
+    COMMAND ${chaste_python3_venv}/cppwg ${CMAKE_SOURCE_DIR}
+            -w ${PYCHASTE_WRAPPER_DIR}
+            -p ${CMAKE_SOURCE_DIR}/pychaste/dynamic/config.yaml
+            -i "$<JOIN:$<TARGET_PROPERTY:chaste_pychaste,INCLUDE_DIRECTORIES>,;>"
+            -l ${CMAKE_CURRENT_BINARY_DIR}/cppwg.log
+            --std c++17
+    COMMAND_EXPAND_LISTS
+)
