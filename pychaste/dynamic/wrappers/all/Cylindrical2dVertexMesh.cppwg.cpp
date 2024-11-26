@@ -126,7 +126,7 @@ void register_Cylindrical2dVertexMesh_class(py::module &m)
             " ", py::arg("pNode"))
         .def("Scale",
             (void(Cylindrical2dVertexMesh::*)(double const, double const, double const)) &Cylindrical2dVertexMesh::Scale,
-            " ", py::arg("xScale") = 1., py::arg("yScale") = 1., py::arg("zScale") = 1.)
+            " ", py::arg("xScale") = 1.0, py::arg("yScale") = 1.0, py::arg("zScale") = 1.0)
         .def("GetMeshForVtk",
             (::VertexMesh<2, 2> *(Cylindrical2dVertexMesh::*)()) &Cylindrical2dVertexMesh::GetMeshForVtk,
             " ", py::return_value_policy::reference)

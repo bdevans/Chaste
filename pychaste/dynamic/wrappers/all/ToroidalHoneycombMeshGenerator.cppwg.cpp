@@ -69,7 +69,7 @@ public:
 void register_ToroidalHoneycombMeshGenerator_class(py::module &m)
 {
     py::class_<ToroidalHoneycombMeshGenerator, ToroidalHoneycombMeshGenerator_Overrides, boost::shared_ptr<ToroidalHoneycombMeshGenerator>, HoneycombMeshGenerator>(m, "ToroidalHoneycombMeshGenerator")
-        .def(py::init<unsigned int, unsigned int, double, double>(), py::arg("numNodesAlongWidth"), py::arg("numNodesAlongDepth"), py::arg("widthScaleFactor") = 1., py::arg("depthScaleFactor") = 1.)
+        .def(py::init<unsigned int, unsigned int, double, double>(), py::arg("numNodesAlongWidth"), py::arg("numNodesAlongDepth"), py::arg("widthScaleFactor") = 1.0, py::arg("depthScaleFactor") = 1.0)
         .def("GetMesh",
             (::boost::shared_ptr<MutableMesh<2, 2>>(ToroidalHoneycombMeshGenerator::*)()) &ToroidalHoneycombMeshGenerator::GetMesh,
             " ")

@@ -191,7 +191,7 @@ void register_AbstractCentreBasedCellPopulation_2_2_class(py::module &m)
             " ", py::arg("pCell"), py::return_value_policy::reference)
         .def("GetCellDataItemAtPdeNode",
             (double(AbstractCentreBasedCellPopulation_2_2::*)(unsigned int, ::std::string &, bool, double)) &AbstractCentreBasedCellPopulation_2_2::GetCellDataItemAtPdeNode,
-            " ", py::arg("pdeNodeIndex"), py::arg("rVariableName"), py::arg("dirichletBoundaryConditionApplies") = false, py::arg("dirichletBoundaryValue") = 0.)
+            " ", py::arg("pdeNodeIndex"), py::arg("rVariableName"), py::arg("dirichletBoundaryConditionApplies") = false, py::arg("dirichletBoundaryValue") = 0.0)
         .def("AddCell",
             (::CellPtr(AbstractCentreBasedCellPopulation_2_2::*)(::CellPtr, ::CellPtr)) &AbstractCentreBasedCellPopulation_2_2::AddCell,
             " ", py::arg("pNewCell"), py::arg("pParentCell") = ::CellPtr( ))

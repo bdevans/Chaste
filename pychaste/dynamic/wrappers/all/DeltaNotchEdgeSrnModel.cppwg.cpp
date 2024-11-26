@@ -176,7 +176,7 @@ void register_DeltaNotchEdgeSrnModel_class(py::module &m)
             " ", py::arg("rParamsFile"))
         .def("AddSrnQuantities",
             (void(DeltaNotchEdgeSrnModel::*)(::AbstractSrnModel *, double const)) &DeltaNotchEdgeSrnModel::AddSrnQuantities,
-            " ", py::arg("pOtherSrn"), py::arg("scale") = 1.)
+            " ", py::arg("pOtherSrn"), py::arg("scale") = 1.0)
         .def("AddShrunkEdgeSrn",
             (void(DeltaNotchEdgeSrnModel::*)(::AbstractSrnModel *)) &DeltaNotchEdgeSrnModel::AddShrunkEdgeSrn,
             " ", py::arg("pShrunkEdgeSrn"))

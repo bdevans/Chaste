@@ -85,7 +85,7 @@ public:
 void register_SphereGeometryBoundaryCondition_2_class(py::module &m)
 {
     py::class_<SphereGeometryBoundaryCondition_2, SphereGeometryBoundaryCondition_2_Overrides, boost::shared_ptr<SphereGeometryBoundaryCondition_2>, AbstractCellPopulationBoundaryCondition<2, 2>>(m, "SphereGeometryBoundaryCondition_2")
-        .def(py::init<::AbstractCellPopulation<2, 2> *, ::boost::numeric::ublas::c_vector<double, 2>, double, double>(), py::arg("pCellPopulation"), py::arg("centre"), py::arg("radius"), py::arg("distance") = 1.0000000000000001E-5)
+        .def(py::init<::AbstractCellPopulation<2, 2> *, ::boost::numeric::ublas::c_vector<double, 2>, double, double>(), py::arg("pCellPopulation"), py::arg("centre"), py::arg("radius"), py::arg("distance") = 1e-05)
         .def("rGetCentreOfSphere",
             (::boost::numeric::ublas::c_vector<double, 2> const &(SphereGeometryBoundaryCondition_2::*)() const) &SphereGeometryBoundaryCondition_2::rGetCentreOfSphere,
             " ", py::return_value_policy::reference_internal)

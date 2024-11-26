@@ -194,6 +194,6 @@ void register_MutableMesh_2_2_class(py::module &m)
             " ", py::arg("pNodeA"), py::arg("pNodeB"))
         .def("CheckIsVoronoi",
             (bool(MutableMesh_2_2::*)(double)) &MutableMesh_2_2::CheckIsVoronoi,
-            " ", py::arg("maxPenetration") = 0.)
+            " ", py::arg("maxPenetration") = 0.0)
     ;
 }

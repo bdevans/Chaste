@@ -97,7 +97,7 @@ void register_PetscTools_class(py::module &m)
             " ", py::arg("isolate") = true)
         .def_static("CreateVec",
             (::Vec(*)(int, int, bool)) &PetscTools::CreateVec,
-            " ", py::arg("size"), py::arg("localSize") = (-1), py::arg("ignoreOffProcEntries") = true, py::return_value_policy::reference)
+            " ", py::arg("size"), py::arg("localSize") = -1.0, py::arg("ignoreOffProcEntries") = true, py::return_value_policy::reference)
         .def_static("CreateVec",
             (::Vec(*)(::std::vector<double>)) &PetscTools::CreateVec,
             " ", py::arg("data"), py::return_value_policy::reference)

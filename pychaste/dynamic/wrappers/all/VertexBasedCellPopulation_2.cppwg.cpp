@@ -434,7 +434,7 @@ void register_VertexBasedCellPopulation_2_class(py::module &m)
             " ", py::arg("pdeNodeIndex"))
         .def("GetCellDataItemAtPdeNode",
             (double(VertexBasedCellPopulation_2::*)(unsigned int, ::std::string &, bool, double)) &VertexBasedCellPopulation_2::GetCellDataItemAtPdeNode,
-            " ", py::arg("pdeNodeIndex"), py::arg("rVariableName"), py::arg("dirichletBoundaryConditionApplies") = false, py::arg("dirichletBoundaryValue") = 0.)
+            " ", py::arg("pdeNodeIndex"), py::arg("rVariableName"), py::arg("dirichletBoundaryConditionApplies") = false, py::arg("dirichletBoundaryValue") = 0.0)
         .def("GetVertexBasedDivisionRule",
             (::boost::shared_ptr<AbstractVertexBasedDivisionRule<2>>(VertexBasedCellPopulation_2::*)()) &VertexBasedCellPopulation_2::GetVertexBasedDivisionRule,
             " ")

@@ -57,7 +57,7 @@ void register_FluidSource_3_class(py::module &m)
     py::class_<FluidSource_3, boost::shared_ptr<FluidSource_3>>(m, "FluidSource_3")
         .def(py::init<unsigned int, ::ChastePoint<3>>(), py::arg("index"), py::arg("point"))
         .def(py::init<unsigned int, ::boost::numeric::ublas::c_vector<double, 3>>(), py::arg("index"), py::arg("location"))
-        .def(py::init<unsigned int, double, double, double>(), py::arg("index"), py::arg("v1") = 0., py::arg("v2") = 0., py::arg("v3") = 0.)
+        .def(py::init<unsigned int, double, double, double>(), py::arg("index"), py::arg("v1") = 0.0, py::arg("v2") = 0.0, py::arg("v3") = 0.0)
         .def("GetIndex",
             (unsigned int(FluidSource_3::*)() const) &FluidSource_3::GetIndex,
             " ")

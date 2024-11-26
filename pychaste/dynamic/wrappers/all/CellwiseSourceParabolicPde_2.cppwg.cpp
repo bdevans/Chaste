@@ -97,7 +97,7 @@ public:
 void register_CellwiseSourceParabolicPde_2_class(py::module &m)
 {
     py::class_<CellwiseSourceParabolicPde_2, CellwiseSourceParabolicPde_2_Overrides, boost::shared_ptr<CellwiseSourceParabolicPde_2>, AbstractLinearParabolicPde<2, 2>>(m, "CellwiseSourceParabolicPde_2")
-        .def(py::init<::AbstractCellPopulation<2, 2> &, double, double, double>(), py::arg("rCellPopulation"), py::arg("duDtCoefficient") = 1., py::arg("diffusionCoefficient") = 1., py::arg("sourceCoefficient") = 0.)
+        .def(py::init<::AbstractCellPopulation<2, 2> &, double, double, double>(), py::arg("rCellPopulation"), py::arg("duDtCoefficient") = 1.0, py::arg("diffusionCoefficient") = 1.0, py::arg("sourceCoefficient") = 0.0)
         .def("rGetCellPopulation",
             (::AbstractCellPopulation<2, 2> const &(CellwiseSourceParabolicPde_2::*)() const) &CellwiseSourceParabolicPde_2::rGetCellPopulation,
             " ", py::return_value_policy::reference_internal)

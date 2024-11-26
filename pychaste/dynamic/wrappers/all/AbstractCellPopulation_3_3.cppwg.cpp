@@ -387,7 +387,7 @@ void register_AbstractCellPopulation_3_3_class(py::module &m)
             " ", py::arg("pdeNodeIndex"))
         .def("GetCellDataItemAtPdeNode",
             (double(AbstractCellPopulation_3_3::*)(unsigned int, ::std::string &, bool, double)) &AbstractCellPopulation_3_3::GetCellDataItemAtPdeNode,
-            " ", py::arg("pdeNodeIndex"), py::arg("rVariableName"), py::arg("dirichletBoundaryConditionApplies") = false, py::arg("dirichletBoundaryValue") = 0.)
+            " ", py::arg("pdeNodeIndex"), py::arg("rVariableName"), py::arg("dirichletBoundaryConditionApplies") = false, py::arg("dirichletBoundaryValue") = 0.0)
         .def("GetNumNodes",
             (unsigned int(AbstractCellPopulation_3_3::*)()) &AbstractCellPopulation_3_3::GetNumNodes,
             " ")

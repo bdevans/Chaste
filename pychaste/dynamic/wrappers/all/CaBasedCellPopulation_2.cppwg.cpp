@@ -418,7 +418,7 @@ void register_CaBasedCellPopulation_2_class(py::module &m)
             " ")
         .def("GetCellDataItemAtPdeNode",
             (double(CaBasedCellPopulation_2::*)(unsigned int, ::std::string &, bool, double)) &CaBasedCellPopulation_2::GetCellDataItemAtPdeNode,
-            " ", py::arg("pdeNodeIndex"), py::arg("rVariableName"), py::arg("dirichletBoundaryConditionApplies") = false, py::arg("dirichletBoundaryValue") = 0.)
+            " ", py::arg("pdeNodeIndex"), py::arg("rVariableName"), py::arg("dirichletBoundaryConditionApplies") = false, py::arg("dirichletBoundaryValue") = 0.0)
         .def("IsPdeNodeAssociatedWithNonApoptoticCell",
             (bool(CaBasedCellPopulation_2::*)(unsigned int)) &CaBasedCellPopulation_2::IsPdeNodeAssociatedWithNonApoptoticCell,
             " ", py::arg("pdeNodeIndex"))

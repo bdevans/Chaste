@@ -87,7 +87,7 @@ public:
 void register_UniformSourceEllipticPde_3_class(py::module &m)
 {
     py::class_<UniformSourceEllipticPde_3, UniformSourceEllipticPde_3_Overrides, boost::shared_ptr<UniformSourceEllipticPde_3>, AbstractLinearEllipticPde<3, 3>>(m, "UniformSourceEllipticPde_3")
-        .def(py::init<double>(), py::arg("sourceCoefficient") = 0.)
+        .def(py::init<double>(), py::arg("sourceCoefficient") = 0.0)
         .def("GetCoefficient",
             (double(UniformSourceEllipticPde_3::*)() const) &UniformSourceEllipticPde_3::GetCoefficient,
             " ")

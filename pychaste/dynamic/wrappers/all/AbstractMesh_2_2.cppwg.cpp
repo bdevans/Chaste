@@ -271,13 +271,13 @@ void register_AbstractMesh_2_2_class(py::module &m)
             " ", py::arg("rTestPoint"))
         .def("Scale",
             (void(AbstractMesh_2_2::*)(double const, double const, double const)) &AbstractMesh_2_2::Scale,
-            " ", py::arg("xFactor") = 1., py::arg("yFactor") = 1., py::arg("zFactor") = 1.)
+            " ", py::arg("xFactor") = 1.0, py::arg("yFactor") = 1.0, py::arg("zFactor") = 1.0)
         .def("Translate",
             (void(AbstractMesh_2_2::*)(::boost::numeric::ublas::c_vector<double, 2> const &)) &AbstractMesh_2_2::Translate,
             " ", py::arg("rDisplacement"))
         .def("Translate",
             (void(AbstractMesh_2_2::*)(double const, double const, double const)) &AbstractMesh_2_2::Translate,
-            " ", py::arg("xMovement") = 0., py::arg("yMovement") = 0., py::arg("zMovement") = 0.)
+            " ", py::arg("xMovement") = 0.0, py::arg("yMovement") = 0.0, py::arg("zMovement") = 0.0)
         .def("Rotate",
             (void(AbstractMesh_2_2::*)(::boost::numeric::ublas::c_matrix<double, 2, 2>)) &AbstractMesh_2_2::Rotate,
             " ", py::arg("rotationMatrix"))

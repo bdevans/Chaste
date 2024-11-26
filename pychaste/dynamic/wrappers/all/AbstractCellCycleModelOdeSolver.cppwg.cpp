@@ -125,7 +125,7 @@ void register_AbstractCellCycleModelOdeSolver_class(py::module &m)
             " ", py::arg("numSteps"))
         .def("SetTolerances",
             (void(AbstractCellCycleModelOdeSolver::*)(double, double)) &AbstractCellCycleModelOdeSolver::SetTolerances,
-            " ", py::arg("relTol") = 1.0E-4, py::arg("absTol") = 9.9999999999999995E-7)
+            " ", py::arg("relTol") = 0.0001, py::arg("absTol") = 1e-06)
         .def("IsAdaptive",
             (bool(AbstractCellCycleModelOdeSolver::*)()) &AbstractCellCycleModelOdeSolver::IsAdaptive,
             " ")

@@ -428,7 +428,7 @@ void register_ImmersedBoundaryCellPopulation_2_class(py::module &m)
             " ", py::arg("pdeNodeIndex"))
         .def("GetCellDataItemAtPdeNode",
             (double(ImmersedBoundaryCellPopulation_2::*)(unsigned int, ::std::string &, bool, double)) &ImmersedBoundaryCellPopulation_2::GetCellDataItemAtPdeNode,
-            " ", py::arg("pdeNodeIndex"), py::arg("rVariableName"), py::arg("dirichletBoundaryConditionApplies") = false, py::arg("dirichletBoundaryValue") = 0.)
+            " ", py::arg("pdeNodeIndex"), py::arg("rVariableName"), py::arg("dirichletBoundaryConditionApplies") = false, py::arg("dirichletBoundaryValue") = 0.0)
         .def("GetImmersedBoundaryDivisionRule",
             (::boost::shared_ptr<AbstractImmersedBoundaryDivisionRule<2>>(ImmersedBoundaryCellPopulation_2::*)()) &ImmersedBoundaryCellPopulation_2::GetImmersedBoundaryDivisionRule,
             " ")

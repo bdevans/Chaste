@@ -66,7 +66,7 @@ void register_ChastePoint_2_class(py::module &m)
             " ", py::return_value_policy::reference_internal)
         .def("GetWithDefault",
             (double(ChastePoint_2::*)(unsigned int, double) const) &ChastePoint_2::GetWithDefault,
-            " ", py::arg("i"), py::arg("def") = 0.)
+            " ", py::arg("i"), py::arg("def") = 0.0)
         .def("SetCoordinate",
             (void(ChastePoint_2::*)(unsigned int, double)) &ChastePoint_2::SetCoordinate,
             " ", py::arg("i"), py::arg("value"))

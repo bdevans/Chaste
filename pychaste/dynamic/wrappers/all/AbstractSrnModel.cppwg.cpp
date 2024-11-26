@@ -217,7 +217,7 @@ void register_AbstractSrnModel_class(py::module &m)
             " ", py::arg("theta"))
         .def("AddSrnQuantities",
             (void(AbstractSrnModel::*)(::AbstractSrnModel *, double const)) &AbstractSrnModel::AddSrnQuantities,
-            " ", py::arg("pOtherSrn"), py::arg("scale") = 1.)
+            " ", py::arg("pOtherSrn"), py::arg("scale") = 1.0)
         .def("AddShrunkEdgeSrn",
             (void(AbstractSrnModel::*)(::AbstractSrnModel *)) &AbstractSrnModel::AddShrunkEdgeSrn,
             " ", py::arg("pShrunkEdgeSrn"))

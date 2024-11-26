@@ -87,7 +87,7 @@ public:
 void register_VoronoiVertexMeshGenerator_class(py::module &m)
 {
     py::class_<VoronoiVertexMeshGenerator, VoronoiVertexMeshGenerator_Overrides, boost::shared_ptr<VoronoiVertexMeshGenerator>>(m, "VoronoiVertexMeshGenerator")
-        .def(py::init<unsigned int, unsigned int, unsigned int, double>(), py::arg("numElementsX"), py::arg("numElementsY"), py::arg("numRelaxationSteps"), py::arg("elementTargetArea") = 1.)
+        .def(py::init<unsigned int, unsigned int, unsigned int, double>(), py::arg("numElementsX"), py::arg("numElementsY"), py::arg("numRelaxationSteps"), py::arg("elementTargetArea") = 1.0)
         .def(py::init<>())
         .def("GenerateVoronoiMesh",
             (void(VoronoiVertexMeshGenerator::*)()) &VoronoiVertexMeshGenerator::GenerateVoronoiMesh,

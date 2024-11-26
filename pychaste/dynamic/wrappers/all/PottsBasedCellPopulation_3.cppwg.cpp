@@ -353,7 +353,7 @@ void register_PottsBasedCellPopulation_3_class(py::module &m)
             " ", py::arg("pUpdateRule"))
         .def("GetCellDataItemAtPdeNode",
             (double(PottsBasedCellPopulation_3::*)(unsigned int, ::std::string &, bool, double)) &PottsBasedCellPopulation_3::GetCellDataItemAtPdeNode,
-            " ", py::arg("pdeNodeIndex"), py::arg("rVariableName"), py::arg("dirichletBoundaryConditionApplies") = false, py::arg("dirichletBoundaryValue") = 0.)
+            " ", py::arg("pdeNodeIndex"), py::arg("rVariableName"), py::arg("dirichletBoundaryConditionApplies") = false, py::arg("dirichletBoundaryValue") = 0.0)
         .def("AddPopulationWriterVoronoiDataWriter", &PottsBasedCellPopulation_3::AddPopulationWriter<VoronoiDataWriter>)
         .def("AddCellWriterCellLabelWriter", &PottsBasedCellPopulation_3::AddCellWriter<CellLabelWriter>)
     ;

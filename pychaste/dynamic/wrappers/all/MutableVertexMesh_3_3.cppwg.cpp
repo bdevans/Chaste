@@ -121,7 +121,7 @@ public:
 void register_MutableVertexMesh_3_3_class(py::module &m)
 {
     py::class_<MutableVertexMesh_3_3, MutableVertexMesh_3_3_Overrides, boost::shared_ptr<MutableVertexMesh_3_3>, VertexMesh<3, 3>>(m, "MutableVertexMesh_3_3")
-        .def(py::init<::std::vector<Node<3> *>, ::std::vector<VertexElement<3, 3> *>, double, double, double, double, double, double>(), py::arg("nodes"), py::arg("vertexElements"), py::arg("cellRearrangementThreshold") = 0.01, py::arg("t2Threshold") = 0.001, py::arg("cellRearrangementRatio") = 1.5, py::arg("protorosetteFormationProbability") = 0., py::arg("protorosetteResolutionProbabilityPerTimestep") = 0., py::arg("rosetteResolutionProbabilityPerTimestep") = 0.)
+        .def(py::init<::std::vector<Node<3> *>, ::std::vector<VertexElement<3, 3> *>, double, double, double, double, double, double>(), py::arg("nodes"), py::arg("vertexElements"), py::arg("cellRearrangementThreshold") = 0.01, py::arg("t2Threshold") = 0.001, py::arg("cellRearrangementRatio") = 1.5, py::arg("protorosetteFormationProbability") = 0.0, py::arg("protorosetteResolutionProbabilityPerTimestep") = 0.0, py::arg("rosetteResolutionProbabilityPerTimestep") = 0.0)
         .def(py::init<>())
         .def("PerformNodeMerge",
             (void(MutableVertexMesh_3_3::*)(::Node<3> *, ::Node<3> *)) &MutableVertexMesh_3_3::PerformNodeMerge,
