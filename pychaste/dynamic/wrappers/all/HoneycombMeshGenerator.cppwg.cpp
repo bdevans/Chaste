@@ -69,7 +69,7 @@ public:
 void register_HoneycombMeshGenerator_class(py::module &m)
 {
     py::class_<HoneycombMeshGenerator, HoneycombMeshGenerator_Overrides, boost::shared_ptr<HoneycombMeshGenerator>>(m, "HoneycombMeshGenerator")
-        .def(py::init<unsigned int, unsigned int, unsigned int, double>(), py::arg("numNodesAlongWidth"), py::arg("numNodesAlongLength"), py::arg("ghosts") = 0.0, py::arg("scaleFactor") = 1.0)
+        .def(py::init<unsigned int, unsigned int, unsigned int, double>(), py::arg("numNodesAlongWidth"), py::arg("numNodesAlongLength"), py::arg("ghosts") = 0, py::arg("scaleFactor") = 1.0)
         .def(py::init<>())
         .def("GetMesh",
             (::boost::shared_ptr<MutableMesh<2, 2>>(HoneycombMeshGenerator::*)()) &HoneycombMeshGenerator::GetMesh,
