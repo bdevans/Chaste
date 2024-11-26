@@ -78,14 +78,12 @@ jobs:
 
       - name: Install PyChaste
         run: |
-          python3 -m venv --system-site-packages .venv
-          . .venv/bin/activate
-          python3 -m pip install -v pychaste/package
+          PIP_BREAK_SYSTEM_PACKAGES=1 \
+          python3 -m pip install -v --user pychaste/package
         working-directory: build
 
       - name: Run PyChaste tests
         run: |
-          . .venv/bin/activate
           xvfb-run --server-args="-screen 0 1024x768x24" \
             ctest -j $(nproc) -L pychaste --output-on-failure
         working-directory: build

@@ -102,6 +102,7 @@ target_link_libraries(
     PRIVATE
     ${Python3_LIBRARIES}  # Python and pybind11 come first
     pybind11::module
+    Chaste_COMMON_DEPS
     chaste_pychaste  # Library built from non-wrapper code in src/cpp/
 )
 
@@ -126,7 +127,7 @@ add_custom_target(pychaste_wrappers
     COMMAND ${chaste_python3_venv}/cppwg ${CMAKE_SOURCE_DIR}
             -w ${PYCHASTE_WRAPPER_DIR}
             -p ${CMAKE_SOURCE_DIR}/pychaste/dynamic/config.yaml
-            -i "$<JOIN:$<TARGET_PROPERTY:chaste_pychaste,INCLUDE_DIRECTORIES>,;>"
+            -i "$<JOIN:$<TARGET_PROPERTY:_pychaste_all,INCLUDE_DIRECTORIES>,;>"
             -l ${CMAKE_CURRENT_BINARY_DIR}/cppwg.log
             --std c++17
     COMMAND_EXPAND_LISTS

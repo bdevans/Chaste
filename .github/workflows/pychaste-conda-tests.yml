@@ -53,11 +53,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
           channels: conda-forge,pychaste
 
-      - name: Install requirements
-        run: |
-          mamba install --yes --file conda/requirements.txt
-        working-directory: pychaste/src/py
-
       - name: Configure PyChaste
         run: |
           cmake \
