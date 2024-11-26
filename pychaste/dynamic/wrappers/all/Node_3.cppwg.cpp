@@ -58,7 +58,7 @@ void register_Node_3_class(py::module &m)
         .def(py::init<unsigned int, ::ChastePoint<3>, bool>(), py::arg("index"), py::arg("point"), py::arg("isBoundaryNode") = false)
         .def(py::init<unsigned int, ::std::vector<double>, bool>(), py::arg("index"), py::arg("coords"), py::arg("isBoundaryNode") = false)
         .def(py::init<unsigned int, ::boost::numeric::ublas::c_vector<double, 3>, bool>(), py::arg("index"), py::arg("location"), py::arg("isBoundaryNode") = false)
-        .def(py::init<unsigned int, bool, double, double, double>(), py::arg("index"), py::arg("isBoundaryNode") = false, py::arg("v1") = 0, py::arg("v2") = 0, py::arg("v3") = 0)
+        .def(py::init<unsigned int, bool, double, double, double>(), py::arg("index"), py::arg("isBoundaryNode") = false, py::arg("v1") = 0.0, py::arg("v2") = 0.0, py::arg("v3") = 0.0)
         .def(py::init<unsigned int, double *, bool>(), py::arg("index"), py::arg("location"), py::arg("isBoundaryNode") = false)
         .def("SetPoint",
             (void(Node_3::*)(::ChastePoint<3>)) &Node_3::SetPoint,

@@ -295,10 +295,10 @@ void register_AbstractTetrahedralMesh_3_3_class(py::module &m)
             " ", py::arg("width"), py::arg("height"), py::arg("depth"))
         .def("ConstructRegularSlabMesh",
             (void(AbstractTetrahedralMesh_3_3::*)(double, double, double, double)) &AbstractTetrahedralMesh_3_3::ConstructRegularSlabMesh,
-            " ", py::arg("spaceStep"), py::arg("width"), py::arg("height") = 0, py::arg("depth") = 0)
+            " ", py::arg("spaceStep"), py::arg("width"), py::arg("height") = 0.0, py::arg("depth") = 0.0)
         .def("ConstructRegularSlabMeshWithDimensionSplit",
             (void(AbstractTetrahedralMesh_3_3::*)(unsigned int, double, double, double, double)) &AbstractTetrahedralMesh_3_3::ConstructRegularSlabMeshWithDimensionSplit,
-            " ", py::arg("dimension"), py::arg("spaceStep"), py::arg("width"), py::arg("height") = 0, py::arg("depth") = 0)
+            " ", py::arg("dimension"), py::arg("spaceStep"), py::arg("width"), py::arg("height") = 0.0, py::arg("depth") = 0.0)
         .def("CalculateDesignatedOwnershipOfBoundaryElement",
             (bool(AbstractTetrahedralMesh_3_3::*)(unsigned int)) &AbstractTetrahedralMesh_3_3::CalculateDesignatedOwnershipOfBoundaryElement,
             " ", py::arg("faceIndex"))

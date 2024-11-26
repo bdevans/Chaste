@@ -55,7 +55,7 @@ PYBIND11_DECLARE_HOLDER_TYPE(T, boost::shared_ptr<T>);
 void register_ChastePoint_2_class(py::module &m)
 {
     py::class_<ChastePoint_2, boost::shared_ptr<ChastePoint_2>>(m, "ChastePoint_2")
-        .def(py::init<double, double, double>(), py::arg("v1") = 0, py::arg("v2") = 0, py::arg("v3") = 0)
+        .def(py::init<double, double, double>(), py::arg("v1") = 0.0, py::arg("v2") = 0.0, py::arg("v3") = 0.0)
         .def(py::init<::std::vector<double>>(), py::arg("coords"))
         .def(py::init<::boost::numeric::ublas::c_vector<double, 2>>(), py::arg("location"))
         .def("rGetLocation",

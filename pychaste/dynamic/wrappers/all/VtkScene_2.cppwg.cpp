@@ -84,7 +84,7 @@ void register_VtkScene_2_class(py::module &m)
             " ")
         .def("ResetRenderer",
             (void(VtkScene_2::*)(unsigned int)) &VtkScene_2::ResetRenderer,
-            " ", py::arg("timeStep") = 0)
+            " ", py::arg("timeStep") = 0.0)
         .def("Start",
             (void(VtkScene_2::*)()) &VtkScene_2::Start,
             " ")
