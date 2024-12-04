@@ -41,8 +41,20 @@ from chaste._pychaste_all import (
     VtkScene_2,
     VtkScene_3,
 )
-from chaste._syntax import TemplateClassDict
+from chaste._syntax import DeprecatedClass, TemplateClassDict
 
+ipython_spec = importlib.util.find_spec("IPython")
+if ipython_spec is None:
+    warnings.warn("IPython not found... skipping Jupyter imports.")
+
+else:
+    from chaste.visualization._jupyter import (
+        JupyterNotebookManager,
+        JupyterSceneModifier_2,
+        JupyterSceneModifier_3,
+    )
+
+# Template Class Syntax
 CellPopulationPyChasteActorGenerator = TemplateClassDict(
     {
         ("2",): CellPopulationPyChasteActorGenerator_2,
@@ -57,20 +69,22 @@ VtkScene = TemplateClassDict(
     }
 )
 
-ipython_spec = importlib.util.find_spec("IPython")
-if ipython_spec is None:
-    warnings.warn("IPython not found... skipping Jupyter imports.")
-else:
-    from chaste.visualization._jupyter import (
-        JupyterNotebookManager,
-        JupyterSceneModifier_2,
-        JupyterSceneModifier_3,
-    )
-
+if ipython_spec is not None:
     JupyterSceneModifier = TemplateClassDict(
         {
             ("2",): JupyterSceneModifier_2,
             ("3",): JupyterSceneModifier_3,
         }
     )
+
+# Deprecated Class Syntax
+CellPopulationPyChasteActorGenerator2 = DeprecatedClass("CellPopulationPyChasteActorGenerator2", CellPopulationPyChasteActorGenerator_2)
+CellPopulationPyChasteActorGenerator3 = DeprecatedClass("CellPopulationPyChasteActorGenerator3", CellPopulationPyChasteActorGenerator_3)
+VtkScene2 = DeprecatedClass("VtkScene2", VtkScene_2)
+VtkScene3 = DeprecatedClass("VtkScene3", VtkScene_3)
+
+if ipython_spec is not None:
+    JupyterSceneModifier2 = DeprecatedClass("JupyterSceneModifier2", JupyterSceneModifier_2)
+    JupyterSceneModifier3 = DeprecatedClass("JupyterSceneModifier3", JupyterSceneModifier_3)
+
 del ipython_spec

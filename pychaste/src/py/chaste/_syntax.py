@@ -33,6 +33,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import inspect
+import warnings
 from collections.abc import Iterable
 from typing import Dict, Tuple, Type
 
@@ -67,3 +68,18 @@ class TemplateClassDict:
             arg.__name__ if inspect.isclass(arg) else str(arg) for arg in arg_tuple
         )
         return self._dict[key]
+
+
+class DeprecatedClass:
+    def __init__(self, old_name: str, new_class: Type):
+        self.old_name = old_name
+        self.new_class = new_class
+
+    def __call__(self, *args, **kwargs):
+        warnings.warn(
+            f"{self.old_name} is deprecated and will be removed in a future version."
+            f"Please use {self.new_class.__name__}",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.new_class(*args, **kwargs)
