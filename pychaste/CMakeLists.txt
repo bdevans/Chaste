@@ -37,62 +37,46 @@ find_package(Chaste COMPONENTS ${Chaste_DEPENDS_pychaste})
 
 chaste_do_component(pychaste)
 
-##################################################
-# Copy Python package to build directory
-##################################################
-set(PYCHASTE_PACKAGE_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/package)
+get_target_property(PYCHASTE_INCLUDE_DIRS chaste_pychaste INCLUDE_DIRECTORIES)
 
-set(file_paths "")
-file(
-    GLOB_RECURSE
-    file_paths
-    RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/src/py
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/py/*
+##################################################
+# Generate Python wrappers
+##################################################
+execute_process(
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/wrappers
+    COMMAND ${chaste_python3_venv}/cppwg ${CMAKE_SOURCE_DIR}
+        -w ${CMAKE_CURRENT_BINARY_DIR}/wrappers
+        -p ${CMAKE_SOURCE_DIR}/pychaste/dynamic/config.yaml
+        -i ${PYCHASTE_INCLUDE_DIRS}
+        -l ${CMAKE_CURRENT_BINARY_DIR}/cppwg.log
+        --std c++17
 )
-list(FILTER file_paths EXCLUDE REGEX ".*\\.(dll|dylib|pyc|so)$") # Remove compiled files
-
-foreach(file_path ${file_paths})
-    if(file_path MATCHES ".*\\.(cfg|in|js|py|toml)$") # Files to track changes on
-        configure_file(
-            ${CMAKE_CURRENT_SOURCE_DIR}/src/py/${file_path}
-            ${PYCHASTE_PACKAGE_BINARY_DIR}/${file_path}
-            COPYONLY
-        )
-    else()
-        file(
-            COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/py/${file_path}
-            DESTINATION ${PYCHASTE_PACKAGE_BINARY_DIR}/
-        )
-    endif()
-endforeach()
 
 ##################################################
-# Build Python modules from wrappers
+# Build Python module from wrappers
 ##################################################
 # Create a `_pychaste_all` shared library. The library name is the same
-# as the module name in the module wrapper `_pychaste_all.main.cppwg.cpp`.
-# It is imported in Python code as `from chaste._pychaste_all import *`.
+# as the module name in the module wrapper `_pychaste_all.main.cppwg.cpp`
+# and it's imported in Python code as `from chaste._pychaste_all import *`.
 
-header_dirs("${CMAKE_CURRENT_SOURCE_DIR}/dynamic" PYCHASTE_WRAPPER_INCLUDE_DIRS)
-set(PYCHASTE_WRAPPER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/dynamic/wrappers")
+header_dirs("${CMAKE_CURRENT_SOURCE_DIR}/dynamic" _include_dirs)
+list(APPEND PYCHASTE_INCLUDE_DIRS ${_include_dirs})
+header_dirs("${CMAKE_CURRENT_BINARY_DIR}/wrappers" _include_dirs)
+list(APPEND PYCHASTE_INCLUDE_DIRS ${_include_dirs})
 
 file(
     GLOB_RECURSE
     PYCHASTE_WRAPPER_SOURCES
-    RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    ${PYCHASTE_WRAPPER_DIR}/all/*.cpp
-    ${PYCHASTE_WRAPPER_DIR}/all/*.hpp
+    ${CMAKE_CURRENT_BINARY_DIR}/wrappers/all/*.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/wrappers/all/*.hpp
 )
 
-add_library(_pychaste_all SHARED
-    "${PYCHASTE_WRAPPER_DIR}/all/_pychaste_all.main.cppwg.cpp"
-    ${PYCHASTE_WRAPPER_SOURCES}
-)
+add_library(_pychaste_all SHARED ${PYCHASTE_WRAPPER_SOURCES})
 
 set_target_properties(
     _pychaste_all
     PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${PYCHASTE_PACKAGE_BINARY_DIR}/chaste
+        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/package/chaste
         PREFIX "${PYTHON_MODULE_PREFIX}"
         SUFFIX "${CMAKE_SHARED_LIBRARY_SUFFIX}"
 )
@@ -110,8 +94,7 @@ target_include_directories(
     _pychaste_all
     PRIVATE
     ${PYTHON3_INCLUDE_DIRS}
-    ${Chaste_pychaste_INCLUDE_DIRS}  # Non-wrapper code in src/cpp/
-    ${PYCHASTE_WRAPPER_INCLUDE_DIRS}
+    ${PYCHASTE_INCLUDE_DIRS}
     ${PETSC4PY_INCLUDES}
 )
 
@@ -120,15 +103,33 @@ target_compile_options(_pychaste_all PRIVATE -Wno-unused-local-typedefs)
 add_dependencies(pychaste _pychaste_all)
 
 ##################################################
-# Python wrapper generation
+# Copy Python package source files to build directory
 ##################################################
 
-add_custom_target(pychaste_wrappers
-    COMMAND ${chaste_python3_venv}/cppwg ${CMAKE_SOURCE_DIR}
-            -w ${PYCHASTE_WRAPPER_DIR}
-            -p ${CMAKE_SOURCE_DIR}/pychaste/dynamic/config.yaml
-            -i "$<JOIN:$<TARGET_PROPERTY:_pychaste_all,INCLUDE_DIRECTORIES>,;>"
-            -l ${CMAKE_CURRENT_BINARY_DIR}/cppwg.log
-            --std c++17
-    COMMAND_EXPAND_LISTS
+set(package_file_paths "")
+file(
+    GLOB_RECURSE
+    package_file_paths
+    RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/src/py
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/py/*
 )
+
+# Exclude compiled files
+list(FILTER package_file_paths EXCLUDE REGEX ".*\\.(dll|dylib|pyc|so)$")
+
+foreach(file_path ${package_file_paths})
+    if(file_path MATCHES ".*\\.(cfg|in|js|py|toml)$")
+        # Copy file and track changes
+        configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/py/${file_path}
+            ${CMAKE_CURRENT_BINARY_DIR}/package/${file_path}
+            COPYONLY
+        )
+    else()
+        # Copy file, but don't track changes
+        file(
+            COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/py/${file_path}
+            DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/package/
+        )
+    endif()
+endforeach()

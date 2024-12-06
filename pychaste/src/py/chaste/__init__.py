@@ -66,9 +66,6 @@ def init(test_output=None, comm=None):
     else:
         petsc4py.init(comm=comm)
 
-    # Do Chaste Petsc setup
-    chaste.core.PetscSetupUtils.CommonSetup()
-
     return chaste.core.OutputFileHandler("", False)
 
 

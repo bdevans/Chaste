@@ -33,90 +33,10 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import re
 import unittest
-from difflib import context_diff
-
-
-def file_diff(file_a: str, file_b: str) -> bool:
-    """Check if two files have the same content.
-
-    :param file_a: The path to the first file
-    :param file_b: The path to the second file
-    :return: A diff of the two files
-    """
-    # Read files and remove excess whitespace
-    with open(file_a, "r") as fa:
-        a = [line.strip() for line in fa]
-        a = [line for line in a if line]
-
-    with open(file_b, "r") as fb:
-        b = [line.strip() for line in fb]
-        b = [line for line in b if line]
-
-    return "\n".join(context_diff(a, b))
 
 
 class TestPyWrapperChanges(unittest.TestCase):
     """Test that the generated wrappers are up to date."""
-
-    def test_wrapper_changes(self) -> None:
-        """Check for wrapper changes."""
-        src_wrapper_dir = os.path.abspath("wrappers")
-        gen_wrapper_dir = os.path.abspath("wrappers.gen")
-
-        self.assertTrue(
-            os.path.isdir(src_wrapper_dir),
-            "Cannot find original wrappers: " + src_wrapper_dir,
-        )
-
-        self.assertTrue(
-            os.path.isdir(gen_wrapper_dir),
-            "Cannot find generated wrappers: " + gen_wrapper_dir,
-        )
-        
-        self.maxDiff = None
-        for dirpath, _, filenames in os.walk(src_wrapper_dir):
-            for filename in filenames:
-                if filename.endswith(".cppwg.cpp") or filename.endswith(".cppwg.hpp"):
-                    src_file = os.path.join(dirpath, filename)
-                    gen_file = os.path.join(
-                        gen_wrapper_dir,
-                        os.path.relpath(src_file, src_wrapper_dir),
-                    )
-
-                    self.assertTrue(
-                        os.path.isfile(gen_file),
-                        f"\n[{os.path.relpath(src_file, src_wrapper_dir)}]"
-                        "\n-- Found ungenerated wrapper in src"
-                        "\n-- if it has been deliberately removed from"
-                        " config.yaml, the wrapper file should be removed as well"
-                        "\n-- if it is not to be removed, the relevant class"
-                        " entry should be added in config.yaml.",
-                    )
-
-                    diff = file_diff(src_file, gen_file)
-                    self.assertEqual(
-                        diff,
-                        "",
-                        f"\n[{os.path.relpath(src_file, src_wrapper_dir)}]"
-                        "\n-- Generated wrapper differs from existing"
-                        "\n-- to update, run `make pychaste_wrappers`.",
-                    )
-
-        for dirpath, _, filenames in os.walk(gen_wrapper_dir):
-            for filename in filenames:
-                if filename.endswith(".cppwg.cpp") or filename.endswith(".cppwg.hpp"):
-                    gen_file = os.path.join(dirpath, filename)
-                    src_file = os.path.join(
-                        src_wrapper_dir,
-                        os.path.relpath(gen_file, gen_wrapper_dir),
-                    )
-                    self.assertTrue(
-                        os.path.isfile(src_file),
-                        f"\n[{os.path.relpath(gen_file, gen_wrapper_dir)}]"
-                        "\n-- New wrapper generated"
-                        "\n-- to add to src, run `make pychaste_wrappers`"
-                        "\n-- to exclude, add `exclude` option in config.yaml.",
-                    )
 
     def test_unwrapped_classes(self) -> None:
         """Find unwrapped classes."""
@@ -143,8 +63,8 @@ class TestPyWrapperChanges(unittest.TestCase):
             len(unknown_classes),
             0,
             "\n" + "".join(unknown_classes) + "Found unknown classes"
-            "\n-- to wrap, add relevant entry to config.yaml. "
-            "\n-- to exclude from wrapping, add to config.yaml with `exclude` option.",
+            "\n-- to wrap, add relevant entries to config.yaml. "
+            "\n-- to exclude from wrapping, add to config.yaml with the `exclude` option.",
         )
 
 
