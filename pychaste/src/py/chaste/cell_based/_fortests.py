@@ -48,9 +48,7 @@ def SetupNotebookTest():
 def TearDownNotebookTest():
     simulation_time = chaste.cell_based.SimulationTime.Instance()
     simulation_time.Destroy()
-
     chaste.core.RandomNumberGenerator.Instance().Destroy()
-    # chaste.cell_based.CellPropertyRegistry.Instance().Clear()
 
 
 class AbstractCellBasedTestSuite(unittest.TestCase):
@@ -64,9 +62,7 @@ class AbstractCellBasedTestSuite(unittest.TestCase):
     def tearDown(self):
         simulation_time = chaste.cell_based.SimulationTime.Instance()
         simulation_time.Destroy()
-
         chaste.core.RandomNumberGenerator.Instance().Destroy()
-        # chaste.cell_based.CellPropertyRegistry.Instance().Clear()
 
 
 class AbstractCellBasedWithTimingsTestSuite(AbstractCellBasedTestSuite):
