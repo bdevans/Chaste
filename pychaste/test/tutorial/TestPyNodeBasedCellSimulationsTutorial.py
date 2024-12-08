@@ -73,7 +73,7 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## Once we have a MutableMesh we can generate a NodesOnlyMesh from it using the following commands.
         ## Note you can also generate the NodesOnlyMesh from a collection of nodes.
 
-        mesh = chaste.mesh.NodesOnlyMesh_2()
+        mesh = chaste.mesh.NodesOnlyMesh[2]()
 
         ## To run node-based simulations you need to define a cut off length (second argument in `ConstructNodesWithoutMesh`),
         ## which defines the connectivity of the nodes by defining a radius of interaction.
@@ -87,37 +87,37 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## the third argument specifies the proliferative type of the cell.
 
         transit_type = chaste.cell_based.TransitCellProliferativeType()
-        cell_generator = chaste.cell_based.CellsGenerator_UniformCellCycleModel_2()
+        cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumNodes(), transit_type)
 
         ## Now we have a mesh and a set of cells to go with it, we can create a `CellPopulation`.
         ## In general, this class associates a collection of cells with a mesh. For this test,
         ## because we have a `NodesOnlyMesh`, we use a particular type of cell population called a `NodeBasedCellPopulation`.
 
-        cell_population = chaste.cell_based.NodeBasedCellPopulation_2(mesh, cells)
+        cell_population = chaste.cell_based.NodeBasedCellPopulation[2](mesh, cells)
 
         ## We can set up a `VtkScene` to do a quick visualization of the population before running the analysis.
 
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         # JUPYTER_SHOW_FIRST
         scene.Start()  # JUPYTER_SHOW
 
         ## We then pass in the cell population into an `OffLatticeSimulation`, and set the output directory, output multiple and end time
 
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestNodeBasedCellSimulationsTutorial")
         simulator.SetSamplingTimestepMultiple(100)
         simulator.SetEndTime(10.0)
 
         ## We now pass a force law to the simulation.
 
-        force = chaste.cell_based.GeneralisedLinearSpringForce_2_2()
+        force = chaste.cell_based.GeneralisedLinearSpringForce[2, 2]()
         simulator.AddForce(force)
 
         ## Save snapshot images of the population during the simulation
 
-        scene_modifier = chaste.cell_based.VtkSceneModifier_2()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[2]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(100)
         simulator.AddSimulationModifier(scene_modifier)
@@ -152,14 +152,14 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
             "Python/TestNodeBasedCellSimulationsSpheroidTutorial"
         )
         nodes = []
-        nodes.append(chaste.mesh.Node_3(0, False, 0.5, 0.0, 0.0))
-        nodes.append(chaste.mesh.Node_3(1, False, -0.5, 0.0, 0.0))
-        nodes.append(chaste.mesh.Node_3(2, False, 0.0, 0.5, 0.0))
-        nodes.append(chaste.mesh.Node_3(3, False, 0.0, -0.5, 0.0))
+        nodes.append(chaste.mesh.Node[3](0, False, 0.5, 0.0, 0.0))
+        nodes.append(chaste.mesh.Node[3](1, False, -0.5, 0.0, 0.0))
+        nodes.append(chaste.mesh.Node[3](2, False, 0.0, 0.5, 0.0))
+        nodes.append(chaste.mesh.Node[3](3, False, 0.0, -0.5, 0.0))
 
         ## Finally a NodesOnlyMesh is created and the vector of nodes is passed to the ConstructNodesWithoutMesh method.
 
-        mesh = chaste.mesh.NodesOnlyMesh_3()
+        mesh = chaste.mesh.NodesOnlyMesh[3]()
 
         ## To run node-based simulations you need to define a cut off length (second argument in ConstructNodesWithoutMesh),
         ## which defines the connectivity of the nodes by defining a radius of interaction.
@@ -170,24 +170,24 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## As before, we do this with the CellsGenerator helper class (this time with dimension 3).
 
         transit_type = chaste.cell_based.TransitCellProliferativeType()
-        cell_generator = chaste.cell_based.CellsGenerator_UniformCellCycleModel_3()
+        cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 3]()
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumNodes(), transit_type)
 
         ## Now we have a mesh and a set of cells to go with it, we can create a `CellPopulation`.
         ## In general, this class associates a collection of cells with a mesh. For this test,
         ## because we have a `NodesOnlyMesh`, we use a particular type of cell population called a `NodeBasedCellPopulation`.
 
-        cell_population = chaste.cell_based.NodeBasedCellPopulation_3(mesh, cells)
+        cell_population = chaste.cell_based.NodeBasedCellPopulation[3](mesh, cells)
 
         ## We can set up a `VtkScene` to do a quick visualization of the population before running the analysis.
 
-        scene = chaste.visualization.VtkScene_3()
+        scene = chaste.visualization.VtkScene[3]()
         scene.SetCellPopulation(cell_population)
         scene.Start()  # JUPYTER_SHOW
 
         ## We then pass in the cell population into an `OffLatticeSimulation`, and set the output directory, output multiple and end time
 
-        simulator = chaste.cell_based.OffLatticeSimulation_3_3(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[3, 3](cell_population)
         simulator.SetOutputDirectory(
             "Python/TestNodeBasedCellSimulationsSpheroidTutorial"
         )
@@ -196,12 +196,12 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
         ## We now pass a force law to the simulation.
 
-        force = chaste.cell_based.GeneralisedLinearSpringForce_3_3()
+        force = chaste.cell_based.GeneralisedLinearSpringForce[3, 3]()
         simulator.AddForce(force)
 
         ## Save snapshot images of the population during the simulation
 
-        scene_modifier = chaste.cell_based.VtkSceneModifier_3()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[3]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(100)
         simulator.AddSimulationModifier(scene_modifier)
@@ -236,11 +236,11 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
             "Python/TestNodeBasedCellSimulationsRestrictedSpheroidTutorial"
         )
         nodes = []
-        nodes.append(chaste.mesh.Node_3(0, False, 0.5, 0.0, 0.0))
-        nodes.append(chaste.mesh.Node_3(1, False, -0.5, 0.0, 0.0))
-        nodes.append(chaste.mesh.Node_3(2, False, 0.0, 0.5, 0.0))
-        nodes.append(chaste.mesh.Node_3(3, False, 0.0, -0.5, 0.0))
-        mesh = chaste.mesh.NodesOnlyMesh_3()
+        nodes.append(chaste.mesh.Node[3](0, False, 0.5, 0.0, 0.0))
+        nodes.append(chaste.mesh.Node[3](1, False, -0.5, 0.0, 0.0))
+        nodes.append(chaste.mesh.Node[3](2, False, 0.0, 0.5, 0.0))
+        nodes.append(chaste.mesh.Node[3](3, False, 0.0, -0.5, 0.0))
+        mesh = chaste.mesh.NodesOnlyMesh[3]()
 
         ## To run node-based simulations you need to define a cut off length (second argument in ConstructNodesWithoutMesh),
         ## which defines the connectivity of the nodes by defining a radius of interaction.
@@ -248,17 +248,17 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         mesh.ConstructNodesWithoutMesh(nodes, 1.5)
 
         transit_type = chaste.cell_based.TransitCellProliferativeType()
-        cell_generator = chaste.cell_based.CellsGenerator_UniformCellCycleModel_3()
+        cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 3]()
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumNodes(), transit_type)
-        cell_population = chaste.cell_based.NodeBasedCellPopulation_3(mesh, cells)
+        cell_population = chaste.cell_based.NodeBasedCellPopulation[3](mesh, cells)
 
         ## We can set up a `VtkScene` to do a quick visualization of the population before running the analysis.
 
-        scene = chaste.visualization.VtkScene_3()
+        scene = chaste.visualization.VtkScene[3]()
         scene.SetCellPopulation(cell_population)
         scene.Start()  # JUPYTER_SHOW
 
-        simulator = chaste.cell_based.OffLatticeSimulation_3_3(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[3, 3](cell_population)
         simulator.SetOutputDirectory(
             "Python/TestNodeBasedCellSimulationsRestrictedSpheroidTutorial"
         )
@@ -267,7 +267,7 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
         ## We now pass a force law to the simulation.
 
-        force = chaste.cell_based.GeneralisedLinearSpringForce_3_3()
+        force = chaste.cell_based.GeneralisedLinearSpringForce[3, 3]()
         simulator.AddForce(force)
 
         ## This time we create a CellPopulationBoundaryCondition and pass this to the OffLatticeSimulation.
@@ -279,14 +279,14 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
         centre = np.array([0.0, 0.0, 1.0])
         radius = 5.0
-        point2 = chaste.mesh.ChastePoint_3(centre)
-        boundary_condition = chaste.cell_based.SphereGeometryBoundaryCondition_3(
+        point2 = chaste.mesh.ChastePoint[3](centre)
+        boundary_condition = chaste.cell_based.SphereGeometryBoundaryCondition[3](
             cell_population, point2.rGetLocation(), radius
         )
         simulator.AddCellPopulationBoundaryCondition(boundary_condition)
 
         ## Save snapshot images of the population during the simulation
-        scene_modifier = chaste.cell_based.VtkSceneModifier_3()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[3]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(100)
         simulator.AddSimulationModifier(scene_modifier)

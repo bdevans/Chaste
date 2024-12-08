@@ -61,7 +61,7 @@ the third argument specifies the proliferative type of the cell.
 ```python
         transit_type = chaste.cell_based.TransitCellProliferativeType()
         cell_generator = (
-            chaste.cell_based.CellsGenerator_UniformG1GenerationalCellCycleModel_2()
+            chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
         )
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), transit_type)
 ```
@@ -70,12 +70,12 @@ In general, this class associates a collection of cells with a mesh. For this te
 we use a particular type of cell population called a VertexBasedCellPopulation.
 
 ```python
-        cell_population = chaste.cell_based.VertexBasedCellPopulation_2(mesh, cells)
+        cell_population = chaste.cell_based.VertexBasedCellPopulation[2](mesh, cells)
 ```
 We can set up a `VtkScene` to do a quick visualization of the population before running the analysis.
 
 ```python
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         # JUPYTER_SHOW_FIRST
         scene.Start()  # JUPYTER_SHOW
@@ -83,7 +83,7 @@ We can set up a `VtkScene` to do a quick visualization of the population before 
 We then pass in the cell population into an `OffLatticeSimulation`, and set the output directory, output multiple and end time
 
 ```python
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestVertexBasedCellSimulationsTutorial")
         simulator.SetEndTime(5.0)
 ```
@@ -102,7 +102,7 @@ Note that some of these forces are not compatible with vertex-based simulations 
 if you try to use an incompatible class then you will receive a warning.
 
 ```python
-        force = chaste.cell_based.NagaiHondaForce_2()
+        force = chaste.cell_based.NagaiHondaForce[2]()
         simulator.AddForce(force)
 ```
 A NagaiHondaForce assumes that each cell has a target area. The target areas of cells are used to determine
@@ -111,13 +111,13 @@ In order to assign target areas to cells and update them in each time step we ad
 to the simulation, which inherits from AbstractTargetAreaModifier.
 
 ```python
-        growth_modifier = chaste.cell_based.SimpleTargetAreaModifier_2()
+        growth_modifier = chaste.cell_based.SimpleTargetAreaModifier[2]()
         simulator.AddSimulationModifier(growth_modifier)
 ```
 Save snapshot images of the population during the simulation
 
 ```python
-        scene_modifier = chaste.cell_based.VtkSceneModifier_2()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[2]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(100)
         simulator.AddSimulationModifier(scene_modifier)
@@ -164,19 +164,19 @@ Having created a mesh, we now create a VectorSharedPtrCells. This is exactly the
 ```python
         transit_type = chaste.cell_based.TransitCellProliferativeType()
         cell_generator = (
-            chaste.cell_based.CellsGenerator_UniformG1GenerationalCellCycleModel_2()
+            chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
         )
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), transit_type)
 ```
 Now we have a mesh and a set of cells to go with it, we can create a CellPopulation. This is also the same as in the above test.
 
 ```python
-        cell_population = chaste.cell_based.VertexBasedCellPopulation_2(mesh, cells)
+        cell_population = chaste.cell_based.VertexBasedCellPopulation[2](mesh, cells)
 ```
 We then pass in the cell population into an `OffLatticeSimulation`, and set the output directory, output multiple and end time
 
 ```python
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestPeriodicVertexBasedCellPopulation")
         simulator.SetEndTime(1.0)
         simulator.SetSamplingTimestepMultiple(50)
@@ -184,13 +184,13 @@ We then pass in the cell population into an `OffLatticeSimulation`, and set the 
 We now make a pointer to an appropriate force and pass it to the OffLatticeSimulation.
 
 ```python
-        force = chaste.cell_based.NagaiHondaForce_2()
+        force = chaste.cell_based.NagaiHondaForce[2]()
         simulator.AddForce(force)
 ```
 We also make a pointer to the target area modifier and add it to the simulator.
 
 ```python
-        growth_modifier = chaste.cell_based.SimpleTargetAreaModifier_2()
+        growth_modifier = chaste.cell_based.SimpleTargetAreaModifier[2]()
         simulator.AddSimulationModifier(growth_modifier)
 ```
 We now create one or more CellPopulationBoundaryConditions, which determine any conditions which each cell in a cell population must satisfy.
@@ -205,7 +205,7 @@ The first step is to define a point on the plane boundary and a normal to the pl
         normal = np.array([0.0, -1.0])
 ```
 We can now make a PlaneBoundaryCondition (passing the point and normal to the plane) and pass it to the OffLatticeSimulation.
-bc = chaste.cell_based.PlaneBoundaryCondition_2_2(cell_population, point, normal)
+bc = chaste.cell_based.PlaneBoundaryCondition[2, 2](cell_population, point, normal)
 
 ```python
         simulator.AddCellPopulationBoundaryCondition(bc)
@@ -220,7 +220,7 @@ The first step is to define a point on the plane boundary and a normal to the pl
         normal = np.array([0.0, 1.0])
 ```
 Finally we now make a PlaneBasedCellKiller (passing the point and normal to the plane) and pass it to the OffLatticeSimulation.
-killer = chaste.cell_based.PlaneBasedCellKiller_2(cell_population, point, normal)
+killer = chaste.cell_based.PlaneBasedCellKiller[2](cell_population, point, normal)
 
 ```python
         simulator.AddCellKiller(killer)
@@ -271,30 +271,30 @@ class TestPyVertexBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
         transit_type = chaste.cell_based.TransitCellProliferativeType()
         cell_generator = (
-            chaste.cell_based.CellsGenerator_UniformG1GenerationalCellCycleModel_2()
+            chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
         )
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), transit_type)
 
-        cell_population = chaste.cell_based.VertexBasedCellPopulation_2(mesh, cells)
+        cell_population = chaste.cell_based.VertexBasedCellPopulation[2](mesh, cells)
 
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         # JUPYTER_SHOW_FIRST
         scene.Start()  # JUPYTER_SHOW
 
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestVertexBasedCellSimulationsTutorial")
         simulator.SetEndTime(5.0)
 
         simulator.SetSamplingTimestepMultiple(50)
 
-        force = chaste.cell_based.NagaiHondaForce_2()
+        force = chaste.cell_based.NagaiHondaForce[2]()
         simulator.AddForce(force)
 
-        growth_modifier = chaste.cell_based.SimpleTargetAreaModifier_2()
+        growth_modifier = chaste.cell_based.SimpleTargetAreaModifier[2]()
         simulator.AddSimulationModifier(growth_modifier)
 
-        scene_modifier = chaste.cell_based.VtkSceneModifier_2()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[2]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(100)
         simulator.AddSimulationModifier(scene_modifier)
@@ -319,21 +319,21 @@ class TestPyVertexBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
         transit_type = chaste.cell_based.TransitCellProliferativeType()
         cell_generator = (
-            chaste.cell_based.CellsGenerator_UniformG1GenerationalCellCycleModel_2()
+            chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
         )
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), transit_type)
 
-        cell_population = chaste.cell_based.VertexBasedCellPopulation_2(mesh, cells)
+        cell_population = chaste.cell_based.VertexBasedCellPopulation[2](mesh, cells)
 
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestPeriodicVertexBasedCellPopulation")
         simulator.SetEndTime(1.0)
         simulator.SetSamplingTimestepMultiple(50)
 
-        force = chaste.cell_based.NagaiHondaForce_2()
+        force = chaste.cell_based.NagaiHondaForce[2]()
         simulator.AddForce(force)
 
-        growth_modifier = chaste.cell_based.SimpleTargetAreaModifier_2()
+        growth_modifier = chaste.cell_based.SimpleTargetAreaModifier[2]()
         simulator.AddSimulationModifier(growth_modifier)
 
         point = np.array([0.0, 0.0])

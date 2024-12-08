@@ -78,14 +78,14 @@ class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         num_points_in_x = 100
         num_points_in_y = 12
-        generator = chaste.mesh.PottsMeshGenerator_2(
+        generator = chaste.mesh.PottsMeshGenerator[2](
             num_points_in_x, 0, 0, num_points_in_y, 0, 0
         )
         mesh = generator.GetMesh()
 
-        ## Note that we are using a `PottsMeshGenerator_2` to set up the grid and we are setting some terms to 0. Chaste
+        ## Note that we are using a `PottsMeshGenerator[2]` to set up the grid and we are setting some terms to 0. Chaste
         ## design is based on re-use of components, the `PottsMeshGenerator` can be used to set up other types of
-        ## cell population which require these extra terms. Note also the '2' at the end of the class name. This
+        ## cell population which require these extra terms. Note also the '[2]' at the end of the class name. This
         ## tells us that we are working in 2D. Most Chaste classes are specialized (templated) for spatial dimension,
         ## so we need to make sure we are consistent in the dimensionality of the classes we are using.
         ##
@@ -100,7 +100,7 @@ class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         ## We are not interested in cell cycling so we specialize the generator to NoCellCycleModel.
 
-        cell_generator = chaste.cell_based.CellsGenerator_NoCellCycleModel_2()
+        cell_generator = chaste.cell_based.CellsGenerator["NoCellCycleModel", 2]()
 
         ## We want two sets of cells, starting on opposite sides of the mesh. We use `location_indices` to map cells onto
         ## locations (or Nodes) on the mesh. For our regular mesh the Node indices increase fastest in x, then y. We will
@@ -122,14 +122,14 @@ class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         ## Now we have a mesh and a set of cells to go with it, we can create a CellPopulation.
 
-        cell_population = chaste.cell_based.CaBasedCellPopulation_2(
+        cell_population = chaste.cell_based.CaBasedCellPopulation[2](
             mesh, cells, bottom_location_indices + top_location_indices
         )
 
         ## Next, we set up an `OffLatticeSimulation` which will manage the solver. We need to add some custom rules to
         ## this solver to specify how we want the cells to migrate.
 
-        simulator = chaste.cell_based.OnLatticeSimulation_2(cell_population)
+        simulator = chaste.cell_based.OnLatticeSimulation[2](cell_population)
         simulator.SetOutputDirectory("Python/TestScratchAssayTutorial")
         simulator.SetEndTime(10.0)
         simulator.SetDt(0.1)
@@ -137,13 +137,13 @@ class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         ## We must now create a rule for cell migration. We will use an existing diffusion type rule.
 
-        diffusion_update_rule = chaste.cell_based.DiffusionCaUpdateRule_2()
+        diffusion_update_rule = chaste.cell_based.DiffusionCaUpdateRule[2]()
         simulator.AddUpdateRule(diffusion_update_rule)
 
         ## PyChaste can do simple 3D rendering with VTK. We set up a `VtkScene` so that we can see the population
         ## evovle in real time.
 
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         scene.GetCellPopulationActorGenerator().SetShowCellCentres(True)
         # JUPYTER_SHOW_FIRST
@@ -154,7 +154,7 @@ class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
         ## have access to the cell population. We will use a similar idea in a moment to record cell
         ## positions for real time plotting.
 
-        scene_modifier = chaste.cell_based.VtkSceneModifier_2()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[2]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(10)
         simulator.AddSimulationModifier(scene_modifier)
@@ -167,7 +167,7 @@ class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
         ## Usually we would define such a class in a different module and import it, it is placed
         ## here for the purposes of the tutorial.
 
-        class PlottingModifier(chaste.cell_based.PythonSimulationModifier_2):
+        class PlottingModifier(chaste.cell_based.PythonSimulationModifier[2]):
             """Class for real time plotting of cell numbers using Matplotlib"""
 
             def __init__(self, num_points_in_x, num_points_in_y):

@@ -50,17 +50,17 @@ class TestPyJupyterNotebookManager(chaste.cell_based.AbstractCellBasedTestSuite)
 
         # Make the cells
         proliferative_type = chaste.cell_based.DefaultCellProliferativeType()
-        cell_generator = chaste.cell_based.CellsGenerator_UniformCellCycleModel_2()
+        cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(
             mesh.GetNumElements(), proliferative_type
         )
 
         # Make the cell population
-        cell_population = chaste.cell_based.VertexBasedCellPopulation_2(mesh, cells)
+        cell_population = chaste.cell_based.VertexBasedCellPopulation[2](mesh, cells)
 
         # Test multiple calls to the visualizer
         for _ in range(10):
-            scene = chaste.visualization.VtkScene_2()
+            scene = chaste.visualization.VtkScene[2]()
             scene.SetCellPopulation(cell_population)
             scene.SetSaveAsAnimation(True)
             scene.SetOutputFilePath(

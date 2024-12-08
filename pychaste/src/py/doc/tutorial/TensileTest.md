@@ -50,7 +50,7 @@ Now set up the cells, again we want to avoid proliferation.
 ```python
         differentiated_type = chaste.cell_based.DifferentiatedCellProliferativeType()
         cell_generator = (
-            chaste.cell_based.CellsGenerator_UniformG1GenerationalCellCycleModel_2()
+            chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
         )
         cells = cell_generator.GenerateBasicRandom(
             mesh.GetNumElements(), differentiated_type
@@ -59,12 +59,12 @@ Now set up the cells, again we want to avoid proliferation.
 Next, create the cell population
 
 ```python
-        cell_population = chaste.cell_based.VertexBasedCellPopulation_2(mesh, cells)
+        cell_population = chaste.cell_based.VertexBasedCellPopulation[2](mesh, cells)
 ```
 Pass the cell population into an `OffLatticeSimulation`, and set the output directory, output multiple and end time
 
 ```python
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestTensileTest")
         simulator.SetEndTime(1.0)
         simulator.SetSamplingTimestepMultiple(1000)
@@ -72,7 +72,7 @@ Pass the cell population into an `OffLatticeSimulation`, and set the output dire
 Now create a force law
 
 ```python
-        force = chaste.cell_based.NagaiHondaForce_2()
+        force = chaste.cell_based.NagaiHondaForce[2]()
         simulator.AddForce(force)
 ```
 A `NagaiHondaForce` assumes that each cell has a target area. The target areas of cells are used to determine
@@ -81,7 +81,7 @@ In order to assign target areas to cells and update them in each time step we ad
 to the simulation, which inherits from `AbstractTargetAreaModifier`.
 
 ```python
-        growth_modifier = chaste.cell_based.SimpleTargetAreaModifier_2()
+        growth_modifier = chaste.cell_based.SimpleTargetAreaModifier[2]()
         simulator.AddSimulationModifier(growth_modifier)
 ```
 For our tensile test we will fix the bottom of the sheet and subject the top to an applied displacement. We neglect
@@ -90,13 +90,13 @@ fixing lateral degress of freedom for simplicity, since we are using an over-dam
 ```python
         my_point = np.array([0.0, 0.0])
         normal = np.array([0.0, -1.0])
-        bc = chaste.cell_based.AttractingPlaneBoundaryCondition_2_2(
+        bc = chaste.cell_based.AttractingPlaneBoundaryCondition[2, 2](
             cell_population, my_point, normal
         )
         simulator.AddCellPopulationBoundaryCondition(bc)
         point = np.array([0.0, 15.5])
         normal = np.array([0.0, -1.0])
-        bc2 = chaste.cell_based.AttractingPlaneBoundaryCondition_2_2(
+        bc2 = chaste.cell_based.AttractingPlaneBoundaryCondition[2, 2](
             cell_population, point, normal
         )
         simulator.AddCellPopulationBoundaryCondition(bc2)
@@ -106,7 +106,7 @@ A more simple alternative is to modify the the position of the point describing 
 as the simulation progresses. As per earlier tutorials we make a new `SimulationModifier` class to do this.
 
 ```python
-        class BoundaryConditionModifier(chaste.cell_based.PythonSimulationModifier_2):
+        class BoundaryConditionModifier(chaste.cell_based.PythonSimulationModifier[2]):
             """Class for time varying boundary conditions"""
 
             def __init__(self, boundary_condition):
@@ -137,11 +137,11 @@ PyChaste can do simple 3D rendering with VTK. We set up a `VtkScene` so that we 
 evovle in real time.
 
 ```python
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         # JUPYTER_SHOW_FIRST
 
-        scene_modifier = chaste.cell_based.VtkSceneModifier_2()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[2]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(1000)
         simulator.AddSimulationModifier(scene_modifier)
@@ -182,39 +182,39 @@ class TestPyTensileTestTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         differentiated_type = chaste.cell_based.DifferentiatedCellProliferativeType()
         cell_generator = (
-            chaste.cell_based.CellsGenerator_UniformG1GenerationalCellCycleModel_2()
+            chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
         )
         cells = cell_generator.GenerateBasicRandom(
             mesh.GetNumElements(), differentiated_type
         )
 
-        cell_population = chaste.cell_based.VertexBasedCellPopulation_2(mesh, cells)
+        cell_population = chaste.cell_based.VertexBasedCellPopulation[2](mesh, cells)
 
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestTensileTest")
         simulator.SetEndTime(1.0)
         simulator.SetSamplingTimestepMultiple(1000)
 
-        force = chaste.cell_based.NagaiHondaForce_2()
+        force = chaste.cell_based.NagaiHondaForce[2]()
         simulator.AddForce(force)
 
-        growth_modifier = chaste.cell_based.SimpleTargetAreaModifier_2()
+        growth_modifier = chaste.cell_based.SimpleTargetAreaModifier[2]()
         simulator.AddSimulationModifier(growth_modifier)
 
         my_point = np.array([0.0, 0.0])
         normal = np.array([0.0, -1.0])
-        bc = chaste.cell_based.AttractingPlaneBoundaryCondition_2_2(
+        bc = chaste.cell_based.AttractingPlaneBoundaryCondition[2, 2](
             cell_population, my_point, normal
         )
         simulator.AddCellPopulationBoundaryCondition(bc)
         point = np.array([0.0, 15.5])
         normal = np.array([0.0, -1.0])
-        bc2 = chaste.cell_based.AttractingPlaneBoundaryCondition_2_2(
+        bc2 = chaste.cell_based.AttractingPlaneBoundaryCondition[2, 2](
             cell_population, point, normal
         )
         simulator.AddCellPopulationBoundaryCondition(bc2)
 
-        class BoundaryConditionModifier(chaste.cell_based.PythonSimulationModifier_2):
+        class BoundaryConditionModifier(chaste.cell_based.PythonSimulationModifier[2]):
             """Class for time varying boundary conditions"""
 
             def __init__(self, boundary_condition):
@@ -241,11 +241,11 @@ class TestPyTensileTestTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
         bc_modifier = BoundaryConditionModifier(bc2)
         simulator.AddSimulationModifier(bc_modifier)
 
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         # JUPYTER_SHOW_FIRST
 
-        scene_modifier = chaste.cell_based.VtkSceneModifier_2()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[2]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(1000)
         simulator.AddSimulationModifier(scene_modifier)

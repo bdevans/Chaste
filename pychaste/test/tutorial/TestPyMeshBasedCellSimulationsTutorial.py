@@ -81,14 +81,14 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## the third argument specifies the proliferative type of the cell.
 
         transit_type = chaste.cell_based.TransitCellProliferativeType()
-        cell_generator = chaste.cell_based.CellsGenerator_UniformCellCycleModel_2()
+        cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumNodes(), transit_type)
 
         ## Now we have a mesh and a set of cells to go with it, we can create a `CellPopulation`.
         ## In general, this class associates a collection of cells with a mesh. For this test, because we have a `MutableMesh`,
         ## we use a particular type of cell population called a `MeshBasedCellPopulation`.
 
-        cell_population = chaste.cell_based.MeshBasedCellPopulation_2_2(mesh, cells)
+        cell_population = chaste.cell_based.MeshBasedCellPopulation[2, 2](mesh, cells)
 
         ## To view the results of this and the next test in Paraview it is necessary to explicitly
         ## generate the required .vtu files.
@@ -97,14 +97,14 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
         ## We can set up a `VtkScene` to do a quick visualization of the population before running the analysis.
 
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         # JUPYTER_SHOW_FIRST
         scene.Start()  # JUPYTER_SHOW
 
         ## We then pass in the cell population into an `OffLatticeSimulation`, and set the output directory and end time.
 
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestMeshBasedCellSimulationsTutorial")
         simulator.SetEndTime(10.0)
 
@@ -119,12 +119,12 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## For a list of possible forces see subclasses of `AbstractForce`. Note that some of these forces are not compatible with mesh-based simulations,
         ## see the specific class documentation for details. If you try to use an incompatible class then you will receive a warning.
 
-        force = chaste.cell_based.GeneralisedLinearSpringForce_2_2()
+        force = chaste.cell_based.GeneralisedLinearSpringForce[2, 2]()
         simulator.AddForce(force)
 
         ## Save snapshot images of the population during the simulation
 
-        scene_modifier = chaste.cell_based.VtkSceneModifier_2()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[2]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(100)
         simulator.AddSimulationModifier(scene_modifier)
@@ -167,7 +167,7 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## As before all cells have `TransitCellProliferativeType`.
 
         transit_type = chaste.cell_based.TransitCellProliferativeType()
-        cell_generator = chaste.cell_based.CellsGenerator_UniformCellCycleModel_2()
+        cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(len(locs), transit_type)
 
         ## Now we have a mesh and a set of cells to go with it, we can create a `CellPopulation`.
@@ -176,7 +176,7 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## a `MeshBasedCellPopulationWithGhostNodes`. The third argument of the constructor takes a vector of the indices of the real nodes
         ## and should be the same length as the vector of cell pointers.
 
-        cell_population = chaste.cell_based.MeshBasedCellPopulationWithGhostNodes_2(
+        cell_population = chaste.cell_based.MeshBasedCellPopulationWithGhostNodes[2](
             mesh, cells, locs
         )
 
@@ -186,21 +186,21 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
         ## We can set up a `VtkScene` to do a quick visualization of the population before running the analysis.
 
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         scene.GetCellPopulationActorGenerator().SetShowVoronoiMeshEdges(True)
         # JUPYTER_SHOW
 
         ## We then pass in the cell population into an `OffLatticeSimulation`, and set the output directory, output multiple and end time.
 
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestMeshBasedCellPopulationWithGhostNodes")
         simulator.SetEndTime(10.0)
         simulator.SetSamplingTimestepMultiple(12)
 
         ## Save snapshot images of the population during the simulation
 
-        scene_modifier = chaste.cell_based.VtkSceneModifier_2()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[2]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(300)
         simulator.AddSimulationModifier(scene_modifier)
@@ -208,7 +208,7 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## Again we create a force law, and pass it to the `OffLatticeSimulation`.
         ## This force law ensures that ghost nodes don't exert forces on real nodes but real nodes exert forces on ghost nodes.
 
-        force = chaste.cell_based.GeneralisedLinearSpringForce_2_2()
+        force = chaste.cell_based.GeneralisedLinearSpringForce[2, 2]()
         simulator.AddForce(force)
 
         ## To run the simulation, we call `Solve()`.

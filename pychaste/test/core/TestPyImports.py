@@ -30,6 +30,7 @@ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
+import os
 import re
 import unittest
 
@@ -53,12 +54,11 @@ from chaste.visualization import *
 class TestPyImports(unittest.TestCase):
 
     def test_imports(self):
-        print(">>> CURRENT WORKING DIRECTORY:", os.getcwd())
-        module = os.path.abspath("wrappers/all/_pychaste_all.main.cppwg.cpp")
+        module_wrapper = os.path.abspath("wrappers/all/_pychaste_all.main.cppwg.cpp")
         class_names = []
 
         class_regex = re.compile(r"^\s*register_(\w+)_class\(m\);\s*$")
-        with open(module, "r") as f:
+        with open(module_wrapper, "r") as f:
             lines = f.readlines()
 
         for line in lines:

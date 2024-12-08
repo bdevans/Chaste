@@ -67,14 +67,14 @@ class TestPyCellSortingTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
         ## This generates a regular square-shaped mesh, in which all elements are the same size.
         ## We have chosen an 8 by 8 block of elements each consisting of 4 by 4 ( = 16) lattice sites.
 
-        generator = chaste.mesh.PottsMeshGenerator_2(50, 8, 4, 50, 8, 4)
+        generator = chaste.mesh.PottsMeshGenerator[2](50, 8, 4, 50, 8, 4)
         mesh = generator.GetMesh()
 
         ## Having created a mesh, we now create some cells. To do this, we the `CellsGenerator` helper class,
         ## as before but this time the third argument is set to make all cells non-proliferative.
 
         differentiated_type = chaste.cell_based.DifferentiatedCellProliferativeType()
-        cell_generator = chaste.cell_based.CellsGenerator_UniformCellCycleModel_2()
+        cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(
             mesh.GetNumElements(), differentiated_type
         )
@@ -88,7 +88,7 @@ class TestPyCellSortingTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         ## Now we have a mesh and a set of cells to go with it, we can create a `CellPopulation`.
 
-        cell_population = chaste.cell_based.PottsBasedCellPopulation_2(mesh, cells)
+        cell_population = chaste.cell_based.PottsBasedCellPopulation[2](mesh, cells)
 
         ## In order to visualize labelled cells we need to use the following command.
 
@@ -97,7 +97,7 @@ class TestPyCellSortingTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
         ## PyChaste can do simple 3D rendering with VTK. We set up a VtkScene so that we can
         ## see the population evovle in real time.
 
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         scene.GetCellPopulationActorGenerator().SetShowPottsMeshEdges(True)
         # JUPYTER_SHOW_FIRST
@@ -105,7 +105,7 @@ class TestPyCellSortingTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         ## We then pass in the cell population into an `OffLatticeSimulation`, and set the output directory and end time
 
-        simulator = chaste.cell_based.OnLatticeSimulation_2(cell_population)
+        simulator = chaste.cell_based.OnLatticeSimulation[2](cell_population)
         simulator.SetOutputDirectory("Python/TestCellSorting")
         simulator.SetEndTime(20.0)
         simulator.SetSamplingTimestepMultiple(10)
@@ -116,7 +116,7 @@ class TestPyCellSortingTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
         ## pass them to the `OnLatticeSimulation`.
 
         volume_constraint_update_rule = (
-            chaste.cell_based.VolumeConstraintPottsUpdateRule_2()
+            chaste.cell_based.VolumeConstraintPottsUpdateRule[2]()
         )
         volume_constraint_update_rule.SetMatureCellTargetVolume(16)
         volume_constraint_update_rule.SetDeformationEnergyParameter(0.2)
@@ -125,7 +125,7 @@ class TestPyCellSortingTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
         ## We repeat the process for any other update rules.
 
         differential_adhesion_update_rule = (
-            chaste.cell_based.DifferentialAdhesionPottsUpdateRule_2()
+            chaste.cell_based.DifferentialAdhesionPottsUpdateRule[2]()
         )
         differential_adhesion_update_rule.SetLabelledCellLabelledCellAdhesionEnergyParameter(
             0.16
@@ -142,7 +142,7 @@ class TestPyCellSortingTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         ## Set up plotting
 
-        scene_modifier = chaste.cell_based.VtkSceneModifier_2()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[2]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(1000)
         simulator.AddSimulationModifier(scene_modifier)

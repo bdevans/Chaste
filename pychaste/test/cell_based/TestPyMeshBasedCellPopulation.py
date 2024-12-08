@@ -50,33 +50,33 @@ class TestPyMeshBasedCellPopulation(chaste.cell_based.AbstractCellBasedTestSuite
 
         # Make the cells
         proliferative_type = chaste.cell_based.DefaultCellProliferativeType()
-        cell_generator = chaste.cell_based.CellsGenerator_UniformCellCycleModel_2()
+        cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(
             mesh.GetNumNodes(), proliferative_type
         )
 
         # Make the cell population
-        cell_population = chaste.cell_based.MeshBasedCellPopulation_2_2(mesh, cells)
+        cell_population = chaste.cell_based.MeshBasedCellPopulation[2, 2](mesh, cells)
         cell_population.AddPopulationWriterVoronoiDataWriter()
 
         # Set up the visualizer
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         scene.SetSaveAsAnimation(True)
         scene.SetOutputFilePath(
             file_handler.GetOutputDirectoryFullPath() + "/cell_population"
         )
 
-        modifier = chaste.cell_based.VtkSceneModifier_2()
+        modifier = chaste.cell_based.VtkSceneModifier[2]()
         modifier.SetVtkScene(scene)
 
         # Set up the simulation
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestMeshBasedCellPopulation")
         simulator.SetEndTime(5.0)
         simulator.SetSamplingTimestepMultiple(12)
 
-        force = chaste.cell_based.GeneralisedLinearSpringForce_2_2()
+        force = chaste.cell_based.GeneralisedLinearSpringForce[2, 2]()
         simulator.AddForce(force)
         simulator.AddSimulationModifier(modifier)
         simulator.Solve()

@@ -52,31 +52,31 @@ class TestPyVertexBasedCellPopulation(chaste.cell_based.AbstractCellBasedTestSui
 
         # Make the cells
         proliferative_type = chaste.cell_based.DefaultCellProliferativeType()
-        cell_generator = chaste.cell_based.CellsGenerator_UniformCellCycleModel_2()
+        cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(
             mesh.GetNumElements(), proliferative_type
         )
 
         # Make the cell population
-        cell_population = chaste.cell_based.VertexBasedCellPopulation_2(mesh, cells)
+        cell_population = chaste.cell_based.VertexBasedCellPopulation[2](mesh, cells)
 
         # Set up the visualizer
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         scene.SetSaveAsAnimation(True)
         scene.SetOutputFilePath(
             file_handler.GetOutputDirectoryFullPath() + "/cell_population"
         )
 
-        modifier = chaste.cell_based.VtkSceneModifier_2()
+        modifier = chaste.cell_based.VtkSceneModifier[2]()
         modifier.SetVtkScene(scene)
 
-        force = chaste.cell_based.NagaiHondaForce_2()
-        target_area_modifier = chaste.cell_based.SimpleTargetAreaModifier_2()
+        force = chaste.cell_based.NagaiHondaForce[2]()
+        target_area_modifier = chaste.cell_based.SimpleTargetAreaModifier[2]()
         target_area_modifier.SetGrowthDuration(1.0)
 
         # Set up the simulation
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestVertexBasedCellPopulation")
         simulator.SetEndTime(0.2)
         simulator.AddForce(force)

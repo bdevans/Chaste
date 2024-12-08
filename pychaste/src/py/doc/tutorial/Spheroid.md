@@ -64,7 +64,7 @@ proliferate if there is enough oxygen, similar to how a tumour spheroid may beha
 ```python
         stem_type = chaste.cell_based.StemCellProliferativeType()
         cell_generator = (
-            chaste.cell_based.CellsGenerator_SimpleOxygenBasedCellCycleModel_2()
+            chaste.cell_based.CellsGenerator["SimpleOxygenBasedCellCycleModel", 2]()
         )
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumNodes(), stem_type)
 ```
@@ -88,7 +88,7 @@ Define when cells become apoptotic
 Now we have a mesh and a set of cells to go with it, we can create a `CellPopulation` as before.
 
 ```python
-        cell_population = chaste.cell_based.MeshBasedCellPopulation_2_2(mesh, cells)
+        cell_population = chaste.cell_based.MeshBasedCellPopulation[2, 2](mesh, cells)
 ```
 To view the results of this and the next test in Paraview it is necessary to explicitly generate the required .vtu files.
 
@@ -98,7 +98,7 @@ To view the results of this and the next test in Paraview it is necessary to exp
 We then pass in the cell population into an `OffLatticeSimulation`, and set the output directory and end time.
 
 ```python
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestSpheroidTutorial")
         simulator.SetEndTime(5.0)
 ```
@@ -110,31 +110,31 @@ We ask for output every 12 increments
 We define how the springs between cells behave using a force law.
 
 ```python
-        force = chaste.cell_based.GeneralisedLinearSpringForce_2_2()
+        force = chaste.cell_based.GeneralisedLinearSpringForce[2, 2]()
         simulator.AddForce(force)
 ```
 We set up a PDE for oxygen diffusion and consumption by cells, setting the rate of consumption to 0.1
 
 ```python
-        pde = chaste.pde.CellwiseSourceEllipticPde_2(cell_population, -0.5)
+        pde = chaste.pde.CellwiseSourceEllipticPde[2](cell_population, -0.5)
 ```
 We set a constant amount of oxygen on the edge of the spheroid
 
 ```python
-        bc = chaste.pde.ConstBoundaryCondition_2(1.0)
+        bc = chaste.pde.ConstBoundaryCondition[2](1.0)
         is_neumann_bc = False
 ```
 Set up a pde modifier to solve the PDE at each simulation time step
 
 ```python
-        # pde_modifier = chaste.cell_based.EllipticGrowingDomainPdeModifier_2(pde, bc, is_neumann_bc)
+        # pde_modifier = chaste.cell_based.EllipticGrowingDomainPdeModifier[2](pde, bc, is_neumann_bc)
         # pde_modifier.SetDependentVariableName("oxygen")
         # simulator.AddSimulationModifier(pde_modifier)
 ```
 As before, we set up a scene modifier for real-time visualization
 
 ```python
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         scene.GetCellPopulationActorGenerator().SetColorByCellData(True)
         scene.GetCellPopulationActorGenerator().SetDataLabel("oxygen")
@@ -142,7 +142,7 @@ As before, we set up a scene modifier for real-time visualization
         scene.GetCellPopulationActorGenerator().SetShowVoronoiMeshEdges(False)
         # JUPYTER_SHOW_FIRST
 
-        scene_modifier = chaste.cell_based.VtkSceneModifier_2()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[2]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(100)
         simulator.AddSimulationModifier(scene_modifier)
@@ -150,7 +150,7 @@ As before, we set up a scene modifier for real-time visualization
 Eventually remove apoptotic cells
 
 ```python
-        killer = chaste.cell_based.ApoptoticCellKiller_2(cell_population)
+        killer = chaste.cell_based.ApoptoticCellKiller[2](cell_population)
         simulator.AddCellKiller(killer)
 ```
 To run the simulation, we call `Solve()`. We can again do a quick rendering of the population at the end of the simulation
@@ -195,7 +195,7 @@ class TestPySpheroidTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         stem_type = chaste.cell_based.StemCellProliferativeType()
         cell_generator = (
-            chaste.cell_based.CellsGenerator_SimpleOxygenBasedCellCycleModel_2()
+            chaste.cell_based.CellsGenerator["SimpleOxygenBasedCellCycleModel", 2]()
         )
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumNodes(), stem_type)
 
@@ -213,29 +213,29 @@ class TestPySpheroidTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
             birth_time = -rnum * (g1_duration + sg2m_duration)
             eachCell.SetBirthTime(birth_time)
 
-        cell_population = chaste.cell_based.MeshBasedCellPopulation_2_2(mesh, cells)
+        cell_population = chaste.cell_based.MeshBasedCellPopulation[2, 2](mesh, cells)
 
         cell_population.AddPopulationWriterVoronoiDataWriter()
 
-        simulator = chaste.cell_based.OffLatticeSimulation_2_2(cell_population)
+        simulator = chaste.cell_based.OffLatticeSimulation[2, 2](cell_population)
         simulator.SetOutputDirectory("Python/TestSpheroidTutorial")
         simulator.SetEndTime(5.0)
 
         simulator.SetSamplingTimestepMultiple(100)
 
-        force = chaste.cell_based.GeneralisedLinearSpringForce_2_2()
+        force = chaste.cell_based.GeneralisedLinearSpringForce[2, 2]()
         simulator.AddForce(force)
 
-        pde = chaste.pde.CellwiseSourceEllipticPde_2(cell_population, -0.5)
+        pde = chaste.pde.CellwiseSourceEllipticPde[2](cell_population, -0.5)
 
-        bc = chaste.pde.ConstBoundaryCondition_2(1.0)
+        bc = chaste.pde.ConstBoundaryCondition[2](1.0)
         is_neumann_bc = False
 
-        # pde_modifier = chaste.cell_based.EllipticGrowingDomainPdeModifier_2(pde, bc, is_neumann_bc)
+        # pde_modifier = chaste.cell_based.EllipticGrowingDomainPdeModifier[2](pde, bc, is_neumann_bc)
         # pde_modifier.SetDependentVariableName("oxygen")
         # simulator.AddSimulationModifier(pde_modifier)
 
-        scene = chaste.visualization.VtkScene_2()
+        scene = chaste.visualization.VtkScene[2]()
         scene.SetCellPopulation(cell_population)
         scene.GetCellPopulationActorGenerator().SetColorByCellData(True)
         scene.GetCellPopulationActorGenerator().SetDataLabel("oxygen")
@@ -243,12 +243,12 @@ class TestPySpheroidTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
         scene.GetCellPopulationActorGenerator().SetShowVoronoiMeshEdges(False)
         # JUPYTER_SHOW_FIRST
 
-        scene_modifier = chaste.cell_based.VtkSceneModifier_2()
+        scene_modifier = chaste.cell_based.VtkSceneModifier[2]()
         scene_modifier.SetVtkScene(scene)
         scene_modifier.SetUpdateFrequency(100)
         simulator.AddSimulationModifier(scene_modifier)
 
-        killer = chaste.cell_based.ApoptoticCellKiller_2(cell_population)
+        killer = chaste.cell_based.ApoptoticCellKiller[2](cell_population)
         simulator.AddCellKiller(killer)
 
         scene.Start()

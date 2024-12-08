@@ -41,19 +41,19 @@ class TestPyChastePoint(unittest.TestCase):
 
     def test_construct(self):
 
-        point = chaste.mesh.ChastePoint_3(1.0, 2.0, 3.0)
+        point = chaste.mesh.ChastePoint[3](1.0, 2.0, 3.0)
         loc = point.rGetLocation()
         self.assertAlmostEqual(loc[0], 1.0, 2)
         self.assertAlmostEqual(loc[1], 2.0, 2)
         self.assertAlmostEqual(loc[2], 3.0, 2)
 
-        point = chaste.mesh.ChastePoint_3(np.array([4.0, 5.0, 6.0]))
+        point = chaste.mesh.ChastePoint[3](np.array([4.0, 5.0, 6.0]))
         loc = point.rGetLocation()
         self.assertAlmostEqual(loc[0], 4.0, 2)
         self.assertAlmostEqual(loc[1], 5.0, 2)
         self.assertAlmostEqual(loc[2], 6.0, 2)
 
-        point = chaste.mesh.ChastePoint_2(np.array([4.0, 5.0]))
+        point = chaste.mesh.ChastePoint[2](np.array([4.0, 5.0]))
         loc = point.rGetLocation()
         self.assertAlmostEqual(loc[0], 4.0, 2)
         self.assertAlmostEqual(loc[1], 5.0, 2)

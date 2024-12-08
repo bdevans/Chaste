@@ -39,7 +39,7 @@ import chaste.mesh
 class TestPyPottsMesh(unittest.TestCase):
 
     def test_construct(self):
-        generator = chaste.mesh.PottsMeshGenerator_3(10, 0, 0, 10, 0, 0, 10, 0, 0)
+        generator = chaste.mesh.PottsMeshGenerator[3](10, 0, 0, 10, 0, 0, 10, 0, 0)
         mesh = generator.GetMesh()
         self.assertEqual(mesh.GetNumNodes(), 1000)
 

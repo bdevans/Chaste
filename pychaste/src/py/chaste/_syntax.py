@@ -46,7 +46,7 @@ class TemplateClassDict:
     >>> Foo = TemplateClassDict({ ("2", "2"): Foo_2_2, ("3", "3"): Foo_3_3 })
     """
 
-    def __init__(self, template_dict: Dict[Tuple[str, ...], Type]):
+    def __init__(self, template_dict: Dict[Tuple[str, ...], Type]) -> None:
         """
         :param template_dict: A dictionary mapping template arg tuples to classes
         """
@@ -77,8 +77,8 @@ class DeprecatedClass:
 
     def __call__(self, *args, **kwargs):
         warnings.warn(
-            f"{self.old_name} is deprecated and will be removed in a future version."
-            f"Please use {self.new_class.__name__}",
+            f"{self.old_name} is deprecated and will be removed in a future version. "
+            f"Please use {self.new_class.__name__} instead.",
             DeprecationWarning,
             stacklevel=2,
         )

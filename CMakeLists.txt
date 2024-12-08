@@ -410,20 +410,17 @@ if (Chaste_USE_VTK)
              )
         if (Chaste_ENABLE_PYCHASTE)
             # Additional modules required by PyChaste
+            list (APPEND _vtk_modules
+                    vtkInteractionStyle vtkIOImage vtkIOMovie
+                    vtkRenderingAnnotation vtkRenderingCore vtkRenderingFreeType
+                    vtkWrappingPythonCore
+                 )
             if (VTK_MAJOR_VERSION LESS 7)
-                list (APPEND _vtk_modules
-                        vtkInteractionStyle vtkIOImage vtkIOMovie
-                        vtkRenderingAnnotation vtkRenderingCore
-                        vtkRenderingFreeType vtkRenderingOpenGL
-                        vtkWrappingPythonCore
-                     )
+                list (APPEND _vtk_modules vtkRenderingOpenGL)
             else ()
                 list (APPEND _vtk_modules
                         vtkFiltersProgrammable vtkFiltersVerdict
-                        vtkInteractionStyle vtkIOImage vtkIOMovie
-                        vtkRenderingAnnotation vtkRenderingCore
-                        vtkRenderingFreeType vtkRenderingOpenGL2
-                        vtkWrappingPythonCore
+                        vtkRenderingOpenGL2
                      )
             endif ()
         endif ()
