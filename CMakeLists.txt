@@ -400,62 +400,50 @@ if (Chaste_USE_VTK)
     endif ()
 
     # Depending on the VTK version, we need different components.
+    set (_vtk_modules "")
     if (VTK_MAJOR_VERSION LESS 9)
+        list (APPEND _vtk_modules
+                vtkCommonCore vtkCommonDataModel vtkFiltersCore
+                vtkFiltersGeneral vtkFiltersGeneric vtkFiltersGeometry
+                vtkFiltersModeling vtkFiltersSources vtkIOCore vtkIOGeometry
+                vtkIOLegacy vtkIOParallelXML vtkIOXML
+             )
         if (Chaste_ENABLE_PYCHASTE)
+            # Additional modules required by PyChaste
             if (VTK_MAJOR_VERSION LESS 7)
-                find_package(VTK COMPONENTS
-                    vtkCommonCore vtkCommonDataModel vtkFiltersCore
-                    vtkFiltersGeneral vtkFiltersGeneric vtkFiltersGeometry
-                    vtkFiltersModeling vtkFiltersSources vtkIOCore
-                    vtkIOGeometry vtkIOLegacy vtkIOParallelXML vtkIOXML
-                    # PyChaste specific
-                    vtkInteractionStyle vtkIOImage vtkIOMovie 
-                    vtkRenderingAnnotation vtkRenderingCore vtkRenderingFreeType
-                    vtkRenderingOpenGL vtkWrappingPythonCore REQUIRED
-                )
+                list (APPEND _vtk_modules
+                        vtkInteractionStyle vtkIOImage vtkIOMovie
+                        vtkRenderingAnnotation vtkRenderingCore
+                        vtkRenderingFreeType vtkRenderingOpenGL
+                        vtkWrappingPythonCore
+                     )
             else ()
-                find_package(VTK COMPONENTS
-                    vtkCommonCore vtkCommonDataModel vtkFiltersCore
-                    vtkFiltersGeneral vtkFiltersGeneric vtkFiltersGeometry
-                    vtkFiltersModeling vtkFiltersSources vtkIOCore
-                    vtkIOGeometry vtkIOLegacy vtkIOParallelXML vtkIOXML
-                    # PyChaste specific
-                    vtkFiltersProgrammable vtkFiltersVerdict vtkInteractionStyle
-                    vtkIOImage vtkIOMovie vtkRenderingAnnotation
-                    vtkRenderingCore vtkRenderingFreeType vtkRenderingOpenGL2
-                    vtkWrappingPythonCore REQUIRED
-                )
+                list (APPEND _vtk_modules
+                        vtkFiltersProgrammable vtkFiltersVerdict
+                        vtkInteractionStyle vtkIOImage vtkIOMovie
+                        vtkRenderingAnnotation vtkRenderingCore
+                        vtkRenderingFreeType vtkRenderingOpenGL2
+                        vtkWrappingPythonCore
+                     )
             endif ()
-        else ()
-            find_package(VTK COMPONENTS 
-                vtkCommonCore vtkCommonDataModel vtkFiltersCore 
-                vtkFiltersGeneral vtkFiltersGeneric vtkFiltersGeometry 
-                vtkFiltersModeling vtkFiltersSources vtkIOCore vtkIOGeometry 
-                vtkIOLegacy vtkIOParallelXML vtkIOXML REQUIRED
-            )
         endif ()
-    # VTK 9.0 and above require the following
     else ()
-    if (Chaste_ENABLE_PYCHASTE)
-        find_package(VTK COMPONENTS 
-            CommonCore CommonDataModel FiltersCore 
-            FiltersGeneral FiltersGeneric FiltersGeometry
-            FiltersModeling FiltersSources IOCore IOGeometry IOLegacy 
-            IOParallelXML IOXML 
-            # PyChaste specific
-            FiltersProgrammable FiltersVerdict InteractionStyle IOImage IOMovie
-            IOOggTheora RenderingAnnotation RenderingCore RenderingFreeType
-            RenderingOpenGL2 WrappingPythonCore REQUIRED
-        )
-    else ()
-        find_package(VTK COMPONENTS 
-            CommonCore CommonDataModel FiltersCore 
-            FiltersGeneral FiltersGeneric FiltersGeometry
-            FiltersModeling FiltersSources IOCore IOGeometry IOLegacy 
-            IOParallelXML IOXML REQUIRED
-        )
+        # VTK 9.0 and above require the following
+        list (APPEND _vtk_modules
+                CommonCore CommonDataModel FiltersCore FiltersGeneral
+                FiltersGeneric FiltersGeometry FiltersModeling FiltersSources
+                IOCore IOGeometry IOLegacy IOParallelXML IOXML
+             )
+        if (Chaste_ENABLE_PYCHASTE)
+            # Additional modules required by PyChaste
+            list (APPEND _vtk_modules
+                    FiltersProgrammable FiltersVerdict InteractionStyle IOImage
+                    IOMovie IOOggTheora RenderingAnnotation RenderingCore
+                    RenderingFreeType RenderingOpenGL2 WrappingPythonCore
+                 )
         endif ()
     endif ()
+    find_package (VTK COMPONENTS ${_vtk_modules} REQUIRED)
 
     add_definitions (-DCHASTE_VTK)
 endif ()

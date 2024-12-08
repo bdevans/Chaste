@@ -37,11 +37,24 @@ find_package(Chaste COMPONENTS ${Chaste_DEPENDS_pychaste})
 
 chaste_do_component(pychaste)
 
+################################
+####  Generate Python wrappers
+################################
+
+# Get required includes
 get_target_property(PYCHASTE_INCLUDE_DIRS chaste_pychaste INCLUDE_DIRECTORIES)
 
-##################################################
-# Generate Python wrappers
-##################################################
+# Get includes for VTK 9+
+if(TARGET VTK::CommonCore)
+    get_target_property(_include_dirs VTK::CommonCore INTERFACE_INCLUDE_DIRECTORIES)
+    list(APPEND PYCHASTE_INCLUDE_DIRS ${_include_dirs})
+endif()
+
+# Add typecasters to includes
+header_dirs("${CMAKE_CURRENT_SOURCE_DIR}/dynamic" _include_dirs)
+list(APPEND PYCHASTE_INCLUDE_DIRS ${_include_dirs})
+
+# Create the wrappers
 execute_process(
     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/wrappers
     COMMAND ${chaste_python3_venv}/cppwg ${CMAKE_SOURCE_DIR}
@@ -52,17 +65,18 @@ execute_process(
         --std c++17
 )
 
-##################################################
-# Build Python module from wrappers
-##################################################
-# Create a `_pychaste_all` shared library. The library name is the same
-# as the module name in the module wrapper `_pychaste_all.main.cppwg.cpp`
-# and it's imported in Python code as `from chaste._pychaste_all import *`.
-
-header_dirs("${CMAKE_CURRENT_SOURCE_DIR}/dynamic" _include_dirs)
-list(APPEND PYCHASTE_INCLUDE_DIRS ${_include_dirs})
+# Add wrappers to includes
 header_dirs("${CMAKE_CURRENT_BINARY_DIR}/wrappers" _include_dirs)
 list(APPEND PYCHASTE_INCLUDE_DIRS ${_include_dirs})
+
+################################
+####  Build Python module
+################################
+# Creates a `_pychaste_all` shared library from the Python wrappers.
+# The library name `_pychaste_all` is the same as the module name in the main 
+# module wrapper source file `wrappers/all/_pychaste_all.main.cppwg.cpp`.
+# When the shared library has been built, it can be used in Python code 
+# as `from chaste._pychaste_all import *`.
 
 file(
     GLOB_RECURSE
@@ -102,10 +116,11 @@ target_compile_options(_pychaste_all PRIVATE -Wno-unused-local-typedefs)
 
 add_dependencies(pychaste _pychaste_all)
 
-##################################################
-# Copy Python package source files to build directory
-##################################################
+################################
+####  Copy Python package
+################################
 
+# Get list of files in the Python package directory `pychaste/src/py/`
 set(package_file_paths "")
 file(
     GLOB_RECURSE
@@ -117,6 +132,7 @@ file(
 # Exclude compiled files
 list(FILTER package_file_paths EXCLUDE REGEX ".*\\.(dll|dylib|pyc|so)$")
 
+# Copy files to the build directory
 foreach(file_path ${package_file_paths})
     if(file_path MATCHES ".*\\.(cfg|in|js|py|toml)$")
         # Copy file and track changes

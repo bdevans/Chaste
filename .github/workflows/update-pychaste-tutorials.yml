@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  
+
   generate-tutorial-markdown:
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'ci:off') }}
@@ -24,14 +24,17 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-        - run: python -m pip install jupyterlab
 
-      - name: generate pychaste-tutorial markdown
+      - name: install dependencies
+        run: |
+          python -m pip install jupyterlab
+
+      - name: generate pychaste tutorial markdown
         run: |
           python GeneratePyChasteTutorials.py
         working-directory: python/infra
 
-      - name: Upload archive files
+      - name: upload archive files
         uses: actions/upload-artifact@v4
         with:
           name: pychaste-tutorial-markdown
