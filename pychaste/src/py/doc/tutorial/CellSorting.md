@@ -6,7 +6,7 @@ images: []
 toc: true
 layout: "single"
 ---
-This tutorial is automatically generated from [TestPyCellSortingTutorial.py](https://github.com/Chaste/Chaste/blob/develop/pychaste/test/tutorial/TestPyCellSortingTutorial.py) at revision [2cd31145369b](https://github.com/Chaste/Chaste/commit/2cd31145369b99ac6f9bd17ad1c916ec7de20b28).
+This tutorial is automatically generated from [TestPyCellSortingTutorial.py](https://github.com/Chaste/Chaste/blob/develop/pychaste/test/tutorial/TestPyCellSortingTutorial.py) at revision [4045f91a83f5](https://github.com/Chaste/Chaste/commit/4045f91a83f55dc4a97f2ca4f97b0c32f4e43a4a).
 
 Note that the code is given in full at the bottom of the page.
 
@@ -27,8 +27,6 @@ import chaste.mesh  # Contains meshes
 import chaste.visualization  # Visualization tools
 import matplotlib.pyplot as plt  # Plotting
 import numpy as np  # Matrix tools
-
-# Set up MPI
 
 class TestPyCellSortingTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 ```
@@ -55,9 +53,7 @@ as before but this time the third argument is set to make all cells non-prolifer
 ```python
         differentiated_type = chaste.cell_based.DifferentiatedCellProliferativeType()
         cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 2]()
-        cells = cell_generator.GenerateBasicRandom(
-            mesh.GetNumElements(), differentiated_type
-        )
+        cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), differentiated_type)
 ```
 Before we make a CellPopulation we make a cell label and then assign this label to some randomly chosen cells.
 
@@ -101,9 +97,7 @@ differential adhesion between cells (`DifferentialAdhesionPottsUpdateRule`), set
 pass them to the `OnLatticeSimulation`.
 
 ```python
-        volume_constraint_update_rule = (
-            chaste.cell_based.VolumeConstraintPottsUpdateRule[2]()
-        )
+        volume_constraint_update_rule = chaste.cell_based.VolumeConstraintPottsUpdateRule[2]()
         volume_constraint_update_rule.SetMatureCellTargetVolume(16)
         volume_constraint_update_rule.SetDeformationEnergyParameter(0.2)
         simulator.AddUpdateRule(volume_constraint_update_rule)
@@ -111,19 +105,11 @@ pass them to the `OnLatticeSimulation`.
 We repeat the process for any other update rules.
 
 ```python
-        differential_adhesion_update_rule = (
-            chaste.cell_based.DifferentialAdhesionPottsUpdateRule[2]()
-        )
-        differential_adhesion_update_rule.SetLabelledCellLabelledCellAdhesionEnergyParameter(
-            0.16
-        )
-        differential_adhesion_update_rule.SetLabelledCellCellAdhesionEnergyParameter(
-            0.11
-        )
+        differential_adhesion_update_rule = chaste.cell_based.DifferentialAdhesionPottsUpdateRule[2]()
+        differential_adhesion_update_rule.SetLabelledCellLabelledCellAdhesionEnergyParameter(0.16)
+        differential_adhesion_update_rule.SetLabelledCellCellAdhesionEnergyParameter(0.11)
         differential_adhesion_update_rule.SetCellCellAdhesionEnergyParameter(0.02)
-        differential_adhesion_update_rule.SetLabelledCellBoundaryAdhesionEnergyParameter(
-            0.16
-        )
+        differential_adhesion_update_rule.SetLabelledCellBoundaryAdhesionEnergyParameter(0.16)
         differential_adhesion_update_rule.SetCellBoundaryAdhesionEnergyParameter(0.16)
         simulator.AddUpdateRule(differential_adhesion_update_rule)
 ```
@@ -159,8 +145,6 @@ import chaste.visualization  # Visualization tools
 import matplotlib.pyplot as plt  # Plotting
 import numpy as np  # Matrix tools
 
-# Set up MPI
-
 class TestPyCellSortingTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
     def test_potts_monolayer_cell_sorting(self):
@@ -172,9 +156,7 @@ class TestPyCellSortingTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         differentiated_type = chaste.cell_based.DifferentiatedCellProliferativeType()
         cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 2]()
-        cells = cell_generator.GenerateBasicRandom(
-            mesh.GetNumElements(), differentiated_type
-        )
+        cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), differentiated_type)
 
         label = chaste.cell_based.CellLabel()
         for eachCell in cells:
@@ -196,26 +178,16 @@ class TestPyCellSortingTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
         simulator.SetEndTime(20.0)
         simulator.SetSamplingTimestepMultiple(10)
 
-        volume_constraint_update_rule = (
-            chaste.cell_based.VolumeConstraintPottsUpdateRule[2]()
-        )
+        volume_constraint_update_rule = chaste.cell_based.VolumeConstraintPottsUpdateRule[2]()
         volume_constraint_update_rule.SetMatureCellTargetVolume(16)
         volume_constraint_update_rule.SetDeformationEnergyParameter(0.2)
         simulator.AddUpdateRule(volume_constraint_update_rule)
 
-        differential_adhesion_update_rule = (
-            chaste.cell_based.DifferentialAdhesionPottsUpdateRule[2]()
-        )
-        differential_adhesion_update_rule.SetLabelledCellLabelledCellAdhesionEnergyParameter(
-            0.16
-        )
-        differential_adhesion_update_rule.SetLabelledCellCellAdhesionEnergyParameter(
-            0.11
-        )
+        differential_adhesion_update_rule = chaste.cell_based.DifferentialAdhesionPottsUpdateRule[2]()
+        differential_adhesion_update_rule.SetLabelledCellLabelledCellAdhesionEnergyParameter(0.16)
+        differential_adhesion_update_rule.SetLabelledCellCellAdhesionEnergyParameter(0.11)
         differential_adhesion_update_rule.SetCellCellAdhesionEnergyParameter(0.02)
-        differential_adhesion_update_rule.SetLabelledCellBoundaryAdhesionEnergyParameter(
-            0.16
-        )
+        differential_adhesion_update_rule.SetLabelledCellBoundaryAdhesionEnergyParameter(0.16)
         differential_adhesion_update_rule.SetCellBoundaryAdhesionEnergyParameter(0.16)
         simulator.AddUpdateRule(differential_adhesion_update_rule)
 

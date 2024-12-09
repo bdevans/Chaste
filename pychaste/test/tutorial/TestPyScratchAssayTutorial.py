@@ -55,8 +55,6 @@ import chaste.visualization  # Visualization tools
 import matplotlib.pyplot as plt  # Plotting
 import numpy as np  # Matrix tools
 
-# Set up MPI
-
 
 class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
@@ -78,9 +76,7 @@ class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         num_points_in_x = 100
         num_points_in_y = 12
-        generator = chaste.mesh.PottsMeshGenerator[2](
-            num_points_in_x, 0, 0, num_points_in_y, 0, 0
-        )
+        generator = chaste.mesh.PottsMeshGenerator[2](num_points_in_x, 0, 0, num_points_in_y, 0, 0)
         mesh = generator.GetMesh()
 
         ## Note that we are using a `PottsMeshGenerator[2]` to set up the grid and we are setting some terms to 0. Chaste
@@ -117,13 +113,16 @@ class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
             )
         )
         cells = cell_generator.GenerateGivenLocationIndices(
-            bottom_location_indices + top_location_indices, differentiated_type
+            bottom_location_indices + top_location_indices,
+            differentiated_type
         )
 
         ## Now we have a mesh and a set of cells to go with it, we can create a CellPopulation.
 
         cell_population = chaste.cell_based.CaBasedCellPopulation[2](
-            mesh, cells, bottom_location_indices + top_location_indices
+            mesh,
+            cells,
+            bottom_location_indices + top_location_indices
         )
 
         ## Next, we set up an `OffLatticeSimulation` which will manage the solver. We need to add some custom rules to
@@ -189,9 +188,7 @@ class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
                 Use the SimulationTime singleton to determine when to plot.
                 """
 
-                num_increments = (
-                    chaste.cell_based.SimulationTime.Instance().GetTimeStepsElapsed()
-                )
+                num_increments = chaste.cell_based.SimulationTime.Instance().GetTimeStepsElapsed()
                 if num_increments % self.plot_frequency == 0:
                     y_locations = np.linspace(0, num_points_in_y, num_points_in_y)
                     num_cells = []

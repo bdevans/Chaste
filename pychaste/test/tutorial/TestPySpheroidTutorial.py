@@ -53,8 +53,6 @@ import chaste.visualization  # Visualization tools
 import matplotlib.pyplot as plt  # Plotting
 import numpy as np  # Matrix tools
 
-# Set up MPI
-
 
 class TestPySpheroidTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
@@ -83,9 +81,7 @@ class TestPySpheroidTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
         ## proliferate if there is enough oxygen, similar to how a tumour spheroid may behave.
 
         stem_type = chaste.cell_based.StemCellProliferativeType()
-        cell_generator = (
-            chaste.cell_based.CellsGenerator["SimpleOxygenBasedCellCycleModel", 2]()
-        )
+        cell_generator = chaste.cell_based.CellsGenerator["SimpleOxygenBasedCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumNodes(), stem_type)
 
         ## Define when cells become apoptotic

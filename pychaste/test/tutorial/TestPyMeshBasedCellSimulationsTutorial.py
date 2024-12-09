@@ -51,8 +51,6 @@ import chaste.visualization  # Visualization tools
 
 from chaste.cell_based import AbstractCellBasedTestSuite
 
-# Set up MPI
-
 
 class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
@@ -151,9 +149,7 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## Here the first and second arguments define the size of the mesh - we have chosen a mesh that is 2 nodes (i.e. cells) wide,
         ## and 2 nodes high. The third argument specifies the number of layers of ghost nodes to make.
 
-        chaste.core.OutputFileHandler(
-            "Python/TestMeshBasedCellPopulationWithGhostNodes"
-        )
+        chaste.core.OutputFileHandler("Python/TestMeshBasedCellPopulationWithGhostNodes")
         generator = chaste.mesh.HoneycombMeshGenerator(5, 5, 2)
         mesh = generator.GetMesh()
 
@@ -176,9 +172,7 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## a `MeshBasedCellPopulationWithGhostNodes`. The third argument of the constructor takes a vector of the indices of the real nodes
         ## and should be the same length as the vector of cell pointers.
 
-        cell_population = chaste.cell_based.MeshBasedCellPopulationWithGhostNodes[2](
-            mesh, cells, locs
-        )
+        cell_population = chaste.cell_based.MeshBasedCellPopulationWithGhostNodes[2](mesh, cells, locs)
 
         ## Again Paraview output is explicitly requested.
 
@@ -220,9 +214,7 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## If different simulation input parameters are being explored the lines should be removed.
 
         self.assertEqual(cell_population.GetNumRealCells(), 48)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 10.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 10.0, 6)
 
         # JUPYTER_TEARDOWN
 

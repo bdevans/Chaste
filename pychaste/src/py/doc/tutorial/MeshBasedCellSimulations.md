@@ -6,7 +6,7 @@ images: []
 toc: true
 layout: "single"
 ---
-This tutorial is automatically generated from [TestPyMeshBasedCellSimulationsTutorial.py](https://github.com/Chaste/Chaste/blob/develop/pychaste/test/tutorial/TestPyMeshBasedCellSimulationsTutorial.py) at revision [5494648e74e5](https://github.com/Chaste/Chaste/commit/5494648e74e52d7e7ae7730fdde6a6eae46829cf).
+This tutorial is automatically generated from [TestPyMeshBasedCellSimulationsTutorial.py](https://github.com/Chaste/Chaste/blob/develop/pychaste/test/tutorial/TestPyMeshBasedCellSimulationsTutorial.py) at revision [4045f91a83f5](https://github.com/Chaste/Chaste/commit/4045f91a83f55dc4a97f2ca4f97b0c32f4e43a4a).
 
 Note that the code is given in full at the bottom of the page.
 
@@ -28,8 +28,6 @@ import chaste.mesh  # Contains meshes
 import chaste.visualization  # Visualization tools
 
 from chaste.cell_based import AbstractCellBasedTestSuite
-
-# Set up MPI
 
 class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 ```
@@ -141,9 +139,7 @@ Here the first and second arguments define the size of the mesh - we have chosen
 and 2 nodes high. The third argument specifies the number of layers of ghost nodes to make.
 
 ```python
-        chaste.core.OutputFileHandler(
-            "Python/TestMeshBasedCellPopulationWithGhostNodes"
-        )
+        chaste.core.OutputFileHandler("Python/TestMeshBasedCellPopulationWithGhostNodes")
         generator = chaste.mesh.HoneycombMeshGenerator(5, 5, 2)
         mesh = generator.GetMesh()
 ```
@@ -169,9 +165,7 @@ a `MeshBasedCellPopulationWithGhostNodes`. The third argument of the constructor
 and should be the same length as the vector of cell pointers.
 
 ```python
-        cell_population = chaste.cell_based.MeshBasedCellPopulationWithGhostNodes[2](
-            mesh, cells, locs
-        )
+        cell_population = chaste.cell_based.MeshBasedCellPopulationWithGhostNodes[2](mesh, cells, locs)
 ```
 Again Paraview output is explicitly requested.
 
@@ -220,9 +214,7 @@ If different simulation input parameters are being explored the lines should be 
 
 ```python
         self.assertEqual(cell_population.GetNumRealCells(), 48)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 10.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 10.0, 6)
 
         # JUPYTER_TEARDOWN
 ```
@@ -247,8 +239,6 @@ import chaste.mesh  # Contains meshes
 import chaste.visualization  # Visualization tools
 
 from chaste.cell_based import AbstractCellBasedTestSuite
-
-# Set up MPI
 
 class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
@@ -297,9 +287,7 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
         # JUPYTER_SETUP
 
-        chaste.core.OutputFileHandler(
-            "Python/TestMeshBasedCellPopulationWithGhostNodes"
-        )
+        chaste.core.OutputFileHandler("Python/TestMeshBasedCellPopulationWithGhostNodes")
         generator = chaste.mesh.HoneycombMeshGenerator(5, 5, 2)
         mesh = generator.GetMesh()
 
@@ -309,9 +297,7 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(len(locs), transit_type)
 
-        cell_population = chaste.cell_based.MeshBasedCellPopulationWithGhostNodes[2](
-            mesh, cells, locs
-        )
+        cell_population = chaste.cell_based.MeshBasedCellPopulationWithGhostNodes[2](mesh, cells, locs)
 
         cell_population.AddPopulationWriterVoronoiDataWriter()
 
@@ -337,9 +323,7 @@ class TestPyMeshBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         simulator.Solve()
 
         self.assertEqual(cell_population.GetNumRealCells(), 48)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 10.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 10.0, 6)
 
         # JUPYTER_TEARDOWN
 

@@ -6,7 +6,7 @@ images: []
 toc: true
 layout: "single"
 ---
-This tutorial is automatically generated from [TestPySpheroidTutorial.py](https://github.com/Chaste/Chaste/blob/develop/pychaste/test/tutorial/TestPySpheroidTutorial.py) at revision [2cd31145369b](https://github.com/Chaste/Chaste/commit/2cd31145369b99ac6f9bd17ad1c916ec7de20b28).
+This tutorial is automatically generated from [TestPySpheroidTutorial.py](https://github.com/Chaste/Chaste/blob/develop/pychaste/test/tutorial/TestPySpheroidTutorial.py) at revision [4045f91a83f5](https://github.com/Chaste/Chaste/commit/4045f91a83f55dc4a97f2ca4f97b0c32f4e43a4a).
 
 Note that the code is given in full at the bottom of the page.
 
@@ -30,8 +30,6 @@ import chaste.pde  # PDEs
 import chaste.visualization  # Visualization tools
 import matplotlib.pyplot as plt  # Plotting
 import numpy as np  # Matrix tools
-
-# Set up MPI
 
 class TestPySpheroidTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 ```
@@ -63,9 +61,7 @@ proliferate if there is enough oxygen, similar to how a tumour spheroid may beha
 
 ```python
         stem_type = chaste.cell_based.StemCellProliferativeType()
-        cell_generator = (
-            chaste.cell_based.CellsGenerator["SimpleOxygenBasedCellCycleModel", 2]()
-        )
+        cell_generator = chaste.cell_based.CellsGenerator["SimpleOxygenBasedCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumNodes(), stem_type)
 ```
 Define when cells become apoptotic
@@ -181,8 +177,6 @@ import chaste.visualization  # Visualization tools
 import matplotlib.pyplot as plt  # Plotting
 import numpy as np  # Matrix tools
 
-# Set up MPI
-
 class TestPySpheroidTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
     def test_spheroid(self):
@@ -194,9 +188,7 @@ class TestPySpheroidTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
         mesh = generator.GetMesh()
 
         stem_type = chaste.cell_based.StemCellProliferativeType()
-        cell_generator = (
-            chaste.cell_based.CellsGenerator["SimpleOxygenBasedCellCycleModel", 2]()
-        )
+        cell_generator = chaste.cell_based.CellsGenerator["SimpleOxygenBasedCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumNodes(), stem_type)
 
         for eachCell in cells:

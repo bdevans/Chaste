@@ -6,7 +6,7 @@ images: []
 toc: true
 layout: "single"
 ---
-This tutorial is automatically generated from [TestPyVertexBasedCellSimulationsTutorial.py](https://github.com/Chaste/Chaste/blob/develop/pychaste/test/tutorial/TestPyVertexBasedCellSimulationsTutorial.py) at revision [5494648e74e5](https://github.com/Chaste/Chaste/commit/5494648e74e52d7e7ae7730fdde6a6eae46829cf).
+This tutorial is automatically generated from [TestPyVertexBasedCellSimulationsTutorial.py](https://github.com/Chaste/Chaste/blob/develop/pychaste/test/tutorial/TestPyVertexBasedCellSimulationsTutorial.py) at revision [4045f91a83f5](https://github.com/Chaste/Chaste/commit/4045f91a83f55dc4a97f2ca4f97b0c32f4e43a4a).
 
 Note that the code is given in full at the bottom of the page.
 
@@ -29,8 +29,6 @@ import chaste.mesh  # Contains meshes
 import chaste.visualization  # Visualization tools
 
 from chaste.cell_based import AbstractCellBasedTestSuite
-
-# Set up MPI
 
 class TestPyVertexBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 ```
@@ -60,9 +58,7 @@ the third argument specifies the proliferative type of the cell.
 
 ```python
         transit_type = chaste.cell_based.TransitCellProliferativeType()
-        cell_generator = (
-            chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
-        )
+        cell_generator = chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), transit_type)
 ```
 Now we have a mesh and a set of cells to go with it, we can create a CellPopulation.
@@ -134,9 +130,7 @@ If different simulation input parameters are being explored the lines should be 
 
 ```python
         self.assertEqual(cell_population.GetNumRealCells(), 7)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 5.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 5.0, 6)
 
         # JUPYTER_TEARDOWN
 ```
@@ -163,9 +157,7 @@ Having created a mesh, we now create a VectorSharedPtrCells. This is exactly the
 
 ```python
         transit_type = chaste.cell_based.TransitCellProliferativeType()
-        cell_generator = (
-            chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
-        )
+        cell_generator = chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), transit_type)
 ```
 Now we have a mesh and a set of cells to go with it, we can create a CellPopulation. This is also the same as in the above test.
@@ -205,9 +197,9 @@ The first step is to define a point on the plane boundary and a normal to the pl
         normal = np.array([0.0, -1.0])
 ```
 We can now make a PlaneBoundaryCondition (passing the point and normal to the plane) and pass it to the OffLatticeSimulation.
-bc = chaste.cell_based.PlaneBoundaryCondition[2, 2](cell_population, point, normal)
 
 ```python
+        bc = chaste.cell_based.PlaneBoundaryCondition[2, 2](cell_population, point, normal)
         simulator.AddCellPopulationBoundaryCondition(bc)
 ```
 We now create one or more CellKillers, which determine how cells are removed from the simulation.
@@ -220,22 +212,22 @@ The first step is to define a point on the plane boundary and a normal to the pl
         normal = np.array([0.0, 1.0])
 ```
 Finally we now make a PlaneBasedCellKiller (passing the point and normal to the plane) and pass it to the OffLatticeSimulation.
-killer = chaste.cell_based.PlaneBasedCellKiller[2](cell_population, point, normal)
 
 ```python
+        killer = chaste.cell_based.PlaneBasedCellKiller[2](cell_population, point, normal)
         simulator.AddCellKiller(killer)
 ```
 To run the simulation, we call `Solve()`.
-simulator.Solve()
 
+```python
+        simulator.Solve()
+```
 The next two lines are for test purposes only and are not part of this tutorial.
 If different simulation input parameters are being explored the lines should be removed.
 
 ```python
         self.assertEqual(cell_population.GetNumRealCells(), 12)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 1.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 1.0, 6)
 
         # JUPYTER_TEARDOWN
 
@@ -258,8 +250,6 @@ import chaste.visualization  # Visualization tools
 
 from chaste.cell_based import AbstractCellBasedTestSuite
 
-# Set up MPI
-
 class TestPyVertexBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
     def test_monolayer(self):
 
@@ -270,9 +260,7 @@ class TestPyVertexBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         mesh = generator.GetMesh()
 
         transit_type = chaste.cell_based.TransitCellProliferativeType()
-        cell_generator = (
-            chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
-        )
+        cell_generator = chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), transit_type)
 
         cell_population = chaste.cell_based.VertexBasedCellPopulation[2](mesh, cells)
@@ -304,9 +292,7 @@ class TestPyVertexBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         scene.End()
 
         self.assertEqual(cell_population.GetNumRealCells(), 7)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 5.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 5.0, 6)
 
         # JUPYTER_TEARDOWN
 
@@ -318,9 +304,7 @@ class TestPyVertexBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         mesh = generator.GetCylindricalMesh()
 
         transit_type = chaste.cell_based.TransitCellProliferativeType()
-        cell_generator = (
-            chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
-        )
+        cell_generator = chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
         cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), transit_type)
 
         cell_population = chaste.cell_based.VertexBasedCellPopulation[2](mesh, cells)
@@ -339,17 +323,19 @@ class TestPyVertexBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         point = np.array([0.0, 0.0])
         normal = np.array([0.0, -1.0])
 
+        bc = chaste.cell_based.PlaneBoundaryCondition[2, 2](cell_population, point, normal)
         simulator.AddCellPopulationBoundaryCondition(bc)
 
         point = np.array([0.0, 3.0])
         normal = np.array([0.0, 1.0])
 
+        killer = chaste.cell_based.PlaneBasedCellKiller[2](cell_population, point, normal)
         simulator.AddCellKiller(killer)
 
+        simulator.Solve()
+
         self.assertEqual(cell_population.GetNumRealCells(), 12)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 1.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 1.0, 6)
 
         # JUPYTER_TEARDOWN
 

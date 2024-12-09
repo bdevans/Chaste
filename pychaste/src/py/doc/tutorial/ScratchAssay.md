@@ -6,7 +6,7 @@ images: []
 toc: true
 layout: "single"
 ---
-This tutorial is automatically generated from [TestPyScratchAssayTutorial.py](https://github.com/Chaste/Chaste/blob/develop/pychaste/test/tutorial/TestPyScratchAssayTutorial.py) at revision [2cd31145369b](https://github.com/Chaste/Chaste/commit/2cd31145369b99ac6f9bd17ad1c916ec7de20b28).
+This tutorial is automatically generated from [TestPyScratchAssayTutorial.py](https://github.com/Chaste/Chaste/blob/develop/pychaste/test/tutorial/TestPyScratchAssayTutorial.py) at revision [4045f91a83f5](https://github.com/Chaste/Chaste/commit/4045f91a83f55dc4a97f2ca4f97b0c32f4e43a4a).
 
 Note that the code is given in full at the bottom of the page.
 
@@ -33,8 +33,6 @@ import chaste.visualization  # Visualization tools
 import matplotlib.pyplot as plt  # Plotting
 import numpy as np  # Matrix tools
 
-# Set up MPI
-
 class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 ```
 ### Test 1 - Scratch Assay
@@ -56,9 +54,7 @@ Here we set up a 2D lattice.
 ```python
         num_points_in_x = 100
         num_points_in_y = 12
-        generator = chaste.mesh.PottsMeshGenerator[2](
-            num_points_in_x, 0, 0, num_points_in_y, 0, 0
-        )
+        generator = chaste.mesh.PottsMeshGenerator[2](num_points_in_x, 0, 0, num_points_in_y, 0, 0)
         mesh = generator.GetMesh()
 ```
 Note that we are using a `PottsMeshGenerator[2]` to set up the grid and we are setting some terms to 0. Chaste
@@ -98,14 +94,17 @@ add four layers of cells to each side of the mesh.
             )
         )
         cells = cell_generator.GenerateGivenLocationIndices(
-            bottom_location_indices + top_location_indices, differentiated_type
+            bottom_location_indices + top_location_indices,
+            differentiated_type
         )
 ```
 Now we have a mesh and a set of cells to go with it, we can create a CellPopulation.
 
 ```python
         cell_population = chaste.cell_based.CaBasedCellPopulation[2](
-            mesh, cells, bottom_location_indices + top_location_indices
+            mesh,
+            cells,
+            bottom_location_indices + top_location_indices
         )
 ```
 Next, we set up an `OffLatticeSimulation` which will manage the solver. We need to add some custom rules to
@@ -176,9 +175,7 @@ here for the purposes of the tutorial.
                 Use the SimulationTime singleton to determine when to plot.
                 """
 
-                num_increments = (
-                    chaste.cell_based.SimulationTime.Instance().GetTimeStepsElapsed()
-                )
+                num_increments = chaste.cell_based.SimulationTime.Instance().GetTimeStepsElapsed()
                 if num_increments % self.plot_frequency == 0:
                     y_locations = np.linspace(0, num_points_in_y, num_points_in_y)
                     num_cells = []
@@ -231,8 +228,6 @@ import chaste.visualization  # Visualization tools
 import matplotlib.pyplot as plt  # Plotting
 import numpy as np  # Matrix tools
 
-# Set up MPI
-
 class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
     def test_single_scratch(self):
@@ -241,9 +236,7 @@ class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         num_points_in_x = 100
         num_points_in_y = 12
-        generator = chaste.mesh.PottsMeshGenerator[2](
-            num_points_in_x, 0, 0, num_points_in_y, 0, 0
-        )
+        generator = chaste.mesh.PottsMeshGenerator[2](num_points_in_x, 0, 0, num_points_in_y, 0, 0)
         mesh = generator.GetMesh()
 
         cells = []
@@ -262,11 +255,14 @@ class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
             )
         )
         cells = cell_generator.GenerateGivenLocationIndices(
-            bottom_location_indices + top_location_indices, differentiated_type
+            bottom_location_indices + top_location_indices,
+            differentiated_type
         )
 
         cell_population = chaste.cell_based.CaBasedCellPopulation[2](
-            mesh, cells, bottom_location_indices + top_location_indices
+            mesh,
+            cells,
+            bottom_location_indices + top_location_indices
         )
 
         simulator = chaste.cell_based.OnLatticeSimulation[2](cell_population)
@@ -311,9 +307,7 @@ class TestPyScratchAssayTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
                 Use the SimulationTime singleton to determine when to plot.
                 """
 
-                num_increments = (
-                    chaste.cell_based.SimulationTime.Instance().GetTimeStepsElapsed()
-                )
+                num_increments = chaste.cell_based.SimulationTime.Instance().GetTimeStepsElapsed()
                 if num_increments % self.plot_frequency == 0:
                     y_locations = np.linspace(0, num_points_in_y, num_points_in_y)
                     num_cells = []

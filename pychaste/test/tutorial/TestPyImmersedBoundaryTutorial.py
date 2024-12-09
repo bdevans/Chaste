@@ -51,6 +51,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import unittest
 
 import chaste
+
 from chaste.cell_based import (
     AbstractCellBasedTestSuite,
     CellsGenerator,
@@ -61,19 +62,18 @@ from chaste.cell_based import (
     ImmersedBoundaryLinearMembraneForce,
     ImmersedBoundarySimulationModifier,
     OffLatticeSimulation,
-    SetupNotebookTest,
-    SimulationTime,
-    TearDownNotebookTest,
 )
-from chaste.mesh import FluidSource, ImmersedBoundaryPalisadeMeshGenerator
+
+from chaste.mesh import (
+    FluidSource, 
+    ImmersedBoundaryPalisadeMeshGenerator,
+)
+
 from chaste.visualization import (
     JupyterNotebookManager,
     JupyterSceneModifier,
     VtkScene,
 )
-
-# setup MPI
-
 
 class TestPyImmersedBoundaryTutorial(AbstractCellBasedTestSuite):
 

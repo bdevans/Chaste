@@ -50,8 +50,6 @@ import chaste.mesh  # Contains meshes
 import chaste.visualization  # Visualization tools
 import numpy as np  # Matrix tools
 
-# Set up MPI
-
 
 class TestPyTensileTestTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
@@ -69,12 +67,8 @@ class TestPyTensileTestTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
         ## Now set up the cells, again we want to avoid proliferation.
 
         differentiated_type = chaste.cell_based.DifferentiatedCellProliferativeType()
-        cell_generator = (
-            chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
-        )
-        cells = cell_generator.GenerateBasicRandom(
-            mesh.GetNumElements(), differentiated_type
-        )
+        cell_generator = chaste.cell_based.CellsGenerator["UniformG1GenerationalCellCycleModel", 2]()
+        cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), differentiated_type)
 
         ## Next, create the cell population
 
@@ -105,15 +99,12 @@ class TestPyTensileTestTutorial(chaste.cell_based.AbstractCellBasedTestSuite):
 
         my_point = np.array([0.0, 0.0])
         normal = np.array([0.0, -1.0])
-        bc = chaste.cell_based.AttractingPlaneBoundaryCondition[2, 2](
-            cell_population, my_point, normal
-        )
+        bc = chaste.cell_based.AttractingPlaneBoundaryCondition[2, 2](cell_population, my_point, normal)
         simulator.AddCellPopulationBoundaryCondition(bc)
+        
         point = np.array([0.0, 15.5])
         normal = np.array([0.0, -1.0])
-        bc2 = chaste.cell_based.AttractingPlaneBoundaryCondition[2, 2](
-            cell_population, point, normal
-        )
+        bc2 = chaste.cell_based.AttractingPlaneBoundaryCondition[2, 2](cell_population, point, normal)
         simulator.AddCellPopulationBoundaryCondition(bc2)
 
         ## We want to displace our top boundary over time. We could write a custom boundary condition class to do this.

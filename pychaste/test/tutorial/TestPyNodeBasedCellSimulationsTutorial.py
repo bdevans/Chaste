@@ -50,8 +50,6 @@ import chaste.visualization  # Visualization tools
 
 from chaste.cell_based import AbstractCellBasedTestSuite
 
-# Set up MPI
-
 
 class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
     ## ### Test 1 - A basic node-based simulation
@@ -132,9 +130,7 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## If different simulation input parameters are being explored the lines should be removed.
 
         self.assertEqual(cell_population.GetNumRealCells(), 8)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 10.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 10.0, 6)
 
         # JUPYTER_TEARDOWN
 
@@ -188,9 +184,7 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## We then pass in the cell population into an `OffLatticeSimulation`, and set the output directory, output multiple and end time
 
         simulator = chaste.cell_based.OffLatticeSimulation[3, 3](cell_population)
-        simulator.SetOutputDirectory(
-            "Python/TestNodeBasedCellSimulationsSpheroidTutorial"
-        )
+        simulator.SetOutputDirectory("Python/TestNodeBasedCellSimulationsSpheroidTutorial")
         simulator.SetSamplingTimestepMultiple(12)
         simulator.SetEndTime(10.0)
 
@@ -216,9 +210,7 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## If different simulation input parameters are being explored the lines should be removed.
 
         self.assertEqual(cell_population.GetNumRealCells(), 8)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 10.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 10.0, 6)
 
         # JUPYTER_TEARDOWN
 
@@ -232,9 +224,7 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
         ## In the third test we run a node-based simulation restricted to the surface of a sphere.
 
-        chaste.core.OutputFileHandler(
-            "Python/TestNodeBasedCellSimulationsRestrictedSpheroidTutorial"
-        )
+        chaste.core.OutputFileHandler("Python/TestNodeBasedCellSimulationsRestrictedSpheroidTutorial")
         nodes = []
         nodes.append(chaste.mesh.Node[3](0, False, 0.5, 0.0, 0.0))
         nodes.append(chaste.mesh.Node[3](1, False, -0.5, 0.0, 0.0))
@@ -259,9 +249,7 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         scene.Start()  # JUPYTER_SHOW
 
         simulator = chaste.cell_based.OffLatticeSimulation[3, 3](cell_population)
-        simulator.SetOutputDirectory(
-            "Python/TestNodeBasedCellSimulationsRestrictedSpheroidTutorial"
-        )
+        simulator.SetOutputDirectory("Python/TestNodeBasedCellSimulationsRestrictedSpheroidTutorial")
         simulator.SetSamplingTimestepMultiple(12)
         simulator.SetEndTime(10.0)
 
@@ -280,9 +268,7 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         centre = np.array([0.0, 0.0, 1.0])
         radius = 5.0
         point2 = chaste.mesh.ChastePoint[3](centre)
-        boundary_condition = chaste.cell_based.SphereGeometryBoundaryCondition[3](
-            cell_population, point2.rGetLocation(), radius
-        )
+        boundary_condition = chaste.cell_based.SphereGeometryBoundaryCondition[3](cell_population, point2.rGetLocation(), radius)
         simulator.AddCellPopulationBoundaryCondition(boundary_condition)
 
         ## Save snapshot images of the population during the simulation
@@ -301,9 +287,7 @@ class TestPyNodeBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## If different simulation input parameters are being explored the lines should be removed.
 
         self.assertEqual(cell_population.GetNumRealCells(), 8)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 10.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 10.0, 6)
 
         # JUPYTER_TEARDOWN
 

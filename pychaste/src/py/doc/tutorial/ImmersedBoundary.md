@@ -6,7 +6,7 @@ images: []
 toc: true
 layout: "single"
 ---
-This tutorial is automatically generated from [TestPyImmersedBoundaryTutorial.py](https://github.com/Chaste/Chaste/blob/develop/pychaste/test/tutorial/TestPyImmersedBoundaryTutorial.py) at revision [2cd31145369b](https://github.com/Chaste/Chaste/commit/2cd31145369b99ac6f9bd17ad1c916ec7de20b28).
+This tutorial is automatically generated from [TestPyImmersedBoundaryTutorial.py](https://github.com/Chaste/Chaste/blob/develop/pychaste/test/tutorial/TestPyImmersedBoundaryTutorial.py) at revision [4045f91a83f5](https://github.com/Chaste/Chaste/commit/4045f91a83f55dc4a97f2ca4f97b0c32f4e43a4a).
 
 Note that the code is given in full at the bottom of the page.
 
@@ -29,6 +29,7 @@ In this tutorial, we demonstrate:
 import unittest
 
 import chaste
+
 from chaste.cell_based import (
     AbstractCellBasedTestSuite,
     CellsGenerator,
@@ -39,18 +40,18 @@ from chaste.cell_based import (
     ImmersedBoundaryLinearMembraneForce,
     ImmersedBoundarySimulationModifier,
     OffLatticeSimulation,
-    SetupNotebookTest,
-    SimulationTime,
-    TearDownNotebookTest,
 )
-from chaste.mesh import FluidSource, ImmersedBoundaryPalisadeMeshGenerator
+
+from chaste.mesh import (
+    FluidSource,
+    ImmersedBoundaryPalisadeMeshGenerator,
+)
+
 from chaste.visualization import (
     JupyterNotebookManager,
     JupyterSceneModifier,
     VtkScene,
 )
-
-# setup MPI
 
 class TestPyImmersedBoundaryTutorial(AbstractCellBasedTestSuite):
 ```
@@ -470,6 +471,7 @@ if __name__ == "__main__":
 import unittest
 
 import chaste
+
 from chaste.cell_based import (
     AbstractCellBasedTestSuite,
     CellsGenerator,
@@ -480,18 +482,18 @@ from chaste.cell_based import (
     ImmersedBoundaryLinearMembraneForce,
     ImmersedBoundarySimulationModifier,
     OffLatticeSimulation,
-    SetupNotebookTest,
-    SimulationTime,
-    TearDownNotebookTest,
 )
-from chaste.mesh import FluidSource, ImmersedBoundaryPalisadeMeshGenerator
+
+from chaste.mesh import (
+    FluidSource,
+    ImmersedBoundaryPalisadeMeshGenerator,
+)
+
 from chaste.visualization import (
     JupyterNotebookManager,
     JupyterSceneModifier,
     VtkScene,
 )
-
-# setup MPI
 
 class TestPyImmersedBoundaryTutorial(AbstractCellBasedTestSuite):
 

@@ -117,9 +117,7 @@ class TestPyPottsBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## and adhesion between cells (AdhesionPottsUpdateRule) and pass them to the OnLatticeSimulation.
         ## For a list of possible update rules see subclasses of AbstractPottsUpdateRule.
 
-        volume_constraint_update_rule = (
-            chaste.cell_based.VolumeConstraintPottsUpdateRule[2]()
-        )
+        volume_constraint_update_rule = (chaste.cell_based.VolumeConstraintPottsUpdateRule[2]())
 
         ## Set an appropriate target volume in number of lattice sites. Here we use the default value of 16 lattice sites.
 
@@ -155,9 +153,7 @@ class TestPyPottsBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## If different simulation input parameters are being explored the lines should be removed.
 
         self.assertEqual(cell_population.GetNumRealCells(), 41)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 50.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 50.0, 6)
 
         # JUPYTER_TEARDOWN
 
@@ -181,9 +177,7 @@ class TestPyPottsBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
         differentiated_type = chaste.cell_based.DifferentiatedCellProliferativeType()
         cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 2]()
-        cells = cell_generator.GenerateBasicRandom(
-            mesh.GetNumElements(), differentiated_type
-        )
+        cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), differentiated_type)
 
         ## Before we make a CellPopulation we make a cell label and then assign this label to some randomly chosen cells.
 
@@ -212,28 +206,18 @@ class TestPyPottsBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## differential adhesion between cells (DifferentialAdhesionPottsUpdateRule), set appropriate parameters, and
         ## pass them to the OnLatticeSimulation.
 
-        volume_constraint_update_rule = (
-            chaste.cell_based.VolumeConstraintPottsUpdateRule[2]()
-        )
+        volume_constraint_update_rule = chaste.cell_based.VolumeConstraintPottsUpdateRule[2]()
         volume_constraint_update_rule.SetMatureCellTargetVolume(16)
         volume_constraint_update_rule.SetDeformationEnergyParameter(0.2)
         simulator.AddUpdateRule(volume_constraint_update_rule)
 
         ## We repeat the process for any other update rules.
 
-        differential_adhesion_update_rule = (
-            chaste.cell_based.DifferentialAdhesionPottsUpdateRule[2]()
-        )
-        differential_adhesion_update_rule.SetLabelledCellLabelledCellAdhesionEnergyParameter(
-            0.16
-        )
-        differential_adhesion_update_rule.SetLabelledCellCellAdhesionEnergyParameter(
-            0.11
-        )
+        differential_adhesion_update_rule = chaste.cell_based.DifferentialAdhesionPottsUpdateRule[2]()
+        differential_adhesion_update_rule.SetLabelledCellLabelledCellAdhesionEnergyParameter(0.16)
+        differential_adhesion_update_rule.SetLabelledCellCellAdhesionEnergyParameter(0.11)
         differential_adhesion_update_rule.SetCellCellAdhesionEnergyParameter(0.02)
-        differential_adhesion_update_rule.SetLabelledCellBoundaryAdhesionEnergyParameter(
-            0.16
-        )
+        differential_adhesion_update_rule.SetLabelledCellBoundaryAdhesionEnergyParameter(0.16)
         differential_adhesion_update_rule.SetCellBoundaryAdhesionEnergyParameter(0.16)
         simulator.AddUpdateRule(differential_adhesion_update_rule)
 
@@ -245,9 +229,7 @@ class TestPyPottsBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## If different simulation input parameters are being explored the lines should be removed.
 
         self.assertEqual(cell_population.GetNumRealCells(), 64)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 20.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 20.0, 6)
 
         # JUPYTER_TEARDOWN
 
@@ -273,9 +255,7 @@ class TestPyPottsBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
 
         differentiated_type = chaste.cell_based.DifferentiatedCellProliferativeType()
         cell_generator = chaste.cell_based.CellsGenerator["UniformCellCycleModel", 3]()
-        cells = cell_generator.GenerateBasicRandom(
-            mesh.GetNumElements(), differentiated_type
-        )
+        cells = cell_generator.GenerateBasicRandom(mesh.GetNumElements(), differentiated_type)
 
         ## As for the 2D case before we make a CellPopulation we make a pointer to a cell label and then assign this label to some randomly chosen cells.
 
@@ -302,28 +282,18 @@ class TestPyPottsBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## We must now create one or more update rules, which determine the Hamiltonian in the Potts simulation.
         ## Now set the target volume to be appropriate for this 3D simulation.
 
-        volume_constraint_update_rule = (
-            chaste.cell_based.VolumeConstraintPottsUpdateRule[3]()
-        )
+        volume_constraint_update_rule = chaste.cell_based.VolumeConstraintPottsUpdateRule[3]()
         volume_constraint_update_rule.SetMatureCellTargetVolume(8)
         volume_constraint_update_rule.SetDeformationEnergyParameter(0.2)
         simulator.AddUpdateRule(volume_constraint_update_rule)
 
         ## We use the same differential adhesion parameters as in the 2D case.
 
-        differential_adhesion_update_rule = (
-            chaste.cell_based.DifferentialAdhesionPottsUpdateRule[3]()
-        )
-        differential_adhesion_update_rule.SetLabelledCellLabelledCellAdhesionEnergyParameter(
-            0.16
-        )
-        differential_adhesion_update_rule.SetLabelledCellCellAdhesionEnergyParameter(
-            0.11
-        )
+        differential_adhesion_update_rule = chaste.cell_based.DifferentialAdhesionPottsUpdateRule[3]()
+        differential_adhesion_update_rule.SetLabelledCellLabelledCellAdhesionEnergyParameter(0.16)
+        differential_adhesion_update_rule.SetLabelledCellCellAdhesionEnergyParameter(0.11)
         differential_adhesion_update_rule.SetCellCellAdhesionEnergyParameter(0.02)
-        differential_adhesion_update_rule.SetLabelledCellBoundaryAdhesionEnergyParameter(
-            0.16
-        )
+        differential_adhesion_update_rule.SetLabelledCellBoundaryAdhesionEnergyParameter(0.16)
         differential_adhesion_update_rule.SetCellBoundaryAdhesionEnergyParameter(0.16)
         simulator.AddUpdateRule(differential_adhesion_update_rule)
 
@@ -335,9 +305,7 @@ class TestPyPottsBasedCellSimulationsTutorial(AbstractCellBasedTestSuite):
         ## If different simulation input parameters are being explored the lines should be removed.
 
         self.assertEqual(cell_population.GetNumRealCells(), 64)
-        self.assertAlmostEqual(
-            chaste.cell_based.SimulationTime.Instance().GetTime(), 20.0, 6
-        )
+        self.assertAlmostEqual(chaste.cell_based.SimulationTime.Instance().GetTime(), 20.0, 6)
 
         # JUPYTER_TEARDOWN
 
