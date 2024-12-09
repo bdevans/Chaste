@@ -41,31 +41,36 @@ chaste_do_component(pychaste)
 ####  Generate Python wrappers
 ################################
 
-# Get required includes
+# Get includes from `chaste_pychaste` (the build target for non-wrapper pychaste code)
 get_target_property(PYCHASTE_INCLUDE_DIRS chaste_pychaste INCLUDE_DIRECTORIES)
 
-# Get includes for VTK 9+
+# Add includes for VTK 9+ (for VTK < 9, already part of `chaste_pychaste` includes)
 if(TARGET VTK::CommonCore)
     get_target_property(_include_dirs VTK::CommonCore INTERFACE_INCLUDE_DIRECTORIES)
     list(APPEND PYCHASTE_INCLUDE_DIRS ${_include_dirs})
 endif()
 
-# Add typecasters to includes
+# Add PETSC4Py includes
+list(APPEND PYCHASTE_INCLUDE_DIRS ${PETSC4PY_INCLUDES})
+
+# Add includes for pybind11 typecasters
 header_dirs("${CMAKE_CURRENT_SOURCE_DIR}/dynamic" _include_dirs)
 list(APPEND PYCHASTE_INCLUDE_DIRS ${_include_dirs})
 
-# Create the wrappers
-execute_process(
-    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/wrappers
-    COMMAND ${chaste_python3_venv}/cppwg ${CMAKE_SOURCE_DIR}
-        -w ${CMAKE_CURRENT_BINARY_DIR}/wrappers
-        -p ${CMAKE_SOURCE_DIR}/pychaste/dynamic/config.yaml
-        -i ${PYCHASTE_INCLUDE_DIRS}
-        -l ${CMAKE_CURRENT_BINARY_DIR}/cppwg.log
-        --std c++17
-)
+# Generate wrappers if not already created
+if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/wrappers/all/_pychaste_all.main.cppwg.cpp")
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/wrappers
+        COMMAND ${chaste_python3_venv}/cppwg ${CMAKE_SOURCE_DIR}
+            -w ${CMAKE_CURRENT_BINARY_DIR}/wrappers
+            -p ${CMAKE_SOURCE_DIR}/pychaste/dynamic/config.yaml
+            -i ${PYCHASTE_INCLUDE_DIRS}
+            -l ${CMAKE_CURRENT_BINARY_DIR}/cppwg.log
+            --std c++17
+    )
+endif()
 
-# Add wrappers to includes
+# Add generated wrappers to includes
 header_dirs("${CMAKE_CURRENT_BINARY_DIR}/wrappers" _include_dirs)
 list(APPEND PYCHASTE_INCLUDE_DIRS ${_include_dirs})
 
@@ -78,41 +83,26 @@ list(APPEND PYCHASTE_INCLUDE_DIRS ${_include_dirs})
 # When the shared library has been built, it can be used in Python code 
 # as `from chaste._pychaste_all import *`.
 
-file(
-    GLOB_RECURSE
-    PYCHASTE_WRAPPER_SOURCES
+file(GLOB_RECURSE PYCHASTE_WRAPPER_SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/wrappers/all/*.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/wrappers/all/*.hpp
 )
 
-add_library(_pychaste_all SHARED ${PYCHASTE_WRAPPER_SOURCES})
+pybind11_add_module(_pychaste_all SHARED ${PYCHASTE_WRAPPER_SOURCES})
 
-set_target_properties(
-    _pychaste_all
-    PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/package/chaste
-        PREFIX "${PYTHON_MODULE_PREFIX}"
-        SUFFIX "${CMAKE_SHARED_LIBRARY_SUFFIX}"
-)
-
-target_link_libraries(
-    _pychaste_all
-    PRIVATE
-    ${Python3_LIBRARIES}  # Python and pybind11 come first
-    pybind11::module
+target_link_libraries(_pychaste_all PRIVATE
+    ${Python3_LIBRARIES}
     Chaste_COMMON_DEPS
-    chaste_pychaste  # Library built from non-wrapper code in src/cpp/
+    chaste_pychaste
 )
 
-target_include_directories(
-    _pychaste_all
-    PRIVATE
-    ${PYTHON3_INCLUDE_DIRS}
-    ${PYCHASTE_INCLUDE_DIRS}
-    ${PETSC4PY_INCLUDES}
-)
+target_include_directories(_pychaste_all PRIVATE ${PYCHASTE_INCLUDE_DIRS})
 
-target_compile_options(_pychaste_all PRIVATE -Wno-unused-local-typedefs)
+target_compile_options(_pychaste_all PRIVATE -flto=auto -Wno-unused-local-typedefs)
+
+set_target_properties(_pychaste_all PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/package/chaste
+)
 
 add_dependencies(pychaste _pychaste_all)
 
@@ -120,7 +110,7 @@ add_dependencies(pychaste _pychaste_all)
 ####  Copy Python package
 ################################
 
-# Get list of files in the Python package directory `pychaste/src/py/`
+# Get list of files in the Python package directory: pychaste/src/py/
 set(package_file_paths "")
 file(
     GLOB_RECURSE
