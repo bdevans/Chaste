@@ -420,11 +420,20 @@ endmacro(Chaste_DO_PROJECT)
 # process the apps folder
 ##########################################################
 macro(Chaste_DO_APPS_COMMON component)
+    message("Configuring apps folder for ${component}")
     include_directories(SYSTEM "${Chaste_THIRD_PARTY_INCLUDE_DIRS}" "${Chaste_INCLUDE_DIRS}")
     include_directories(SYSTEM "${CXXTEST_INCLUDES}")
-    file(GLOB_RECURSE Chaste_${component}_APPS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} src/*.cpp)
+    message("Directory is ${CMAKE_CURRENT_SOURCE_DIR}")
+    file(GLOB_RECURSE Chaste_${component}_APPS 
+         RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+         ${CMAKE_CURRENT_SOURCE_DIR}/src *.cpp *.cu *.cuh)
     foreach(app ${Chaste_${component}_APPS})
-        string(REGEX REPLACE ".*/([a-zA-Z0-9_]+)[.]cpp" "\\1" appName "${app}")
+        message("Now processing app ${app}")
+        string(REPLACE "src/" "" appNameNoSrc "${app}")
+        string(REGEX REPLACE ".*/([a-zA-Z0-9_-]+)[.]cpp" "\\1" appName "${appNameNoSrc}")
+        string(REGEX REPLACE ".*/([a-zA-Z0-9_-]+)[.]cu" "\\1" appName "${appNameNoSrc}")
+        string(REGEX REPLACE ".*/([a-zA-Z0-9_-]+)[.]cuh" "\\1" appName "${appNameNoSrc}")
+        message("appName is now ${appName}")
         if (${component} MATCHES "project_")
             message("Configuring ${appName} app for ${component}")
             set(component_library chaste_${component})
@@ -493,10 +502,10 @@ endmacro(Chaste_DO_APPS_COMMON)
 # these wrap chaste_do_apps_common for both the main
 # Chaste apps directory and external project apps dirs
 ##########################################################
-macro(Chaste_DO_APPS_PROJECT projectName)
+macro(chaste_do_apps_project projectName)
     message("Configuring apps for project ${projectName}")
     Chaste_DO_APPS_COMMON(project_${projectName})
-endmacro(Chaste_DO_APPS_PROJECT)
+endmacro(chaste_do_apps_project)
 
 macro(Chaste_DO_APPS_MAIN)
     message("Configuring main Chaste apps")

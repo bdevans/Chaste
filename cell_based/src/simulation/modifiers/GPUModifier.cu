@@ -56,28 +56,51 @@ FLAMEGPU_AGENT_FUNCTION(compute_force_meineke_spring, flamegpu::MessageSpatial2D
         float other_y = message.getVariable<float>("y");
         float other_radius = message.getVariable<float>("radius");
         
+        // Compute unit distance
         float x_dist = other_x - x;
         float y_dist = other_y - y;
         float distance_between_nodes = sqrt(x_dist * x_dist + y_dist * y_dist);
+
         float unit_x = x_dist / distance_between_nodes;
         float unit_y = y_dist / distance_between_nodes;
-        const float rest_length = radius + other_radius; 
-        float overlap = distance_between_nodes - rest_length;
-        const float spring_stiffness = 15.0f;
+        
+        // Only compute force if within cutoff distance and for positive distance
         const float cutoff_length = 1.5f;
-        const float multiplication_factor = 1.0f;
+        if (distance_between_nodes < cutoff_length && distance_between_nodes > 0.0f) {
 
-        if (distance_between_nodes > 0.0f) {
-            if (x_dist * x_dist + y_dist * y_dist < cutoff_length) {
-                x_force += multiplication_factor * spring_stiffness * unit_x * overlap; 
-                y_force += multiplication_factor * spring_stiffness * unit_y * overlap; 
+            // Compute rest length
+            const float rest_length = radius + other_radius; 
+            const float rest_length_final = rest_length;
+            
+            // TODO: Should check here if newly divided or apoptosis happening
+
+
+            // Compute the force
+            float overlap = distance_between_nodes - rest_length;
+            bool is_closer_than_rest_length = (overlap <= 0);
+            const float spring_stiffness = 15.0f;
+            const float multiplication_factor = 1.0f;
+
+            
+            // A reasonably stable simple force law
+            if (is_closer_than_rest_length) //overlap is negative
+            {
+                //assert(overlap > -rest_length_final);
+                x_force += multiplication_factor * spring_stiffness * unit_x * rest_length_final* log(1.0 + overlap/rest_length_final);
+                y_force  = multiplication_factor * spring_stiffness * unit_y * rest_length_final* log(1.0 + overlap/rest_length_final);
+            }
+            else
+            {
+                double alpha = 5.0;
+                x_force += multiplication_factor * spring_stiffness * unit_x * overlap * exp(-alpha * overlap/rest_length_final);
+                y_force += multiplication_factor * spring_stiffness * unit_y * overlap * exp(-alpha * overlap/rest_length_final);
             }
         }
 
         
-        FLAMEGPU->setVariable<float>("x_force", x_force);        
-        FLAMEGPU->setVariable<float>("y_force", y_force);        
     }
+    FLAMEGPU->setVariable<float>("x_force", x_force);        
+    FLAMEGPU->setVariable<float>("y_force", y_force);        
     return flamegpu::ALIVE;
 }
 
@@ -156,8 +179,8 @@ void GPUModifier<DIM>::SetupSolve(AbstractCellPopulation<DIM,DIM>& rCellPopulati
     //location_message.newVariable<float>("x"); // Implicit for spatial message
     //location_message.newVariable<float>("y"); // Implicit for spatial message
     location_message.newVariable<float>("radius");
-    location_message.setMin(-5.0, -5.0);
-    location_message.setMax(5.0, 5.0);
+    location_message.setMin(-500.0, -500.0);
+    location_message.setMax(500.0, 500.0);
     location_message.setRadius(1.5);
 
     // Agent functions

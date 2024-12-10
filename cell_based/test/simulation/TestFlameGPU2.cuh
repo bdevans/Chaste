@@ -86,7 +86,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "PetscSetupAndFinalize.hpp"
 
-FLAMEGPU_AGENT_FUNCTION(do_nothing, flamegpu::MessageNone, flamegpu::MessageNone) {
+FLAMEGPU_AGENT_FUNCTION(test_do_nothing, flamegpu::MessageNone, flamegpu::MessageNone) {
     return flamegpu::ALIVE;
 }
 
@@ -125,31 +125,53 @@ FLAMEGPU_AGENT_FUNCTION(test_compute_force_meineke_spring, flamegpu::MessageBrut
         float other_y = message.getVariable<float>("y");
         float other_radius = message.getVariable<float>("radius");
         
+        // Compute unit distance
         float x_dist = other_x - x;
         float y_dist = other_y - y;
         float distance_between_nodes = sqrt(x_dist * x_dist + y_dist * y_dist);
+
         float unit_x = x_dist / distance_between_nodes;
         float unit_y = y_dist / distance_between_nodes;
-        const float rest_length = radius + other_radius; 
-        float overlap = distance_between_nodes - rest_length;
-        const float spring_stiffness = 15.0f;
+        
+        // Only compute force if within cutoff distance and for positive distance
         const float cutoff_length = 1.5f;
-        const float multiplication_factor = 1.0f;
+        if (distance_between_nodes < cutoff_length && distance_between_nodes > 0.0f) {
 
-        if (distance_between_nodes > 0.0f) {
-            if (x_dist * x_dist + y_dist * y_dist < cutoff_length) {
-                x_force += multiplication_factor * spring_stiffness * unit_x * overlap; 
-                y_force += multiplication_factor * spring_stiffness * unit_y * overlap; 
+            // Compute rest length
+            const float rest_length = radius + other_radius; 
+            const float rest_length_final = rest_length;
+            
+            // TODO: Should check here if newly divided or apoptosis happening
+
+
+            // Compute the force
+            float overlap = distance_between_nodes - rest_length;
+            bool is_closer_than_rest_length = (overlap <= 0);
+            const float spring_stiffness = 15.0f;
+            const float multiplication_factor = 1.0f;
+
+            
+            // A reasonably stable simple force law
+            if (is_closer_than_rest_length) //overlap is negative
+            {
+                //assert(overlap > -rest_length_final);
+                x_force += multiplication_factor * spring_stiffness * unit_x * rest_length_final* log(1.0 + overlap/rest_length_final);
+                y_force  = multiplication_factor * spring_stiffness * unit_y * rest_length_final* log(1.0 + overlap/rest_length_final);
+            }
+            else
+            {
+                double alpha = 5.0;
+                x_force += multiplication_factor * spring_stiffness * unit_x * overlap * exp(-alpha * overlap/rest_length_final);
+                y_force += multiplication_factor * spring_stiffness * unit_y * overlap * exp(-alpha * overlap/rest_length_final);
             }
         }
 
-
-        FLAMEGPU->setVariable<float>("x_force", x_force);        
-        FLAMEGPU->setVariable<float>("y_force", y_force);        
         
-        FLAMEGPU->setVariable<float>("x", x + x_force * 0.001);
-        FLAMEGPU->setVariable<float>("y", y + y_force * 0.001);
     }
+
+    FLAMEGPU->setVariable<float>("x_force", x_force);        
+    FLAMEGPU->setVariable<float>("y_force", y_force);        
+
     return flamegpu::ALIVE;
 }
 
@@ -178,6 +200,7 @@ public:
 
         //flamegpu::CUDASimulation cuda_model(model);
         //cuda_model.simulate();
+        //cuda_model.reset(true);
     }
     
 
@@ -188,92 +211,92 @@ public:
         /* 
          * Chaste computation 
          */
-        //SimulationTime::Instance()->SetEndTimeAndNumberOfTimeSteps(1.0,1);
-        //
-        //// Create a NodeBasedCellPopulation
-        //std::vector<Node<2>*> nodes;
-        //nodes.push_back(new Node<2>(0, true, 0.0, 0.0));
-        //nodes.push_back(new Node<2>(1, true, 0.5, 0.5));
-        //nodes.push_back(new Node<2>(2, true, 1.0, 1.0));
+        SimulationTime::Instance()->SetEndTimeAndNumberOfTimeSteps(1.0,1);
+        
+        // Create a NodeBasedCellPopulation
+        std::vector<Node<2>*> nodes;
+        nodes.push_back(new Node<2>(0, true, 0.0, 0.0));
+        nodes.push_back(new Node<2>(1, true, 0.5, 0.5));
+        nodes.push_back(new Node<2>(2, true, 1.0, 1.0));
 
-        //// Convert this to a NodesOnlyMesh
-        //NodesOnlyMesh<2> mesh;
-        //mesh.ConstructNodesWithoutMesh(nodes, 100.0);
+        // Convert this to a NodesOnlyMesh
+        NodesOnlyMesh<2> mesh;
+        mesh.ConstructNodesWithoutMesh(nodes, 100.0);
 
-        //std::vector<CellPtr> cells;
-        //CellsGenerator<FixedG1GenerationalCellCycleModel, 2> cells_generator;
-        //cells_generator.GenerateBasic(cells, mesh.GetNumNodes());
+        std::vector<CellPtr> cells;
+        CellsGenerator<FixedG1GenerationalCellCycleModel, 2> cells_generator;
+        cells_generator.GenerateBasic(cells, mesh.GetNumNodes());
 
-        //NodeBasedCellPopulation<2> cell_population(mesh, cells);
-        //cell_population.Update(); //Needs to be called separately as not in a simulation
+        NodeBasedCellPopulation<2> cell_population(mesh, cells);
+        cell_population.Update(); //Needs to be called separately as not in a simulation
 
-        //RepulsionForce<2> repulsion_force;
+        GeneralisedLinearSpringForce<2> generalsiedLinearSpringForce;
 
-        //for (AbstractMesh<2,2>::NodeIterator node_iter = mesh.GetNodeIteratorBegin();
-        //        node_iter != mesh.GetNodeIteratorEnd();
-        //        ++node_iter)
-        //{
-        //    node_iter->ClearAppliedForce();
-        //}
-        //repulsion_force.AddForceContribution(cell_population);
+        for (AbstractMesh<2,2>::NodeIterator node_iter = mesh.GetNodeIteratorBegin();
+                node_iter != mesh.GetNodeIteratorEnd();
+                ++node_iter)
+        {
+            node_iter->ClearAppliedForce();
+        }
+        generalsiedLinearSpringForce.AddForceContribution(cell_population);
 
-        ///* 
-        // * Flame computation 
-        // */
-        //flamegpu::ModelDescription model("TestSimpleForceCalculation");
-        //
-        //// Define an agent
-        //flamegpu::AgentDescription cell_agent = model.newAgent("cell"); 
-        //cell_agent.newVariable<float>("x");
-        //cell_agent.newVariable<float>("y");
-        //cell_agent.newVariable<float>("radius");
-        //cell_agent.newVariable<float>("x_force");
-        //cell_agent.newVariable<float>("y_force");
-        //
-        //// Define the location message
-        //flamegpu::MessageBruteForce::Description location_message = model.newMessage<flamegpu::MessageBruteForce>("location_message");
-        //location_message.newVariable<float>("x");
-        //location_message.newVariable<float>("y");
-        //location_message.newVariable<float>("radius");
+        /* 
+         * Flame computation 
+         */
+        flamegpu::ModelDescription model("TestSimpleForceCalculation");
+        
+        // Define an agent
+        flamegpu::AgentDescription cell_agent = model.newAgent("cell"); 
+        cell_agent.newVariable<float>("x");
+        cell_agent.newVariable<float>("y");
+        cell_agent.newVariable<float>("radius");
+        cell_agent.newVariable<float>("x_force");
+        cell_agent.newVariable<float>("y_force");
+        
+        // Define the location message
+        flamegpu::MessageBruteForce::Description location_message = model.newMessage<flamegpu::MessageBruteForce>("location_message");
+        location_message.newVariable<float>("x");
+        location_message.newVariable<float>("y");
+        location_message.newVariable<float>("radius");
 
-        //// Agent functions
-        //flamegpu::AgentFunctionDescription output_location_desc = cell_agent.newFunction("test_output_location", test_output_location);
-        //output_location_desc.setMessageOutput("location_message");
-        //
-        //flamegpu::AgentFunctionDescription compute_force_desc = cell_agent.newFunction("test_compute_force_meineke_spring", test_compute_force_meineke_spring);
-        //compute_force_desc.setMessageInput("location_message");
+        // Agent functions
+        flamegpu::AgentFunctionDescription output_location_desc = cell_agent.newFunction("test_output_location", test_output_location);
+        output_location_desc.setMessageOutput("location_message");
+        
+        flamegpu::AgentFunctionDescription compute_force_desc = cell_agent.newFunction("test_compute_force_meineke_spring", test_compute_force_meineke_spring);
+        compute_force_desc.setMessageInput("location_message");
 
-        //compute_force_desc.dependsOn(output_location_desc);
-        //
-        //// Set execution root
-        //model.addExecutionRoot(output_location_desc);
-        //
-        //model.addInitFunction(test_simple_force_create_agents);
-        //
-        //model.generateLayers();
+        compute_force_desc.dependsOn(output_location_desc);
+        
+        // Set execution root
+        model.addExecutionRoot(output_location_desc);
+        
+        model.addInitFunction(test_simple_force_create_agents);
+        
+        model.generateLayers();
 
-        //flamegpu::CUDASimulation cuda_model(model);
-        //cuda_model.SimulationConfig().steps = 1;
-        //cuda_model.simulate();
-        //
-        //// Get results
-        //flamegpu::AgentVector out_pop(cell_agent);
-        //cuda_model.getPopulationData(out_pop);
-        //
-        ///*
-        // * Compare forces
-        // */
-        //
-        //for (int i = 0; i < 3; i++) {
-        //    TS_ASSERT_DELTA(cell_population.GetNode(i)->rGetAppliedForce()[0], out_pop[i].getVariable<float>("x_force"), 1e-4);
-        //    TS_ASSERT_DELTA(cell_population.GetNode(i)->rGetAppliedForce()[1], out_pop[i].getVariable<float>("y_force"), 1e-4);
-        //}
+        flamegpu::CUDASimulation cuda_model(model);
+        cuda_model.SimulationConfig().steps = 1;
+        cuda_model.simulate();
+        
+        // Get results
+        flamegpu::AgentVector out_pop(cell_agent);
+        cuda_model.getPopulationData(out_pop);
+        
+        /*
+         * Compare forces
+         */
+        
+        for (int i = 0; i < 3; i++) {
+            TS_ASSERT_DELTA(cell_population.GetNode(i)->rGetAppliedForce()[0], out_pop[i].getVariable<float>("x_force"), 1e-4);
+            TS_ASSERT_DELTA(cell_population.GetNode(i)->rGetAppliedForce()[1], out_pop[i].getVariable<float>("y_force"), 1e-4);
+        }
     }
     
     void TestGPUModifier() {
         
-        double size_of_box = 8.0;
-        unsigned cells_across = 12;
+        double size_of_box = 250.0;
+        unsigned cells_across = 380;
         double scaling = size_of_box/(double(cells_across-1));
 
         // Create a simple 3D NodeBasedCellPopulation consisting of cells evenly spaced in a regular grid
@@ -320,8 +343,8 @@ public:
 
     void TestCPUPathway() {
         
-        double size_of_box = 8.0;
-        unsigned cells_across = 12;
+        double size_of_box = 250.0;
+        unsigned cells_across = 380;
         double scaling = size_of_box/(double(cells_across-1));
 
         // Create a simple 3D NodeBasedCellPopulation consisting of cells evenly spaced in a regular grid
