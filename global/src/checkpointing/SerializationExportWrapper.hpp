@@ -55,7 +55,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * We also support 1.41 and above, which introduce BOOST_CLASS_EXPORT_KEY
  * and BOOST_CLASS_EXPORT_IMPLEMENT. Note 1.41.1 has bugs in serialization.
- * See https://chaste.cs.ox.ac.uk/trac/wiki/InstallGuides/DependencyVersions
+ * See https://chaste.github.io/docs/installguides/dependency-versions/
  * for recommended versions.
  *
  * To handle all situations in Chaste:
