@@ -41,10 +41,10 @@ chaste_do_component(pychaste)
 ####  Generate Python wrappers
 ################################
 
-# Get includes from `chaste_pychaste` (the build target for non-wrapper pychaste code)
+# Get includes from `chaste_pychaste` (target for non-wrapper code in pychaste/src/cpp)
 get_target_property(PYCHASTE_INCLUDE_DIRS chaste_pychaste INCLUDE_DIRECTORIES)
 
-# Add includes for VTK 9+ (for VTK < 9, already part of `chaste_pychaste` includes)
+# Add includes for VTK 9+ (includes for VTK < 9 will already be in the list)
 if(TARGET VTK::CommonCore)
     get_target_property(_include_dirs VTK::CommonCore INTERFACE_INCLUDE_DIRECTORIES)
     list(APPEND PYCHASTE_INCLUDE_DIRS ${_include_dirs})
@@ -57,18 +57,26 @@ list(APPEND PYCHASTE_INCLUDE_DIRS ${PETSC4PY_INCLUDES})
 header_dirs("${CMAKE_CURRENT_SOURCE_DIR}/dynamic" _include_dirs)
 list(APPEND PYCHASTE_INCLUDE_DIRS ${_include_dirs})
 
+# Command for generating wrappers
+set(PYCHASTE_WRAPPER_GENERATION_COMMAND
+    ${chaste_python3_venv}/cppwg ${CMAKE_SOURCE_DIR}
+        -w ${CMAKE_CURRENT_BINARY_DIR}/wrappers
+        -p ${CMAKE_CURRENT_SOURCE_DIR}/dynamic/config.yaml
+        -i ${PYCHASTE_INCLUDE_DIRS}
+        -l ${CMAKE_CURRENT_BINARY_DIR}/cppwg.log
+        --std c++17
+)
+
 # Generate wrappers if not already created
-if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/wrappers/all/_pychaste_all.main.cppwg.cpp")
-    execute_process(
-        COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/wrappers
-        COMMAND ${chaste_python3_venv}/cppwg ${CMAKE_SOURCE_DIR}
-            -w ${CMAKE_CURRENT_BINARY_DIR}/wrappers
-            -p ${CMAKE_SOURCE_DIR}/pychaste/dynamic/config.yaml
-            -i ${PYCHASTE_INCLUDE_DIRS}
-            -l ${CMAKE_CURRENT_BINARY_DIR}/cppwg.log
-            --std c++17
-    )
+if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/wrappers")
+    execute_process(COMMAND ${PYCHASTE_WRAPPER_GENERATION_COMMAND})
 endif()
+
+# Target for manually re-generating the wrappers
+add_custom_target(pychaste_wrappers
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_BINARY_DIR}/wrappers
+    COMMAND ${PYCHASTE_WRAPPER_GENERATION_COMMAND}
+)
 
 # Add generated wrappers to includes
 header_dirs("${CMAKE_CURRENT_BINARY_DIR}/wrappers" _include_dirs)
