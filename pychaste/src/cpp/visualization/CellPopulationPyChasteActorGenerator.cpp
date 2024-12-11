@@ -322,7 +322,7 @@ void CellPopulationPyChasteActorGenerator<DIM>::AddPottsBasedCellPopulationActor
 #if (VTK_MAJOR_VERSION < 9 || (VTK_MAJOR_VERSION == 9 && VTK_MINOR_VERSION < 1)) // VTK < 9.1
         p_threshold->ThresholdByUpper(0.0);
 #else
-        p_threshold->SetUpperThreshold(0.0);
+        p_threshold->SetLowerThreshold(0.0);
 #endif
         p_threshold->SetInputArrayToProcess(0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_CELLS, "Cell Id");
 
@@ -1077,7 +1077,7 @@ void CellPopulationPyChasteActorGenerator<DIM>::AddMeshBasedCellPopulationActor(
 #if (VTK_MAJOR_VERSION < 9 || (VTK_MAJOR_VERSION == 9 && VTK_MINOR_VERSION < 1)) // VTK < 9.1
         p_threshold->ThresholdByUpper(0.0);
 #else
-        p_threshold->SetUpperThreshold(0.0);
+        p_threshold->SetLowerThreshold(0.0);
 #endif
         p_threshold->SetInputArrayToProcess(0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_CELLS, "CellColors");
 
