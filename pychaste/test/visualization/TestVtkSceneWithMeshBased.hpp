@@ -142,8 +142,9 @@ public:
 
         OffLatticeSimulation<3> simulator(*p_cell_population);
         simulator.SetOutputDirectory("TestVtkSceneWithMeshBasedPopulation/3d/");
-        simulator.SetEndTime(2.0);
-        simulator.SetSamplingTimestepMultiple(5);
+        simulator.SetEndTime(1.0);
+        simulator.SetDt(0.1);
+        simulator.SetSamplingTimestepMultiple(100);
 
         MAKE_PTR(GeneralisedLinearSpringForce<3>, p_force);
         p_force->SetMeinekeSpringStiffness(30.0); // default is 15.0;

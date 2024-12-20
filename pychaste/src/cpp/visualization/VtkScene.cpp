@@ -181,7 +181,7 @@ void VtkScene<DIM>::ResetRenderer(unsigned time_step)
         Start();
     }
 
-    vtkActor* p_actor;
+    vtkSmartPointer<vtkActor> p_actor;
     vtkSmartPointer<vtkActorCollection> p_actors = mpRenderer->GetActors();
 
     for (p_actors->InitTraversal(); (p_actor = p_actors->GetNextItem()) != NULL;)
