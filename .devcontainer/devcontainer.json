@@ -92,7 +92,7 @@
 	// TODO: https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/cmake-presets.md
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+	"remoteUser": "root",
 
 	"hostRequirements": {
 		"memory": "4gb",
