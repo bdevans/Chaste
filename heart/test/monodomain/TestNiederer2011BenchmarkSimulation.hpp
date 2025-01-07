@@ -64,7 +64,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * Note: the obtain the results in this paper, the simulations are run with 'state-variable interpolation'
  * (SVI) switched on (which is not true by default). For full details on SVI, see the documentation page:
- * ChasteGuides -> Advanced -> StateVariableInterpolation
+ * https://chaste.github.io/docs/user-guides/state-variable-interpolation/
  *
  * Also, a follow-up paper
  *
