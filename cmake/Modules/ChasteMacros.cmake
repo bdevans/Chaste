@@ -571,7 +571,13 @@ macro(Chaste_DO_TEST_COMMON component)
                     set(parallel ON)
                 endif()
 
-                if (NOT DEFINED ${testTargetName})
+                if (DEFINED ${testTargetName})
+                    # if the test has already been defined, add it to this test pack
+                    get_property(test_labels TEST ${testTargetName} PROPERTY LABELS)
+                    list(APPEND test_labels ${type}_${component})
+                    set_property(TEST ${testTargetName} PROPERTY LABELS "${test_labels}")
+
+                else()
                     set(${testTargetName} ON)
                     chaste_add_test(${testTargetName} "${CMAKE_CURRENT_SOURCE_DIR}/${filename}")
 
